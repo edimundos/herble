@@ -46,6 +46,8 @@ class MyPlantsForm extends StatefulWidget {
 }
 
 class _MyPlantsFormState extends State<MyPlantsForm> {
+  List<Uint8List> plantPics = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,17 +70,23 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                IndividualPlant(plant: plants[index])),
+                          builder: (context) => IndividualPlant(
+                            plant: plants[index],
+                            pic: plantPics[index],
+                          ),
+                        ),
                       );
                     },
                     leading: FutureBuilder(
                       future: getImage(plants[index].picture),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
+                          plantPics.add(snapshot.data!);
                           return Image.memory(snapshot.data!);
                         } else {
-                          return Container();
+                          return const Placeholder(
+                            child: CircularProgressIndicator(),
+                          );
                         }
                       },
                     ),
