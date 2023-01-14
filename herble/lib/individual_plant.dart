@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:herble/plant_page.dart';
 import 'package:herble/update_plant.dart';
 import 'globals.dart' as globals;
+import 'package:http/http.dart' as http;
 
 class IndividualPlant extends StatefulWidget {
   final globals.Plant plant;
@@ -68,9 +70,59 @@ class _bodyFormState extends State<bodyForm> {
               ),
             );
           },
-          child: const Text('Update plant'),
+          child: const Text('Edit plant'),
+        ),
+        TextButton(
+          onPressed: () async {
+            bool? confirmed = await showConfirmationDialog(context);
+            if (confirmed != null && confirmed) {
+              await deletePlant(widget.plant.plantId);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const PlantListScreen()),
+              );
+            }
+          },
+          child: const Text('Delete plant'),
         ),
       ],
+    );
+  }
+
+  Future<bool?> showConfirmationDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete'),
+          content: const Text('Are you sure you want to delete this plant?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> deletePlant(int id) async {
+    await http.post(
+      Uri.parse('https://herbledb.000webhostapp.com/delete_plant.php'),
+      body: {'plant_id': id.toString()},
     );
   }
 }
