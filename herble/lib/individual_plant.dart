@@ -65,7 +65,7 @@ class _bodyFormState extends State<bodyForm> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
-                  return const UpdatePage();
+                  return UpdatePage(plant: widget.plant, pic: widget.pic);
                 },
               ),
             );
