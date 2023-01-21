@@ -97,7 +97,7 @@ class _LogInFormState extends State<LogInForm> {
                   color: Theme.of(context).primaryColorDark,
                 ),
                 onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible variable
+                  // Update the state i.e. toogle the state of passwordVisible vari able
                   setState(() {
                     passwordVisible = !passwordVisible;
                   });
