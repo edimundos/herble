@@ -4,7 +4,7 @@ import 'package:herble/sign_up.dart';
 import 'package:herble/plant_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:dbcrypt/dbcrypt.dart';
+import 'package:bcrypt/bcrypt.dart';
 import 'globals.dart' as globals;
 
 void main() => runApp(const LogInScreen());
@@ -147,7 +147,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
       List<dynamic> user = jsonDecode(response.body);
       Map<String, dynamic> userMap = user[0];
       String X = userMap["password"].toString();
-      if (DBCrypt().checkpw(pw, X)) {
+      if (BCrypt.checkpw(pw, X)) {
         return true;
       } else {
         return false;

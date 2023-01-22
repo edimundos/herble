@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:herble/change_picture.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
@@ -20,7 +20,10 @@ class _AddPlantPageState extends State<AddPlantPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PlantListScreen()),
+            );
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
@@ -55,6 +58,20 @@ class _PlantFormState extends State<PlantForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const PicturePage(pic: null)),
+            );
+          },
+          child: Image.asset(
+            'assets/default_plant-1.jpg',
+            width: 120,
+            height: 120,
+          ),
+        ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
