@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
@@ -46,7 +45,8 @@ class _LogInFormState extends State<LogInForm> {
   bool isDisabled = false;
 
   @override
-  bool passwordVisible = false;
+  bool passwordVisible1 = false;
+  bool passwordVisible2 = false;
 
   void dispose() {
     emailController.dispose();
@@ -84,7 +84,7 @@ class _LogInFormState extends State<LogInForm> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
-            obscureText: !passwordVisible,
+            obscureText: !passwordVisible1,
             controller: pwController1,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -93,13 +93,13 @@ class _LogInFormState extends State<LogInForm> {
               suffixIcon: IconButton(
                 icon: Icon(
                   // Based on passwordVisible state choose the icon
-                  passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  passwordVisible1 ? Icons.visibility : Icons.visibility_off,
                   color: Theme.of(context).primaryColorDark,
                 ),
                 onPressed: () {
                   // Update the state i.e. toogle the state of passwordVisible vari able
                   setState(() {
-                    passwordVisible = !passwordVisible;
+                    passwordVisible1 = !passwordVisible1;
                   });
                 },
               ),
@@ -109,7 +109,7 @@ class _LogInFormState extends State<LogInForm> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
-            obscureText: !passwordVisible,
+            obscureText: !passwordVisible2,
             controller: pwController2,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -118,13 +118,13 @@ class _LogInFormState extends State<LogInForm> {
               suffixIcon: IconButton(
                 icon: Icon(
                   // Based on passwordVisible state choose the icon
-                  passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  passwordVisible2 ? Icons.visibility : Icons.visibility_off,
                   color: Theme.of(context).primaryColorDark,
                 ),
                 onPressed: () {
                   // Update the state i.e. toogle the state of passwordVisible variable
                   setState(() {
-                    passwordVisible = !passwordVisible;
+                    passwordVisible2 = !passwordVisible2;
                   });
                 },
               ),
