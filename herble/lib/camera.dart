@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart'
     show SystemChrome, SystemUiMode, rootBundle;
 import 'package:flutter/material.dart';
 import 'package:herble/change_picture.dart';
-import 'package:image_picker/image_picker.dart';
+import 'dart:ui' as ui;
+import 'dart:async';
+import 'dart:math' as math;
 
 List<CameraDescription> cameras = [];
 
@@ -117,9 +120,29 @@ class _CameraScreenState extends State<CameraScreen> {
             Column(
               children: [
                 _isCameraInitialized
-                    ? AspectRatio(
-                        aspectRatio: 1 / controller!.value.aspectRatio,
-                        child: controller!.buildPreview(),
+                    ? Stack(
+                        children: [
+                          Positioned(
+                              left: (MediaQuery.of(context).size.width -
+                                      (MediaQuery.of(context).size.width -
+                                          10)) /
+                                  2,
+                              top: (MediaQuery.of(context).size.height -
+                                      (MediaQuery.of(context).size.width -
+                                          10)) /
+                                  2,
+                              child: ClipOval(
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width - 10,
+                                  height:
+                                      MediaQuery.of(context).size.width - 10,
+                                ),
+                              )),
+                          AspectRatio(
+                            aspectRatio: 1 / controller!.value.aspectRatio,
+                            child: controller!.buildPreview(),
+                          ),
+                        ],
                       )
                     : Container(),
               ],
@@ -174,10 +197,11 @@ class _CameraScreenState extends State<CameraScreen> {
                   try {
                     final path = (await controller!.takePicture()).path;
                     final imageData = await File(path).readAsBytes();
+                    final cropedImage = await cropToCircle(imageData, 10);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PicturePage(pic: imageData)),
+                          builder: (context) => PicturePage(pic: cropedImage)),
                     );
                   } on CameraException catch (e) {
                     print('Error occured while taking picture: $e');
@@ -214,5 +238,43 @@ class _CameraScreenState extends State<CameraScreen> {
       print('Error occured while taking picture: $e');
       return null;
     }
+  }
+
+  Future<Uint8List> cropToCircle(Uint8List imageData, double radius) async {
+    ui.Image image = await loadImage(imageData);
+    var pictureRecorder = ui.PictureRecorder();
+    var canvas = Canvas(pictureRecorder);
+    var paint = Paint();
+    paint.isAntiAlias = true;
+
+    final center = Offset(radius, radius);
+    final paintCircle = Paint()..color = Colors.black;
+    final paintBorder = Paint()
+      ..color = Colors.white
+      ..strokeWidth = radius / 18
+      ..style = PaintingStyle.stroke;
+    canvas.drawCircle(center, radius, paintCircle);
+    canvas.drawCircle(center, radius, paintBorder);
+
+    Path path = Path()
+      ..addOval(Rect.fromLTWH(
+          0, 0, image.width.toDouble() - 10, image.width.toDouble() - 10));
+    //Rect.fromLTWH(0, 0, 150, 150));
+
+    canvas.clipPath(path);
+
+    canvas.drawImage(image, Offset(0, 0), Paint());
+    var pic = pictureRecorder.endRecording();
+    ui.Image img = await pic.toImage(image.width, image.height);
+    var byteData = await img.toByteData(format: ui.ImageByteFormat.png);
+    return byteData!.buffer.asUint8List();
+  }
+
+  Future<ui.Image> loadImage(Uint8List img) async {
+    final Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(img, (ui.Image img) {
+      return completer.complete(img);
+    });
+    return completer.future;
   }
 }
