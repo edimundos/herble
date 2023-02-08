@@ -35,16 +35,8 @@ class _PicturePageState extends State<PicturePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Change picture"),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AddPlantPage()),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
+        automaticallyImplyLeading: true,
+        leading: const Icon(Icons.arrow_back_ios_new),
       ),
       body: PicForm(pic: widget.pic),
     );

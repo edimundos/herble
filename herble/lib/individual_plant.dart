@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:herble/plant_page.dart';
-import 'package:herble/update_plant.dart';
+import 'package:herble/pre_update_screen.dart';
+import 'package:herble/update_plant_basics.dart';
+import 'package:herble/update_plant_technicalities.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
@@ -58,6 +60,19 @@ class _bodyFormState extends State<bodyForm> {
         ),
         Text("plant name:${widget.plant.plantName}"),
         Text("plant description:${widget.plant.plantDescription}"),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return UpdatePlantBasics(
+                      plant: widget.plant, pic: widget.pic);
+                },
+              ),
+            );
+          },
+          child: const Text('Edit plant basics'),
+        ),
         Text("day count:${widget.plant.dayCount}"),
         Text("water volume:${widget.plant.waterVolume}"),
         TextButton(
@@ -65,12 +80,12 @@ class _bodyFormState extends State<bodyForm> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
-                  return UpdatePage(plant: widget.plant, pic: widget.pic);
+                  return PreUpdateScreen(plant: widget.plant, pic: widget.pic);
                 },
               ),
             );
           },
-          child: const Text('Edit plant'),
+          child: const Text('Edit plant technicalities'),
         ),
         TextButton(
           onPressed: () async {

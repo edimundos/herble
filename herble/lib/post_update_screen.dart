@@ -1,46 +1,38 @@
 import 'dart:typed_data';
-import 'package:herble/update_plant_technicalities.dart';
 
-import 'globals.dart' as globals;
 import 'package:flutter/material.dart';
-import 'package:herble/plant_page.dart';
-import 'add_plant.dart';
 import 'package:http/http.dart' as http;
+import 'package:herble/plant_page.dart';
+import 'globals.dart' as globals;
+import 'package:connectivity/connectivity.dart';
 
-class PreUpdateScreen extends StatefulWidget {
+class PostUpdate extends StatefulWidget {
   final globals.Plant plant;
-  final Uint8List pic;
-
-  const PreUpdateScreen({Key? key, required this.plant, required this.pic})
-      : super(key: key);
+  final int days;
+  final int volume;
+  final Uint8List picture;
+  PostUpdate({
+    super.key,
+    required this.plant,
+    required this.days,
+    required this.volume,
+    required this.picture,
+  });
 
   @override
-  State<PreUpdateScreen> createState() => _PreUpdateScreenState();
+  State<PostUpdate> createState() => _ConnectInternetState();
 }
 
-class _PreUpdateScreenState extends State<PreUpdateScreen> {
+class _ConnectInternetState extends State<PostUpdate> {
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Update plant"),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PlantListScreen()),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-      ),
+      appBar: AppBar(automaticallyImplyLeading: false),
       body: Column(
         children: [
-          const Text("1. Turn on wifi on the herble pot "),
-          const Text("2. Connect to the wifi from your device"),
+          const Text("Reconect to the internet to finish"),
           isLoading
               ? const CircularProgressIndicator()
               : TextButton(
@@ -48,12 +40,18 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
                     setState(() {
                       isLoading = true;
                     });
-                    if (await checkIfUrlIsAccessible()) {
+                    if (await hasInternet()) {
+                      await updatePlant(
+                        widget.plant.plantName,
+                        widget.plant.plantDescription,
+                        widget.days,
+                        widget.picture.toString(),
+                        widget.volume,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UpdatePlantTechnicalities(
-                                plant: widget.plant, pic: widget.pic)),
+                            builder: (context) => const PlantListScreen()),
                       );
                     } else {
                       showDialog(
@@ -61,7 +59,7 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             content: const Text(
-                                'The device must be connected to plant pot'),
+                                'The device must be connected to the internet'),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () =>
@@ -83,10 +81,24 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
     );
   }
 
-  Future<bool> checkIfUrlIsAccessible() async {
+  Future<void> updatePlant(
+      String name, String desc, int days, String pic, int volume) async {
+    String url = 'https://herbledb.000webhostapp.com/update_plant.php';
+    await http.post(Uri.parse(url), body: {
+      'id': widget.plant.plantId.toString(),
+      'plant_name': name,
+      'plant_description': desc,
+      'day_count': days.toString(),
+      'picture': pic,
+      'water_volume': volume.toString(),
+    });
+  }
+
+  Future<bool> hasInternet() async {
     try {
       final response = await Future.any([
-        http.get(Uri.parse("http://192.168.4.1/")),
+        http.get(
+            Uri.parse("https://herbledb.000webhostapp.com/post_plant.php")),
         Future.delayed(const Duration(seconds: 3), () => null),
       ]);
       if (response == null) {
