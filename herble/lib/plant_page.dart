@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:herble/individual_plant.dart';
+import 'package:herble/pre_add_screen.dart';
 import 'package:herble/profile_page.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -104,7 +105,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AddPlantPage()),
+              MaterialPageRoute(builder: (context) => const PreAddScreen()),
             );
           }),
     );

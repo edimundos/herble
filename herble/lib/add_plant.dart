@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:herble/change_picture.dart';
+import 'package:herble/connect_to_internet_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
@@ -118,26 +119,51 @@ class _PlantFormState extends State<PlantForm> {
           ),
         ),
         TextButton(
+          onPressed: (() async {
+            if (await checkIfUrlIsAccessible()) {
+              print("Yes access ########################################");
+            } else {
+              print("NO access##################");
+            }
+          }),
+          child: Text("test connect"),
+        ),
+        TextButton(
           onPressed: () async {
-            int validator = dataIsValid(
+            int validator = await dataIsValid(
               nameController.text,
               descriptionController.text,
               dayController.text,
               volumeController.text,
             );
             if (validator == 100 && globals.isLoggedIn) {
-              await postPlant(
-                nameController.text,
-                descriptionController.text,
+              sendToChip(
                 int.parse(dayController.text),
-                "0",
                 int.parse(volumeController.text),
               );
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const PlantListScreen()),
+                    builder: (context) => ConnectInternet(
+                          plant: nameController.text,
+                          desc: descriptionController.text,
+                          days: int.parse(dayController.text),
+                          pic: "0",
+                          volume: int.parse(volumeController.text),
+                        )),
               );
+              // await postPlant(
+              //   nameController.text,
+              //   descriptionController.text,
+              //   int.parse(dayController.text),
+              //   "0",
+              //   int.parse(volumeController.text),
+              // );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) => const PlantListScreen()),
+              // );
             } else if (validator == 101) {
               showDialog(
                 context: context,
@@ -244,6 +270,21 @@ class _PlantFormState extends State<PlantForm> {
                   );
                 },
               );
+            } else if (validator == 108) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: const Text('Must be connected to plant pot'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'sorry'),
+                        child: const Text('sorry'),
+                      ),
+                    ],
+                  );
+                },
+              );
             }
           },
           child: const Text('Confirm'),
@@ -252,20 +293,8 @@ class _PlantFormState extends State<PlantForm> {
     );
   }
 
-  Future<void> postPlant(
-      String plant, String desc, int days, String pic, int volume) async {
-    String url = 'https://herbledb.000webhostapp.com/post_plant.php';
-    await http.post(Uri.parse(url), body: {
-      'user_id': globals.userID.toString(),
-      'plant_name': plant,
-      'plant_description': desc,
-      'day_count': days.toString(),
-      'picture': pic,
-      'water_volume': volume.toString(),
-    });
-  }
-
-  int dataIsValid(String species, String desc, String days, String volume) {
+  Future<int> dataIsValid(
+      String species, String desc, String days, String volume) async {
     if (species.isEmpty) return 105;
     if (days.isEmpty) return 106;
     if (volume.isEmpty) return 107;
@@ -273,6 +302,30 @@ class _PlantFormState extends State<PlantForm> {
     if (desc.length > 2000) return 102;
     if (int.tryParse(days) == null) return 103;
     if (int.tryParse(volume) == null) return 104;
+    if (!await checkIfUrlIsAccessible()) return 108;
     return 100;
+  }
+
+  Future<void> sendToChip(int days, int volume) async {
+    String url = 'http://192.168.4.1/?var1=$days&var2=$volume';
+    await http.post(Uri.parse(url));
+  }
+
+  Future<bool> checkIfUrlIsAccessible() async {
+    try {
+      final response = await Future.any([
+        http.get(Uri.parse("http://192.168.4.1/")),
+        Future.delayed(const Duration(seconds: 3), () => null),
+      ]);
+      if (response == null) {
+        throw Exception("Request timed out");
+      }
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (_) {
+      return false;
+    }
+    return false;
   }
 }
