@@ -1,47 +1,61 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:herble/change_picture.dart';
-import 'package:herble/connect_to_internet_page.dart';
-import 'package:http/http.dart' as http;
+import 'package:herble/individual_plant.dart';
 import 'package:herble/plant_page.dart';
+import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
+import 'package:flutter/material.dart';
 
-class AddPlantPage extends StatefulWidget {
-  const AddPlantPage({super.key});
+class UpdatePlantBasics extends StatefulWidget {
+  final globals.Plant plant;
+  final Uint8List pic;
+  int? picId;
+
+  UpdatePlantBasics(
+      {Key? key, required this.plant, required this.pic, this.picId})
+      : super(key: key);
 
   @override
-  State<AddPlantPage> createState() => _AddPlantPageState();
+  State<UpdatePlantBasics> createState() => _UpdatePageState();
 }
 
-class _AddPlantPageState extends State<AddPlantPage> {
+class _UpdatePageState extends State<UpdatePlantBasics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Add a plant"),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PlantListScreen()),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
+        appBar: AppBar(
+          title: const Text("Update"),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back_ios_new),
+          ),
         ),
-      ),
-      body: const PlantForm(),
-    );
+        body: PlantUpdateForm(
+          plant: widget.plant,
+          pic: widget.pic,
+          picId: widget.picId,
+        ));
   }
 }
 
-class PlantForm extends StatefulWidget {
-  const PlantForm({super.key});
+class PlantUpdateForm extends StatefulWidget {
+  final globals.Plant plant;
+  final Uint8List pic;
+  int? picId;
+
+  PlantUpdateForm(
+      {Key? key, required this.plant, required this.pic, required this.picId})
+      : super(key: key);
 
   @override
-  State<PlantForm> createState() => _PlantFormState();
+  State<PlantUpdateForm> createState() => _PlantUpdateFormState();
 }
 
-class _PlantFormState extends State<PlantForm> {
+class _PlantUpdateFormState extends State<PlantUpdateForm> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final dayController = TextEditingController();
@@ -56,23 +70,45 @@ class _PlantFormState extends State<PlantForm> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    nameController.text = widget.plant.plantName;
+    descriptionController.text = widget.plant.plantDescription;
+    dayController.text = widget.plant.dayCount.toString();
+    volumeController.text = widget.plant.waterVolume.toString();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const PicturePage(pic: null, cum: 1)),
-            );
-          },
-          child: Image.asset(
-            'assets/default_plant-1.jpg',
-            width: 120,
-            height: 120,
-          ),
-        ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PicturePage(pic: widget.pic, cum: 2)),
+              );
+            },
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3,
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.memory(
+                  widget.pic,
+                  width: 120,
+                  height: 120,
+                ),
+              ),
+            )),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
@@ -95,75 +131,27 @@ class _PlantFormState extends State<PlantForm> {
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: dayController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Days',
-              hintText: 'enter how often you want your plant to be watered',
-            ),
-          ),
-        ),
-        Padding(
-          //te ganjau vajadzes kaut kādu check box ar dazadiem variantiem or smth un tad pedejais variants "Custom:"
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: volumeController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Volume',
-              hintText: 'enter how much water you want on your plant',
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: (() async {
-            if (await checkIfUrlIsAccessible()) {
-              print("Yes access ########################################");
-            } else {
-              print("NO access##################");
-            }
-          }),
-          child: Text("test connect"),
-        ),
         TextButton(
           onPressed: () async {
-            int validator = await dataIsValid(
+            int validator = dataIsValid(
               nameController.text,
               descriptionController.text,
               dayController.text,
               volumeController.text,
             );
             if (validator == 100 && globals.isLoggedIn) {
-              sendToChip(
+              await updatePlant(
+                nameController.text,
+                descriptionController.text,
                 int.parse(dayController.text),
+                widget.pic,
                 int.parse(volumeController.text),
               );
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ConnectInternet(
-                          plant: nameController.text,
-                          desc: descriptionController.text,
-                          days: int.parse(dayController.text),
-                          pic: "0",
-                          volume: int.parse(volumeController.text),
-                        )),
+                    builder: (context) => const PlantListScreen()),
               );
-              // await postPlant(
-              //   nameController.text,
-              //   descriptionController.text,
-              //   int.parse(dayController.text),
-              //   "0",
-              //   int.parse(volumeController.text),
-              // );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => const PlantListScreen()),
-              // );
             } else if (validator == 101) {
               showDialog(
                 context: context,
@@ -270,21 +258,6 @@ class _PlantFormState extends State<PlantForm> {
                   );
                 },
               );
-            } else if (validator == 108) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Must be connected to plant pot'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
             }
           },
           child: const Text('Confirm'),
@@ -293,8 +266,27 @@ class _PlantFormState extends State<PlantForm> {
     );
   }
 
-  Future<int> dataIsValid(
-      String species, String desc, String days, String volume) async {
+  Future<void> updatePlant(
+      String name, String desc, int days, Uint8List pic, int volume) async {
+    String url = 'https://herbledb.000webhostapp.com/update_plant.php';
+    String picture;
+    if (widget.picId != null) {
+      picture = widget.picId.toString();
+    } else {
+      picture = base64Encode(pic).toString();
+    }
+    await http.post(Uri.parse(url), body: {
+      'id': widget.plant.plantId.toString(),
+      'plant_name': name,
+      'plant_description': desc,
+      'day_count': days.toString(),
+      'picture': picture,
+      'water_volume': volume.toString(),
+    });
+    print(base64Encode(pic));
+  }
+
+  int dataIsValid(String species, String desc, String days, String volume) {
     if (species.isEmpty) return 105;
     if (days.isEmpty) return 106;
     if (volume.isEmpty) return 107;
@@ -302,30 +294,6 @@ class _PlantFormState extends State<PlantForm> {
     if (desc.length > 2000) return 102;
     if (int.tryParse(days) == null) return 103;
     if (int.tryParse(volume) == null) return 104;
-    if (!await checkIfUrlIsAccessible()) return 108;
     return 100;
-  }
-
-  Future<void> sendToChip(int days, int volume) async {
-    String url = 'http://192.168.4.1/?var1=$days&var2=$volume';
-    await http.post(Uri.parse(url));
-  }
-
-  Future<bool> checkIfUrlIsAccessible() async {
-    try {
-      final response = await Future.any([
-        http.get(Uri.parse("http://192.168.4.1/")),
-        Future.delayed(const Duration(seconds: 3), () => null),
-      ]);
-      if (response == null) {
-        throw Exception("Request timed out");
-      }
-      if (response.statusCode == 200) {
-        return true;
-      }
-    } catch (_) {
-      return false;
-    }
-    return false;
   }
 }

@@ -201,7 +201,7 @@ class _CameraScreenState extends State<CameraScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PicturePage(pic: cropedImage)),
+                          builder: (context) => PicturePage(pic: imageData, cum: 0,)),
                     );
                   } on CameraException catch (e) {
                     print('Error occured while taking picture: $e');

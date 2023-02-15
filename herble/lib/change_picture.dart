@@ -3,7 +3,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:herble/add_plant.dart';
+import 'globals.dart' as globals;
 import 'package:herble/camera.dart';
+import 'package:herble/update_plant_basics.dart';
 import 'package:image_picker/image_picker.dart';
 
 List<CameraDescription> cameras = [];
@@ -17,13 +19,16 @@ Future<void> main() async {
   }
   runApp(const PicturePage(
     pic: null,
+    cum: 0,
   ));
 }
 
 class PicturePage extends StatefulWidget {
   final Uint8List? pic;
+  final int cum;
 
-  const PicturePage({Key? key, required this.pic}) : super(key: key);
+  const PicturePage({Key? key, required this.pic, required this.cum})
+      : super(key: key);
 
   @override
   State<PicturePage> createState() => _PicturePageState();
@@ -35,34 +40,34 @@ class _PicturePageState extends State<PicturePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Change picture"),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AddPlantPage()),
-            );
+            Navigator.of(context).pop();
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
       ),
-      body: PicForm(pic: widget.pic),
+      body: PicForm(pic: widget.pic, cum: widget.cum),
     );
   }
 }
 
 class PicForm extends StatefulWidget {
   final Uint8List? pic;
+  final int cum;
 
-  const PicForm({Key? key, required this.pic}) : super(key: key);
+  const PicForm({Key? key, required this.pic, required this.cum})
+      : super(key: key);
 
   @override
   State<PicForm> createState() => _PicFormState();
 }
 
 class _PicFormState extends State<PicForm> {
-  Uint8List? currentPicture;
-
+  late Uint8List? currentPicture;
+  int? picId;
+  
   @override
   void initState() {
     super.initState();
@@ -119,6 +124,7 @@ class _PicFormState extends State<PicForm> {
                   setState(() {
                     currentPicture = newPicture;
                   });
+                  picId = 0;
                 },
                 child: Image.asset(
                   'assets/default_plant0.jpg',
@@ -133,6 +139,7 @@ class _PicFormState extends State<PicForm> {
                   setState(() {
                     currentPicture = newPicture;
                   });
+                  picId = 1;
                 },
                 child: Image.asset(
                   'assets/default_plant1.jpg',
@@ -147,6 +154,7 @@ class _PicFormState extends State<PicForm> {
                   setState(() {
                     currentPicture = newPicture;
                   });
+                  picId = 2;
                 },
                 child: Image.asset(
                   'assets/default_plant2.jpg',
@@ -163,6 +171,7 @@ class _PicFormState extends State<PicForm> {
                   setState(() {
                     currentPicture = newPicture;
                   });
+                  picId = 3;
                 },
                 child: Image.asset(
                   'assets/default_plant3.jpg',
@@ -177,6 +186,7 @@ class _PicFormState extends State<PicForm> {
                   setState(() {
                     currentPicture = newPicture;
                   });
+                  picId = 4;
                 },
                 child: Image.asset(
                   'assets/default_plant4.jpg',
@@ -191,6 +201,7 @@ class _PicFormState extends State<PicForm> {
                   setState(() {
                     currentPicture = newPicture;
                   });
+                  picId = 5;
                 },
                 child: Image.asset(
                   'assets/default_plant5.jpg',
@@ -203,17 +214,36 @@ class _PicFormState extends State<PicForm> {
         ),
         TextButton(
             onPressed: _useGalery, child: const Text("Choose from gallery")),
-        // TextButton(
-        //     onPressed: () => _takePicture(), child: const Text("Open camera")),
-
         TextButton(
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CameraScreen()),
             );
+            picId = null;
           },
           child: const Text("Open camera"),
+        ),
+        TextButton(
+          onPressed: () {
+            if (widget.cum == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddPlantPage()),
+              );
+            } else if (widget.cum == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UpdatePlantBasics(
+                          pic: currentPicture!,
+                          plant: globals.currentPlant,
+                          picId: picId,
+                        )),
+              );
+            }
+          },
+          child: const Text("Save image"),
         ),
       ],
     );
@@ -226,6 +256,7 @@ class _PicFormState extends State<PicForm> {
 
   Future<void> _useGalery() async {
     var imagePicker = ImagePicker();
+    picId = null;
     var image = await imagePicker.pickImage(source: ImageSource.gallery);
     Uint8List bytes = await image!.readAsBytes();
     setState(() {
