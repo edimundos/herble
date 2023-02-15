@@ -2,6 +2,13 @@ library my_prj.globals;
 
 bool isLoggedIn = false;
 int userID = 0;
+Plant currentPlant = Plant(
+    plantId: 0,
+    plantName: "a",
+    plantDescription: "a",
+    dayCount: 1,
+    picture: "0",
+    waterVolume: 1);
 
 class Plant {
   final int plantId;

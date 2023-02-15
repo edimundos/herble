@@ -64,7 +64,7 @@ class _PlantFormState extends State<PlantForm> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const PicturePage(pic: null)),
+                  builder: (context) => const PicturePage(pic: null, cum: 1)),
             );
           },
           child: Image.asset(

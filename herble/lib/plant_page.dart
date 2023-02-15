@@ -48,6 +48,7 @@ class MyPlantsForm extends StatefulWidget {
 
 class _MyPlantsFormState extends State<MyPlantsForm> {
   List<Uint8List> plantPics = [];
+  Map<int, Uint8List> plantPicData = {};
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +69,13 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                     title: Text(plants[index].plantName),
                     subtitle: Text(plants[index].plantDescription),
                     onTap: () {
+                      globals.currentPlant = plants[index];
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => IndividualPlant(
                             plant: plants[index],
-                            pic: plantPics[index],
+                            pic: plantPicData[index]!,
                           ),
                         ),
                       );
@@ -82,8 +84,9 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                       future: getImage(plants[index].picture),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          plantPics.add(snapshot.data!);
-                          return Image.memory(snapshot.data!);
+                          Uint8List picData = snapshot.data!;
+                          plantPicData[index] = picData;
+                          return Image.memory(picData);
                         } else {
                           return const Placeholder(
                             child: CircularProgressIndicator(),
@@ -112,7 +115,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
   }
 
   Future<Uint8List> getImage(String blob) async {
-    int? picID = int.tryParse(String.fromCharCodes(base64Decode(blob)));
+    int? picID = int.tryParse(blob);
     if (picID != null) {
       return (await rootBundle.load('assets/default_plant$picID.jpg'))
           .buffer

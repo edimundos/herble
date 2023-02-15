@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:herble/change_picture.dart';
 import 'package:herble/individual_plant.dart';
@@ -9,7 +10,10 @@ import 'package:flutter/material.dart';
 class UpdatePlantBasics extends StatefulWidget {
   final globals.Plant plant;
   final Uint8List pic;
-  const UpdatePlantBasics({Key? key, required this.plant, required this.pic})
+  int? picId;
+
+  UpdatePlantBasics(
+      {Key? key, required this.plant, required this.pic, this.picId})
       : super(key: key);
 
   @override
@@ -30,15 +34,21 @@ class _UpdatePageState extends State<UpdatePlantBasics> {
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
         ),
-        body: PlantUpdateForm(plant: widget.plant, pic: widget.pic));
+        body: PlantUpdateForm(
+          plant: widget.plant,
+          pic: widget.pic,
+          picId: widget.picId,
+        ));
   }
 }
 
 class PlantUpdateForm extends StatefulWidget {
   final globals.Plant plant;
   final Uint8List pic;
+  int? picId;
 
-  const PlantUpdateForm({Key? key, required this.plant, required this.pic})
+  PlantUpdateForm(
+      {Key? key, required this.plant, required this.pic, required this.picId})
       : super(key: key);
 
   @override
@@ -73,19 +83,32 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const PicturePage(pic: null)),
-            );
-          },
-          child: Image.asset(
-            'assets/default_plant-1.jpg',
-            width: 120,
-            height: 120,
-          ),
-        ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PicturePage(pic: widget.pic, cum: 2)),
+              );
+            },
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3,
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.memory(
+                  widget.pic,
+                  width: 120,
+                  height: 120,
+                ),
+              ),
+            )),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
@@ -121,7 +144,7 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                 nameController.text,
                 descriptionController.text,
                 int.parse(dayController.text),
-                "0",
+                widget.pic,
                 int.parse(volumeController.text),
               );
               Navigator.push(
@@ -244,16 +267,23 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
   }
 
   Future<void> updatePlant(
-      String name, String desc, int days, String pic, int volume) async {
+      String name, String desc, int days, Uint8List pic, int volume) async {
     String url = 'https://herbledb.000webhostapp.com/update_plant.php';
+    String picture;
+    if (widget.picId != null) {
+      picture = widget.picId.toString();
+    } else {
+      picture = base64Encode(pic).toString();
+    }
     await http.post(Uri.parse(url), body: {
       'id': widget.plant.plantId.toString(),
       'plant_name': name,
       'plant_description': desc,
       'day_count': days.toString(),
-      'picture': pic,
+      'picture': picture,
       'water_volume': volume.toString(),
     });
+    print(base64Encode(pic));
   }
 
   int dataIsValid(String species, String desc, String days, String volume) {
