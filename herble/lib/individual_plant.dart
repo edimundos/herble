@@ -25,7 +25,10 @@ class _IndividualPlantState extends State<IndividualPlant> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PlantListScreen()),
+            );
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),

@@ -43,7 +43,21 @@ class _PicturePageState extends State<PicturePage> {
         automaticallyImplyLeading: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            if (widget.cum == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddPlantPage()),
+              );
+            } else if (widget.cum == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UpdatePlantBasics(
+                          pic: widget.pic!,
+                          plant: globals.currentPlant,
+                        )),
+              );
+            }
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
@@ -214,7 +228,8 @@ class _PicFormState extends State<PicForm> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CameraScreen()),
+              MaterialPageRoute(
+                  builder: (context) => CameraScreen(cum: widget.cum)),
             );
             picId = null;
           },

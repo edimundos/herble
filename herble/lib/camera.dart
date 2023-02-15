@@ -10,7 +10,8 @@ import 'package:image_picker/image_picker.dart';
 List<CameraDescription> cameras = [];
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  final int cum;
+  const CameraScreen({super.key, required this.cum});
 
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -177,7 +178,10 @@ class _CameraScreenState extends State<CameraScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PicturePage(pic: imageData, cum: 0,)),
+                          builder: (context) => PicturePage(
+                                pic: imageData,
+                                cum: widget.cum,
+                              )),
                     );
                   } on CameraException catch (e) {
                     print('Error occured while taking picture: $e');

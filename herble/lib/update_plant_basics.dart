@@ -29,7 +29,15 @@ class _UpdatePageState extends State<UpdatePlantBasics> {
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => IndividualPlant(
+                    plant: globals.currentPlant,
+                    pic: widget.pic,
+                  ),
+                ),
+              );
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
@@ -283,7 +291,6 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
       'picture': picture,
       'water_volume': volume.toString(),
     });
-    print(base64Encode(pic));
   }
 
   int dataIsValid(String species, String desc, String days, String volume) {
