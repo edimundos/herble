@@ -81,48 +81,52 @@ class PicForm extends StatefulWidget {
 class _PicFormState extends State<PicForm> {
   late Uint8List? currentPicture;
   int? picId;
+  
   @override
   void initState() {
-    if (widget.pic == null) {
-      loadImageFromAssets("assets/default_plant-1.jpg").then((value) {
-        setState(() {
-          currentPicture = value;
-        });
-      });
-    } else {
-      setState(() {
-        currentPicture = widget.pic;
-      });
+    super.initState();
+    if (widget.pic != null) {
+      currentPicture = widget.pic!;
     }
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Column(
-          children: [
-            Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                  width: 3,
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.memory(
-                  currentPicture!,
-                  width: 150,
-                  height: 150,
-                ),
-              ),
-            )
-          ],
+        Container(
+          width: 150,
+          height: 150,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black,
+              width: 3,
+            ),
+            shape: BoxShape.circle,
+          ),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: currentPicture == null
+                  ? const FittedBox(
+                      fit: BoxFit.cover,
+                      child: Image(
+                        image: AssetImage('assets/default_plant-1.jpg'),
+                        width: 150,
+                        height: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : FittedBox(
+                      fit: BoxFit.cover,
+                      child: Image.memory(
+                        currentPicture!,
+                        width: 150,
+                        height: 150,
+                      ),
+                    )),
         ),
+
         Column(
           children: [
             const Text("Choose from default pictures"),
