@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:herble/change_picture.dart';
 import 'package:herble/connect_to_internet_page.dart';
 import 'package:http/http.dart' as http;
@@ -6,7 +9,10 @@ import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
 
 class AddPlantPage extends StatefulWidget {
-  const AddPlantPage({super.key});
+  Uint8List pic;
+  int? picId;
+
+  AddPlantPage({Key? key, required this.pic, this.picId}) : super(key: key);
 
   @override
   State<AddPlantPage> createState() => _AddPlantPageState();
@@ -29,13 +35,16 @@ class _AddPlantPageState extends State<AddPlantPage> {
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
       ),
-      body: const PlantForm(),
+      body: PlantForm(pic: widget.pic, picId: widget.picId),
     );
   }
 }
 
 class PlantForm extends StatefulWidget {
-  const PlantForm({super.key});
+  Uint8List pic;
+  int? picId;
+
+  PlantForm({super.key, required this.pic, this.picId});
 
   @override
   State<PlantForm> createState() => _PlantFormState();
@@ -60,19 +69,32 @@ class _PlantFormState extends State<PlantForm> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const PicturePage(pic: null, cum: 1)),
-            );
-          },
-          child: Image.asset(
-            'assets/default_plant-1.jpg',
-            width: 120,
-            height: 120,
-          ),
-        ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PicturePage(pic: widget.pic, cum: 1)),
+              );
+            },
+            child: Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 3,
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.memory(
+                  widget.pic,
+                  width: 120,
+                  height: 120,
+                ),
+              ),
+            )),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
@@ -119,16 +141,6 @@ class _PlantFormState extends State<PlantForm> {
           ),
         ),
         TextButton(
-          onPressed: (() async {
-            if (await checkIfUrlIsAccessible()) {
-              print("Yes access ########################################");
-            } else {
-              print("NO access##################");
-            }
-          }),
-          child: Text("test connect"),
-        ),
-        TextButton(
           onPressed: () async {
             int validator = await dataIsValid(
               nameController.text,
@@ -148,22 +160,11 @@ class _PlantFormState extends State<PlantForm> {
                           plant: nameController.text,
                           desc: descriptionController.text,
                           days: int.parse(dayController.text),
-                          pic: "0",
+                          pic: base64Encode(widget.pic),
+                          picId: widget.picId,
                           volume: int.parse(volumeController.text),
                         )),
               );
-              // await postPlant(
-              //   nameController.text,
-              //   descriptionController.text,
-              //   int.parse(dayController.text),
-              //   "0",
-              //   int.parse(volumeController.text),
-              // );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => const PlantListScreen()),
-              // );
             } else if (validator == 101) {
               showDialog(
                 context: context,

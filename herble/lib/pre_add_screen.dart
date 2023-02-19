@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:herble/plant_page.dart';
 import 'add_plant.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +15,17 @@ class PreAddScreen extends StatefulWidget {
 
 class _PreAddScreenState extends State<PreAddScreen> {
   bool isLoading = false;
+  late Uint8List pic;
+
+  @override
+  void initState() {
+    super.initState();
+    loadImageFromAssets('assets/default_plant-1.jpg').then((value) {
+      setState(() {
+        pic = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +58,7 @@ class _PreAddScreenState extends State<PreAddScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AddPlantPage()),
+                            builder: (context) => AddPlantPage(pic: pic)),
                       );
                     } else {
                       showDialog(
@@ -90,5 +104,10 @@ class _PreAddScreenState extends State<PreAddScreen> {
       return false;
     }
     return false;
+  }
+
+  Future<Uint8List> loadImageFromAssets(String url) async {
+    final byteData = await rootBundle.load(url);
+    return byteData.buffer.asUint8List();
   }
 }

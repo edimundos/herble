@@ -15,6 +15,7 @@ class ConnectInternet extends StatefulWidget {
   int days;
   String pic;
   int volume;
+  int? picId;
   ConnectInternet({
     super.key,
     required this.plant,
@@ -22,6 +23,7 @@ class ConnectInternet extends StatefulWidget {
     required this.days,
     required this.pic,
     required this.volume,
+    this.picId,
   });
 
   @override
@@ -89,6 +91,9 @@ class _ConnectInternetState extends State<ConnectInternet> {
   Future<void> postPlant(
       String plant, String desc, int days, String pic, int volume) async {
     String url = 'https://herbledb.000webhostapp.com/post_plant.php';
+    if (widget.picId != null) {
+      pic = widget.picId.toString();
+    }
     await http.post(Uri.parse(url), body: {
       'user_id': globals.userID.toString(),
       'plant_name': plant,
