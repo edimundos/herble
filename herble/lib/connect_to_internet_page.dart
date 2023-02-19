@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:herble/notificationservice.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
-import 'package:connectivity/connectivity.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class ConnectInternet extends StatefulWidget {
   String plant;
@@ -92,13 +97,37 @@ class _ConnectInternetState extends State<ConnectInternet> {
       'picture': pic,
       'water_volume': volume.toString(),
     });
+
+    int plantId = await getPlantID(plant, days, volume);
+    //create notification
+    Time notificationTime = globals.wateringTime;
+    Duration repeatInterval =
+        Duration(days: getRefilDayCount(days.toDouble(), volume.toDouble()));
+    await NotificationService().scheduleNotification(
+      plantId, //id
+      'Fill up water', //title
+      'Fill up the water for $plant', //text
+      notificationTime,
+      repeatInterval,
+    );
+  }
+
+  int getRefilDayCount(double days, double volume) {
+    const double waterCapacity = 1.1;
+    int refilDays;
+    if (waterCapacity % volume == 0) {
+      refilDays = ((waterCapacity / volume * 1000).floor() * days - 1).floor();
+    } else {
+      refilDays = ((waterCapacity / volume * 1000).floor() * days).floor();
+    }
+    return refilDays;
   }
 
   Future<bool> hasInternet() async {
     try {
       final response = await Future.any([
         http.get(
-            Uri.parse("https://herbledb.000webhostapp.com/post_plant.php")),
+            Uri.parse("https://herbledb.000webhostapp.com/get_all_users.php")),
         Future.delayed(const Duration(seconds: 3), () => null),
       ]);
       if (response == null) {
@@ -111,5 +140,26 @@ class _ConnectInternetState extends State<ConnectInternet> {
       return false;
     }
     return false;
+  }
+
+  Future<int> getPlantID(String plant, int days, int volume) async {
+    String url = 'https://herbledb.000webhostapp.com/get_plant_id.php';
+    var response = await http.post(Uri.parse(url), body: {
+      'user_id': globals.userID.toString(),
+      'plant_name': plant,
+      'day_count': days.toString(),
+      'water_volume': volume.toString(),
+    });
+
+    if (response.statusCode == 200 && response.body.length > 6) {
+      List<dynamic> user = jsonDecode(response.body);
+      Map<String, dynamic> userMap = user[0];
+      int X = int.parse(userMap["plant_id"]);
+      return X;
+    } else {
+      // The request failed
+      debugPrint('Request failed with status: ${response.statusCode}');
+      return 0;
+    }
   }
 }

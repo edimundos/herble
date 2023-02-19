@@ -1,7 +1,10 @@
 library my_prj.globals;
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 bool isLoggedIn = false;
 int userID = 0;
+Time wateringTime = Time(20, 0, 0);
 Plant currentPlant = Plant(
     plantId: 0,
     plantName: "a",

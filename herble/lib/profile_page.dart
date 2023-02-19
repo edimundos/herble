@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/main.dart';
+import 'package:herble/notificationservice.dart';
 import 'globals.dart' as globals;
 
 class ProfilePage extends StatefulWidget {
@@ -46,7 +48,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         body: Column(
       children: [
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             globals.isLoggedIn = false;
             globals.userID = 0;
             Navigator.of(context).push(

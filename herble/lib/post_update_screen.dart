@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:herble/notificationservice.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
@@ -45,7 +48,7 @@ class _ConnectInternetState extends State<PostUpdate> {
                         widget.plant.plantName,
                         widget.plant.plantDescription,
                         widget.days,
-                        widget.picture.toString(),
+                        base64Encode(widget.picture),
                         widget.volume,
                       );
                       Navigator.push(
@@ -92,6 +95,32 @@ class _ConnectInternetState extends State<PostUpdate> {
       'picture': pic,
       'water_volume': volume.toString(),
     });
+
+    await NotificationService().cancelNotificationById(widget.plant.plantId);
+
+    //create notification
+    Time notificationTime = globals.wateringTime;
+    Duration repeatInterval =
+        Duration(days: getRefilDayCount(days.toDouble(), volume.toDouble()));
+    await NotificationService().scheduleNotification(
+      widget.plant.plantId, //id
+      'Fill up water', //title
+      'Fill up the water for $name', //text
+      notificationTime,
+      repeatInterval,
+    );
+  }
+
+  int getRefilDayCount(double days, double volume) {
+    const double waterCapacity = 1.1;
+    int refilDays;
+    if (waterCapacity % volume == 0) {
+      refilDays = ((waterCapacity / volume * 1000).floor() * days - 1).floor();
+    } else {
+      refilDays = ((waterCapacity / volume * 1000).floor() * days).floor();
+    }
+    print(refilDays);
+    return refilDays;
   }
 
   Future<bool> hasInternet() async {
