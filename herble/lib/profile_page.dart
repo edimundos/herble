@@ -49,6 +49,7 @@ class _ProfileBodyState extends State<ProfileBody> {
       children: [
         TextButton(
           onPressed: () async {
+            //scheduleNotification();
             globals.isLoggedIn = false;
             globals.userID = 0;
             Navigator.of(context).push(
@@ -64,4 +65,15 @@ class _ProfileBodyState extends State<ProfileBody> {
       ],
     ));
   }
+
+  // Future<void> scheduleNotification() async {
+  //   String plant = 'monkey';
+  //   await NotificationService().scheduleNotification(
+  //     3, //id
+  //     'Fill up the water for $plant', //title
+  //     'Click the notification to confirm that you filled it', //text
+  //     Time(18, 35),
+  //     Duration(seconds: 30),
+  //   );
+  // }
 }

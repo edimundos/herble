@@ -30,6 +30,7 @@ class _PlantListScreenState extends State<PlantListScreen> {
                 context,
                 MaterialPageRoute(builder: (context) => const ProfilePage()),
               );
+              NotificationService().logActiveNotifications();
             },
             icon: const Icon(Icons.person),
           ),

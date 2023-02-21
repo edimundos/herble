@@ -104,14 +104,16 @@ class _ConnectInternetState extends State<ConnectInternet> {
     });
 
     int plantId = await getPlantID(plant, days, volume);
+
+    NotificationService().cancelNotificationById(plantId);
     //create notification
     Time notificationTime = globals.wateringTime;
     Duration repeatInterval =
         Duration(days: getRefilDayCount(days.toDouble(), volume.toDouble()));
     await NotificationService().scheduleNotification(
       plantId, //id
-      'Fill up water', //title
-      'Fill up the water for $plant', //text
+      'Fill up the water for $plant', //title
+      'Click the notification to confirm that you filled it', //text
       notificationTime,
       repeatInterval,
     );
