@@ -1,15 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/individual_plant.dart';
-import 'package:herble/instructions.dart';
 import 'package:herble/pre_add_screen.dart';
-import 'package:herble/profile_page.dart';
-import 'package:herble/tips.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
-import 'notificationservice.dart';
 
 class PlantListScreen extends StatefulWidget {
   const PlantListScreen({super.key});

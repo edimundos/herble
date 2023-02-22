@@ -41,3 +41,43 @@ class Plant {
     );
   }
 }
+
+class Instruction {
+  final int instructionId;
+  final String question;
+  final String answer;
+
+  Instruction({
+    required this.instructionId,
+    required this.question,
+    required this.answer,
+  });
+
+  factory Instruction.fromJson(Map<String, dynamic> json) {
+    return Instruction(
+      instructionId: int.parse(json['id']),
+      question: json['question'],
+      answer: json['answer'],
+    );
+  }
+}
+
+class Tip {
+  final int tipId;
+  final String title;
+  final String description;
+
+  Tip({
+    required this.tipId,
+    required this.title,
+    required this.description,
+  });
+
+  factory Tip.fromJson(Map<String, dynamic> json) {
+    return Tip(
+      tipId: int.parse(json['id']),
+      title: json['title'],
+      description: json['description'],
+    );
+  }
+}
