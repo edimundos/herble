@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:herble/individual_instruction.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
@@ -50,16 +51,14 @@ class _InstructionsFormState extends State<InstructionsForm> {
                   return ListTile(
                     title: Text(instructions[index].question),
                     onTap: () {
-                      // globals.currentPlant = plants[index];
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => IndividualPlant(
-                      //       plant: plants[index],
-                      //       pic: plantPicData[index]!,
-                      //     ),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => IndividualInstruction(
+                            instruction: instructions[index],
+                          ),
+                        ),
+                      );
                     },
                   );
                 });
