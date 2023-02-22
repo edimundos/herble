@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:herble/main_page.dart';
 import 'package:herble/update_plant_technicalities.dart';
 
 import 'globals.dart' as globals;
@@ -31,7 +32,7 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PlantListScreen()),
+              MaterialPageRoute(builder: (context) => MainPage()),
             );
           },
           icon: const Icon(Icons.arrow_back_ios_new),

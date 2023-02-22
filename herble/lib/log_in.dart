@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:herble/main_page.dart';
 import 'package:herble/sign_up.dart';
 import 'package:herble/plant_page.dart';
 import 'package:http/http.dart' as http;
@@ -204,7 +205,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   void _navigateToPlantList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PlantListScreen()),
+      MaterialPageRoute(builder: (context) => MainPage()),
     );
   }
 }

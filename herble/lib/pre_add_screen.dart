@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:herble/main_page.dart';
 import 'package:herble/plant_page.dart';
 import 'add_plant.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +38,7 @@ class _PreAddScreenState extends State<PreAddScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PlantListScreen()),
+              MaterialPageRoute(builder: (context) => MainPage()),
             );
           },
           icon: const Icon(Icons.arrow_back_ios_new),

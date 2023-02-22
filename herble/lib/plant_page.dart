@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/individual_plant.dart';
+import 'package:herble/instructions.dart';
 import 'package:herble/pre_add_screen.dart';
 import 'package:herble/profile_page.dart';
+import 'package:herble/tips.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'notificationservice.dart';
@@ -23,18 +25,6 @@ class _PlantListScreenState extends State<PlantListScreen> {
       appBar: AppBar(
         title: const Text("Plant list"),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfilePage()),
-              );
-              NotificationService().logActiveNotifications();
-            },
-            icon: const Icon(Icons.person),
-          ),
-        ],
       ),
       body: const MyPlantsForm(),
     );

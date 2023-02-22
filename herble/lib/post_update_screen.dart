@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:herble/main_page.dart';
 import 'package:herble/notificationservice.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
@@ -54,7 +55,7 @@ class _ConnectInternetState extends State<PostUpdate> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const PlantListScreen()),
+                            builder: (context) => const MainPage()),
                       );
                     } else {
                       showDialog(

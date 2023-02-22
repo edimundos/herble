@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:herble/main_page.dart';
 import 'package:herble/notificationservice.dart';
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
@@ -20,13 +21,13 @@ class _WaterConfirmState extends State<WaterConfirm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Change picture"),
+        title: const Text("Confirm water fill-up"),
         automaticallyImplyLeading: true,
         leading: IconButton(
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const PlantListScreen()),
+              MaterialPageRoute(builder: (context) => const MainPage()),
             );
           },
           icon: const Icon(Icons.arrow_back_ios_new),
@@ -48,8 +49,7 @@ class _WaterConfirmState extends State<WaterConfirm> {
                     );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => PlantListScreen()),
+                      MaterialPageRoute(builder: (context) => MainPage()),
                     );
                   },
                   child: const Text("yes")),
@@ -69,8 +69,7 @@ class _WaterConfirmState extends State<WaterConfirm> {
                       );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => PlantListScreen()),
+                        MaterialPageRoute(builder: (context) => MainPage()),
                       );
                     },
                     items: const [

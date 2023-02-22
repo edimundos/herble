@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:herble/change_picture.dart';
 import 'package:herble/connect_to_internet_page.dart';
+import 'package:herble/main_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
@@ -29,7 +30,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PlantListScreen()),
+              MaterialPageRoute(builder: (context) => MainPage()),
             );
           },
           icon: const Icon(Icons.arrow_back_ios_new),

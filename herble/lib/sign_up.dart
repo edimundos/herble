@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:herble/main_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
@@ -312,7 +313,7 @@ class _LogInFormState extends State<LogInForm> {
   void _navigateToPlantList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PlantListScreen()),
+      MaterialPageRoute(builder: (context) => MainPage()),
     );
   }
 }
