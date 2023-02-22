@@ -1,7 +1,10 @@
 library my_prj.globals;
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
 bool isLoggedIn = false;
 int userID = 0;
+Time wateringTime = Time(20, 0, 0);
 Plant currentPlant = Plant(
     plantId: 0,
     plantName: "a",
@@ -35,6 +38,46 @@ class Plant {
       dayCount: int.parse(json['day_count']),
       picture: json['picture'],
       waterVolume: int.parse(json['water_volume']),
+    );
+  }
+}
+
+class Instruction {
+  final int instructionId;
+  final String question;
+  final String answer;
+
+  Instruction({
+    required this.instructionId,
+    required this.question,
+    required this.answer,
+  });
+
+  factory Instruction.fromJson(Map<String, dynamic> json) {
+    return Instruction(
+      instructionId: int.parse(json['id']),
+      question: json['question'],
+      answer: json['answer'],
+    );
+  }
+}
+
+class Tip {
+  final int tipId;
+  final String title;
+  final String description;
+
+  Tip({
+    required this.tipId,
+    required this.title,
+    required this.description,
+  });
+
+  factory Tip.fromJson(Map<String, dynamic> json) {
+    return Tip(
+      tipId: int.parse(json['id']),
+      title: json['title'],
+      description: json['description'],
     );
   }
 }

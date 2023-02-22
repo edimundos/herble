@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:herble/main_page.dart';
 import 'package:herble/sign_up.dart';
 import 'package:herble/plant_page.dart';
 import 'package:http/http.dart' as http;
@@ -103,6 +105,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
               globals.userID = await getUserID(
                 emailController.text,
               );
+              globals.wateringTime = await getUserTime(
+                emailController.text,
+              );
               _navigateToPlantList(context);
             } else {
               showDialog(
@@ -176,10 +181,31 @@ class _MyCustomFormState extends State<MyCustomForm> {
     }
   }
 
+  Future<Time> getUserTime(String username) async {
+    String url = 'https://herbledb.000webhostapp.com/get_user_id.php';
+    var response =
+        await http.post(Uri.parse(url), body: {'username_flutter': username});
+
+    if (response.statusCode == 200 && response.body.length > 6) {
+      List<dynamic> user = jsonDecode(response.body);
+      Map<String, dynamic> userMap = user[0];
+      List<String> parts = userMap["watering_time"].split(':');
+      Time time = Time(
+        int.parse(parts[0]),
+        int.parse(parts[1]),
+      );
+      return time;
+    } else {
+      // The request failed
+      debugPrint('Request failed with status: ${response.statusCode}');
+      return const Time(20, 0);
+    }
+  }
+
   void _navigateToPlantList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PlantListScreen()),
+      MaterialPageRoute(builder: (context) => MainPage()),
     );
   }
 }

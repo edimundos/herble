@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/main.dart';
+import 'package:herble/notificationservice.dart';
 import 'globals.dart' as globals;
 
 class ProfilePage extends StatefulWidget {
@@ -17,12 +19,6 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: const Text("Profile page"),
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
       ),
       body: const ProfileBody(
         title: 'profile ',
@@ -46,7 +42,8 @@ class _ProfileBodyState extends State<ProfileBody> {
         body: Column(
       children: [
         TextButton(
-          onPressed: () {
+          onPressed: () async {
+            //scheduleNotification();
             globals.isLoggedIn = false;
             globals.userID = 0;
             Navigator.of(context).push(
@@ -62,4 +59,15 @@ class _ProfileBodyState extends State<ProfileBody> {
       ],
     ));
   }
+
+  // Future<void> scheduleNotification() async {
+  //   String plant = 'monkey';
+  //   await NotificationService().scheduleNotification(
+  //     3, //id
+  //     'Fill up the water for $plant', //title
+  //     'Click the notification to confirm that you filled it', //text
+  //     Time(18, 35),
+  //     Duration(seconds: 30),
+  //   );
+  // }
 }

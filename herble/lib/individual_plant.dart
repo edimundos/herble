@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:herble/main_page.dart';
 import 'package:herble/plant_page.dart';
 import 'package:herble/pre_update_screen.dart';
 import 'package:herble/update_plant_basics.dart';
@@ -25,7 +26,10 @@ class _IndividualPlantState extends State<IndividualPlant> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MainPage()),
+            );
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
@@ -94,8 +98,7 @@ class _bodyFormState extends State<bodyForm> {
               await deletePlant(widget.plant.plantId);
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const PlantListScreen()),
+                MaterialPageRoute(builder: (context) => const MainPage()),
               );
             }
           },

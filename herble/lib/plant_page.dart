@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:herble/individual_plant.dart';
 import 'package:herble/pre_add_screen.dart';
-import 'package:herble/profile_page.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
-import 'package:herble/add_plant.dart';
 
 class PlantListScreen extends StatefulWidget {
   const PlantListScreen({super.key});
@@ -22,17 +20,6 @@ class _PlantListScreenState extends State<PlantListScreen> {
       appBar: AppBar(
         title: const Text("Plant list"),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfilePage()),
-              );
-            },
-            icon: const Icon(Icons.person),
-          ),
-        ],
       ),
       body: const MyPlantsForm(),
     );

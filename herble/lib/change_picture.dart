@@ -35,6 +35,18 @@ class PicturePage extends StatefulWidget {
 }
 
 class _PicturePageState extends State<PicturePage> {
+  late Uint8List pic;
+
+  @override
+  void initState() {
+    super.initState();
+    loadImageFromAssets('assets/default_plant-1.jpg').then((value) {
+      setState(() {
+        pic = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,13 +55,32 @@ class _PicturePageState extends State<PicturePage> {
         automaticallyImplyLeading: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            if (widget.cum == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddPlantPage(pic: pic)),
+              );
+            } else if (widget.cum == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UpdatePlantBasics(
+                          pic: widget.pic!,
+                          plant: globals.currentPlant,
+                        )),
+              );
+            }
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
       ),
       body: PicForm(pic: widget.pic, cum: widget.cum),
     );
+  }
+
+  Future<Uint8List> loadImageFromAssets(String url) async {
+    final byteData = await rootBundle.load(url);
+    return byteData.buffer.asUint8List();
   }
 }
 
@@ -67,7 +98,7 @@ class PicForm extends StatefulWidget {
 class _PicFormState extends State<PicForm> {
   late Uint8List? currentPicture;
   int? picId;
-  
+
   @override
   void initState() {
     super.initState();
@@ -112,7 +143,6 @@ class _PicFormState extends State<PicForm> {
                       ),
                     )),
         ),
-
         Column(
           children: [
             const Text("Choose from default pictures"),
@@ -218,7 +248,8 @@ class _PicFormState extends State<PicForm> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CameraScreen()),
+              MaterialPageRoute(
+                  builder: (context) => CameraScreen(cum: widget.cum)),
             );
             picId = null;
           },
@@ -229,7 +260,11 @@ class _PicFormState extends State<PicForm> {
             if (widget.cum == 1) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddPlantPage()),
+                MaterialPageRoute(
+                    builder: (context) => AddPlantPage(
+                          pic: currentPicture!,
+                          picId: picId,
+                        )),
               );
             } else if (widget.cum == 2) {
               Navigator.push(

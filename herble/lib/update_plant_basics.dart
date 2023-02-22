@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:herble/change_picture.dart';
 import 'package:herble/individual_plant.dart';
+import 'package:herble/main_page.dart';
 import 'package:herble/plant_page.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
@@ -29,7 +30,15 @@ class _UpdatePageState extends State<UpdatePlantBasics> {
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => IndividualPlant(
+                    plant: globals.currentPlant,
+                    pic: widget.pic,
+                  ),
+                ),
+              );
             },
             icon: const Icon(Icons.arrow_back_ios_new),
           ),
@@ -149,8 +158,7 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
               );
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const PlantListScreen()),
+                MaterialPageRoute(builder: (context) => const MainPage()),
               );
             } else if (validator == 101) {
               showDialog(
@@ -283,7 +291,6 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
       'picture': picture,
       'water_volume': volume.toString(),
     });
-    print(base64Encode(pic));
   }
 
   int dataIsValid(String species, String desc, String days, String volume) {
