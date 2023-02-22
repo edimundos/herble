@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:herble/individual_tip.dart';
 import 'dart:convert';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -50,16 +51,14 @@ class _TipFormState extends State<TipForm> {
                     title: Text(tips[index].title),
                     subtitle: Text(tips[index].description),
                     onTap: () {
-                      // globals.currentPlant = plants[index];
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => IndividualPlant(
-                      //       plant: plants[index],
-                      //       pic: plantPicData[index]!,
-                      //     ),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => IndividualTip(
+                            tip: tips[index],
+                          ),
+                        ),
+                      );
                     },
                   );
                 });
