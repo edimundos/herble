@@ -102,9 +102,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
             var pass = checkPass(emailController.text, pwController.text);
             if (await pass) {
               globals.isLoggedIn = true;
+              globals.password = pwController.text;
+              globals.username = emailController.text;
               globals.userID = await getUserID(
                 emailController.text,
               );
+              await getEmailAndUsername();
               globals.wateringTime = await getUserTime(
                 emailController.text,
               );
@@ -178,6 +181,22 @@ class _MyCustomFormState extends State<MyCustomForm> {
       // The request failed
       debugPrint('Request failed with status: ${response.statusCode}');
       return 0;
+    }
+  }
+
+  Future<void> getEmailAndUsername() async {
+    String url = 'https://herbledb.000webhostapp.com/get_user_credentials.php';
+    var response = await http
+        .post(Uri.parse(url), body: {'user_id': globals.userID.toString()});
+
+    if (response.statusCode == 200 && response.body.length > 6) {
+      List<dynamic> user = jsonDecode(response.body);
+      Map<String, dynamic> userMap = user[0];
+      globals.username = (userMap["username"]).toString();
+      globals.email = (userMap["email"]).toString();
+    } else {
+      // The request failed
+      debugPrint('Request failed with status: ${response.statusCode}');
     }
   }
 

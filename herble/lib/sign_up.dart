@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:herble/main_page.dart';
 import 'package:http/http.dart' as http;
-import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
 
 class SignUpPage extends StatefulWidget {
@@ -44,8 +43,6 @@ class _LogInFormState extends State<LogInForm> {
   final pwController2 = TextEditingController();
   final usernameController = TextEditingController();
   bool isDisabled = false;
-
-  @override
   bool passwordVisible1 = false;
   bool passwordVisible2 = false;
 
@@ -155,6 +152,7 @@ class _LogInFormState extends State<LogInForm> {
                       emailController.text,
                     );
                     globals.isLoggedIn = true;
+                    globals.username = usernameController.text;
                     globals.userID = await getUserID(
                       usernameController.text,
                     );
@@ -264,6 +262,9 @@ class _LogInFormState extends State<LogInForm> {
 
   Future<void> postUser(String username, String pw, String email) async {
     String url = 'https://herbledb.000webhostapp.com/post_user.php';
+    globals.username = username;
+    globals.password = pw;
+    globals.email = email;
     await http.post(Uri.parse(url), body: {
       'username_flutter': username,
       'pw_flutter': pw,
