@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:html';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/main_page.dart';
 import 'package:herble/sign_up.dart';
@@ -47,6 +50,7 @@ class MyCustomForm extends StatefulWidget {
 class _MyCustomFormState extends State<MyCustomForm> {
   final emailController = TextEditingController();
   final pwController = TextEditingController();
+  bool isLoading = false;
 
   @override
   bool passwordVisible = false;
@@ -61,6 +65,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        isLoading ? const CircularProgressIndicator() : Container(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: TextField(
@@ -99,6 +104,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
         ),
         TextButton(
           onPressed: () async {
+            setState(() {
+              isLoading = true;
+            });
             var pass = checkPass(emailController.text, pwController.text);
             if (await pass) {
               globals.isLoggedIn = true;
@@ -111,8 +119,16 @@ class _MyCustomFormState extends State<MyCustomForm> {
               globals.wateringTime = await getUserTime(
                 emailController.text,
               );
+
+              setState(() {
+                isLoading = false;
+              });
+
               _navigateToPlantList(context);
             } else {
+              setState(() {
+                isLoading = false;
+              });
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
