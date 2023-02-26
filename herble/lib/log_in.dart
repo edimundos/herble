@@ -224,7 +224,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   void _navigateToPlantList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage()),
+      MaterialPageRoute(builder: (context) => MainPage(index: 1)),
     );
   }
 }

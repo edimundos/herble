@@ -5,7 +5,8 @@ import 'package:herble/profile_page.dart';
 import 'package:herble/tips.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  int? index;
+  MainPage({super.key, this.index});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -13,6 +14,12 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.index ?? 0;
+  }
 
   static const List<Widget> _widgetOptions = <Widget>[
     Instructions(),

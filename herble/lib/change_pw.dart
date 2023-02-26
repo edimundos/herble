@@ -209,7 +209,7 @@ class _PasswordBodyState extends State<PasswordBody> {
   void _navigateToPlantList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage()),
+      MaterialPageRoute(builder: (context) => MainPage(index: 3)),
     );
   }
 }

@@ -314,7 +314,7 @@ class _LogInFormState extends State<LogInForm> {
   void _navigateToPlantList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage()),
+      MaterialPageRoute(builder: (context) => MainPage(index: 1)),
     );
   }
 }

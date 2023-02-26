@@ -193,7 +193,7 @@ class _EmailBodyState extends State<EmailBody> {
   void _navigateToPlantList(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainPage()),
+      MaterialPageRoute(builder: (context) => MainPage(index: 3)),
     );
   }
 }
