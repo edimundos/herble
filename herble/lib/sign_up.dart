@@ -55,209 +55,223 @@ class _LogInFormState extends State<LogInForm> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: emailController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Email',
-              hintText: 'enter your email',
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: usernameController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Username',
-              hintText: 'enter your username',
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            obscureText: !passwordVisible1,
-            controller: pwController1,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Password',
-              hintText: 'enter your password',
-              suffixIcon: IconButton(
-                icon: Icon(
-                  // Based on passwordVisible state choose the icon
-                  passwordVisible1 ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).primaryColorDark,
+    return Scaffold(
+        body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            reverse: true,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                      hintText: 'enter your email',
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible vari able
-                  setState(() {
-                    passwordVisible1 = !passwordVisible1;
-                  });
-                },
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            obscureText: !passwordVisible2,
-            controller: pwController2,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Repeat Password',
-              hintText: 'repeat your password',
-              suffixIcon: IconButton(
-                icon: Icon(
-                  // Based on passwordVisible state choose the icon
-                  passwordVisible2 ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).primaryColorDark,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    controller: usernameController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Username',
+                      hintText: 'enter your username',
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible variable
-                  setState(() {
-                    passwordVisible2 = !passwordVisible2;
-                  });
-                },
-              ),
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: !isDisabled
-              ? () async {
-                  print(isDisabled);
-                  setState(() {
-                    isDisabled = true;
-                  });
-                  print(isDisabled);
-                  int validator = await dataIsValid(
-                    usernameController.text,
-                    pwController1.text,
-                    pwController2.text,
-                    emailController.text,
-                  );
-                  if (validator == 100) {
-                    Future.delayed(
-                        Duration.zero, () => _navigateToPlantList(context));
-                    await postUser(
-                      usernameController.text,
-                      pwController2.text,
-                      emailController.text,
-                    );
-                    globals.isLoggedIn = true;
-                    globals.username = usernameController.text;
-                    globals.userID = await getUserID(
-                      usernameController.text,
-                    );
-                    setState(() {
-                      isDisabled = false;
-                    });
-                  } else if (validator == 101) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Password doesnt match'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 102) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Password length must be >8'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 103) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Email must contain @'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 104) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text(
-                              'A user with this username already exists'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 105) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text(
-                              'A user with this email already exists'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                }
-              : null,
-          child: const Text('Confirm'),
-        ),
-      ],
-    );
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    obscureText: !passwordVisible1,
+                    controller: pwController1,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                      hintText: 'enter your password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          passwordVisible1
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible vari able
+                          setState(() {
+                            passwordVisible1 = !passwordVisible1;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    obscureText: !passwordVisible2,
+                    controller: pwController2,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Repeat Password',
+                      hintText: 'repeat your password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          passwordVisible2
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            passwordVisible2 = !passwordVisible2;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: !isDisabled
+                      ? () async {
+                          print(isDisabled);
+                          setState(() {
+                            isDisabled = true;
+                          });
+                          print(isDisabled);
+                          int validator = await dataIsValid(
+                            usernameController.text,
+                            pwController1.text,
+                            pwController2.text,
+                            emailController.text,
+                          );
+                          if (validator == 100) {
+                            Future.delayed(Duration.zero,
+                                () => _navigateToPlantList(context));
+                            await postUser(
+                              usernameController.text,
+                              pwController2.text,
+                              emailController.text,
+                            );
+                            globals.isLoggedIn = true;
+                            globals.username = usernameController.text;
+                            globals.userID = await getUserID(
+                              usernameController.text,
+                            );
+                            setState(() {
+                              isDisabled = false;
+                            });
+                          } else if (validator == 101) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: const Text('Password doesnt match'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validator == 102) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content:
+                                      const Text('Password length must be >8'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validator == 103) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: const Text('Email must contain @'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validator == 104) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: const Text(
+                                      'A user with this username already exists'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validator == 105) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: const Text(
+                                      'A user with this email already exists'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        }
+                      : null,
+                  child: const Text('Confirm'),
+                ),
+              ],
+            )));
   }
 
   Future<void> postUser(String username, String pw, String email) async {

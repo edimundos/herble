@@ -89,188 +89,195 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PicturePage(pic: widget.pic, cum: 2)),
-              );
-            },
-            child: Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                  width: 3,
+    return Scaffold(
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        reverse: true,
+        child: Column(
+          children: [
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PicturePage(pic: widget.pic, cum: 2)),
+                  );
+                },
+                child: Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 3,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.memory(
+                      widget.pic,
+                      width: 120,
+                      height: 120,
+                    ),
+                  ),
+                )),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Plant name',
+                  hintText: 'enter your plants name',
                 ),
-                shape: BoxShape.circle,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.memory(
-                  widget.pic,
-                  width: 120,
-                  height: 120,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Description',
+                  hintText: 'enter your plants description',
                 ),
               ),
-            )),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: nameController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Plant name',
-              hintText: 'enter your plants name',
             ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: descriptionController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Description',
-              hintText: 'enter your plants description',
+            TextButton(
+              onPressed: () async {
+                int validator = dataIsValid(
+                  nameController.text,
+                  descriptionController.text,
+                  dayController.text,
+                  volumeController.text,
+                );
+                if (validator == 100 && globals.isLoggedIn) {
+                  await updatePlant(
+                    nameController.text,
+                    descriptionController.text,
+                    int.parse(dayController.text),
+                    widget.pic,
+                    int.parse(volumeController.text),
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage(index: 1)),
+                  );
+                } else if (validator == 101) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Plant name length must be < 250'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 102) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text(
+                            'Plant description length must be < 2000'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 103) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('day count must be an int'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 104) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Water volume must be an int'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 105) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Plant name cant be empty'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 106) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Day count cant be empty'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 107) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Water volume cant be empty'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+              child: const Text('Confirm'),
             ),
-          ),
+          ],
         ),
-        TextButton(
-          onPressed: () async {
-            int validator = dataIsValid(
-              nameController.text,
-              descriptionController.text,
-              dayController.text,
-              volumeController.text,
-            );
-            if (validator == 100 && globals.isLoggedIn) {
-              await updatePlant(
-                nameController.text,
-                descriptionController.text,
-                int.parse(dayController.text),
-                widget.pic,
-                int.parse(volumeController.text),
-              );
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MainPage(index: 1)),
-              );
-            } else if (validator == 101) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Plant name length must be < 250'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 102) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content:
-                        const Text('Plant description length must be < 2000'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 103) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('day count must be an int'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 104) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Water volume must be an int'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 105) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Plant name cant be empty'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 106) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Day count cant be empty'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 107) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Water volume cant be empty'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
-          },
-          child: const Text('Confirm'),
-        ),
-      ],
+      ),
     );
   }
 

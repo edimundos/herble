@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:herble/individual_plant.dart';
 import 'package:herble/plant_page.dart';
 import 'package:herble/post_update_screen.dart';
@@ -72,118 +73,131 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: dayController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Days',
-              hintText: 'enter how often you want your plant to be watered',
-            ),
-          ),
-        ),
-        Padding(
-          //te ganjau vajadzes kaut kādu check box ar dazadiem variantiem or smth un tad pedejais variants "Custom:"
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: volumeController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Volume',
-              hintText: 'enter how much water you want on your plant',
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: () async {
-            int validator = dataIsValid(
-              dayController.text,
-              volumeController.text,
-            );
-            if (validator == 100 && globals.isLoggedIn) {
-              sendToChip(
-                int.parse(dayController.text),
-                int.parse(volumeController.text),
-              );
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PostUpdate(
-                          plant: widget.plant,
-                          days: int.parse(dayController.text),
-                          volume: int.parse(volumeController.text),
-                          picture: widget.pic,
-                        )),
-              );
-            } else if (validator == 103) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('day count must be an int'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 104) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Water volume must be an int'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 106) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Day count cant be empty'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else if (validator == 107) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: const Text('Water volume cant be empty'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'sorry'),
-                        child: const Text('sorry'),
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
-          },
-          child: const Text('Confirm'),
-        ),
-      ],
-    );
+    return Scaffold(
+        body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            reverse: true,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    controller: dayController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Days',
+                      hintText:
+                          'enter how often you want your plant to be watered',
+                    ),
+                  ),
+                ),
+                Padding(
+                  //te ganjau vajadzes kaut kādu check box ar dazadiem variantiem or smth un tad pedejais variants "Custom:"
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    controller: volumeController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Volume',
+                      hintText: 'enter how much water you want on your plant',
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    int validator = dataIsValid(
+                      dayController.text,
+                      volumeController.text,
+                    );
+                    if (validator == 100 && globals.isLoggedIn) {
+                      sendToChip(
+                        int.parse(dayController.text),
+                        int.parse(volumeController.text),
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PostUpdate(
+                                  plant: widget.plant,
+                                  days: int.parse(dayController.text),
+                                  volume: int.parse(volumeController.text),
+                                  picture: widget.pic,
+                                )),
+                      );
+                    } else if (validator == 103) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text('day count must be an int'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'sorry'),
+                                child: const Text('sorry'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else if (validator == 104) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text('Water volume must be an int'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'sorry'),
+                                child: const Text('sorry'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else if (validator == 106) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text('Day count cant be empty'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'sorry'),
+                                child: const Text('sorry'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else if (validator == 107) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text('Water volume cant be empty'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'sorry'),
+                                child: const Text('sorry'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: const Text('Confirm'),
+                ),
+              ],
+            )));
   }
 
   Future<void> updatePlant(

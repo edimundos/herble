@@ -41,124 +41,133 @@ class _EmailBodyState extends State<EmailBody> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: emailB4Controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Old Email',
-              hintText: 'enter your old email',
-              suffixIcon: IconButton(
-                icon: Icon(Icons.cancel),
-                onPressed: () {
-                  emailB4Controller.clear();
-                },
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: emailController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Email',
-              hintText: 'enter your email',
-              suffixIcon: IconButton(
-                icon: Icon(Icons.cancel),
-                onPressed: () {
-                  emailController.clear();
-                },
-              ),
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: !isDisabled
-              ? () async {
-                  setState(() {
-                    isDisabled = true;
-                  });
-                  int validator = await dataIsValid(
-                    emailB4Controller.text,
-                    emailController.text,
-                  );
-                  if (validator == 100) {
-                    Future.delayed(
-                        Duration.zero, () => _navigateToPlantList(context));
-                    await updateEmail(
-                      emailController.text,
-                    );
-                    globals.email = emailController.text;
-                    setState(() {
-                      isDisabled = false;
-                    });
-                  } else if (validator == 103) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('New email must contain @'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 105) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text(
-                              'A user with this email already exists'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 102) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Old email is not correct'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                }
-              : null,
-          child: const Text('Confirm'),
-        ),
-      ],
-    );
+    return Scaffold(
+        body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            reverse: true,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    controller: emailB4Controller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Old Email',
+                      hintText: 'enter your old email',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.cancel),
+                        onPressed: () {
+                          emailB4Controller.clear();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Email',
+                      hintText: 'enter your email',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.cancel),
+                        onPressed: () {
+                          emailController.clear();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: !isDisabled
+                      ? () async {
+                          setState(() {
+                            isDisabled = true;
+                          });
+                          int validator = await dataIsValid(
+                            emailB4Controller.text,
+                            emailController.text,
+                          );
+                          if (validator == 100) {
+                            Future.delayed(Duration.zero,
+                                () => _navigateToPlantList(context));
+                            await updateEmail(
+                              emailController.text,
+                            );
+                            globals.email = emailController.text;
+                            setState(() {
+                              isDisabled = false;
+                            });
+                          } else if (validator == 103) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content:
+                                      const Text('New email must contain @'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validator == 105) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: const Text(
+                                      'A user with this email already exists'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validator == 102) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content:
+                                      const Text('Old email is not correct'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        }
+                      : null,
+                  child: const Text('Confirm'),
+                ),
+              ],
+            )));
   }
 
   Future<void> updateEmail(String email) async {

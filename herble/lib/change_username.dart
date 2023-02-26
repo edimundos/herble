@@ -39,70 +39,75 @@ class _UsernameBodyState extends State<UsernameBody> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: usernameController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'New username',
-              hintText: 'enter your new username',
-              suffixIcon: IconButton(
-                icon: Icon(Icons.cancel),
-                onPressed: () {
-                  usernameController.clear();
-                },
-              ),
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: !isDisabled
-              ? () async {
-                  setState(() {
-                    isDisabled = true;
-                  });
-                  int validator = await dataIsValid(
-                    usernameController.text,
-                  );
-                  if (validator == 100) {
-                    Future.delayed(
-                        Duration.zero, () => _navigateToPlantList(context));
-                    await updateUsername(
-                      usernameController.text,
-                    );
-                    globals.username = usernameController.text;
-                    setState(() {
-                      isDisabled = false;
-                    });
-                  } else if (validator == 105) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text(
-                              'A user with this username already exists'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                }
-              : null,
-          child: const Text('Confirm'),
-        ),
-      ],
-    );
+    return Scaffold(
+        body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            reverse: true,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    controller: usernameController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'New username',
+                      hintText: 'enter your new username',
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.cancel),
+                        onPressed: () {
+                          usernameController.clear();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: !isDisabled
+                      ? () async {
+                          setState(() {
+                            isDisabled = true;
+                          });
+                          int validator = await dataIsValid(
+                            usernameController.text,
+                          );
+                          if (validator == 100) {
+                            Future.delayed(Duration.zero,
+                                () => _navigateToPlantList(context));
+                            await updateUsername(
+                              usernameController.text,
+                            );
+                            globals.username = usernameController.text;
+                            setState(() {
+                              isDisabled = false;
+                            });
+                          } else if (validator == 105) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: const Text(
+                                      'A user with this username already exists'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        }
+                      : null,
+                  child: const Text('Confirm'),
+                ),
+              ],
+            )));
   }
 
   Future<void> updateUsername(String username) async {
