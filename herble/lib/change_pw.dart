@@ -46,147 +46,160 @@ class _PasswordBodyState extends State<PasswordBody> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            obscureText: !passwordVisible0,
-            controller: passwordB4Controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Current Password',
-              hintText: 'enter your current password',
-              suffixIcon: IconButton(
-                icon: Icon(
-                  // Based on passwordVisible state choose the icon
-                  passwordVisible0 ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).primaryColorDark,
+    return Scaffold(
+        body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            reverse: true,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    obscureText: !passwordVisible0,
+                    controller: passwordB4Controller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Current Password',
+                      hintText: 'enter your current password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          passwordVisible0
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible vari able
+                          setState(() {
+                            passwordVisible0 = !passwordVisible0;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible vari able
-                  setState(() {
-                    passwordVisible0 = !passwordVisible0;
-                  });
-                },
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            obscureText: !passwordVisible1,
-            controller: passwordController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'New Password',
-              hintText: 'enter your new password',
-              suffixIcon: IconButton(
-                icon: Icon(
-                  // Based on passwordVisible state choose the icon
-                  passwordVisible1 ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).primaryColorDark,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    obscureText: !passwordVisible1,
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'New Password',
+                      hintText: 'enter your new password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          passwordVisible1
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible vari able
+                          setState(() {
+                            passwordVisible1 = !passwordVisible1;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible vari able
-                  setState(() {
-                    passwordVisible1 = !passwordVisible1;
-                  });
-                },
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            obscureText: !passwordVisible2,
-            controller: passwordRepeatController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Repeat Password',
-              hintText: 'repeat your new password',
-              suffixIcon: IconButton(
-                icon: Icon(
-                  // Based on passwordVisible state choose the icon
-                  passwordVisible2 ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).primaryColorDark,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    obscureText: !passwordVisible2,
+                    controller: passwordRepeatController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Repeat Password',
+                      hintText: 'repeat your new password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          // Based on passwordVisible state choose the icon
+                          passwordVisible2
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          // Update the state i.e. toogle the state of passwordVisible variable
+                          setState(() {
+                            passwordVisible2 = !passwordVisible2;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible variable
-                  setState(() {
-                    passwordVisible2 = !passwordVisible2;
-                  });
-                },
-              ),
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: !isDisabled
-              ? () async {
-                  setState(() {
-                    isDisabled = true;
-                  });
-                  int validator = await dataIsValid(
-                    passwordB4Controller.text,
-                    passwordController.text,
-                    passwordRepeatController.text,
-                  );
-                  if (validator == 100) {
-                    Future.delayed(
-                        Duration.zero, () => _navigateToPlantList(context));
-                    await updatePassword(
-                      passwordController.text,
-                    );
-                    globals.password = passwordController.text;
-                    setState(() {
-                      isDisabled = false;
-                    });
-                  } else if (validator == 101) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Password doesnt match'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 102) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Password length must be >8'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                }
-              : null,
-          child: const Text('Confirm'),
-        ),
-      ],
-    );
+                TextButton(
+                  onPressed: !isDisabled
+                      ? () async {
+                          setState(() {
+                            isDisabled = true;
+                          });
+                          int validator = await dataIsValid(
+                            passwordB4Controller.text,
+                            passwordController.text,
+                            passwordRepeatController.text,
+                          );
+                          if (validator == 100) {
+                            Future.delayed(Duration.zero,
+                                () => _navigateToPlantList(context));
+                            await updatePassword(
+                              passwordController.text,
+                            );
+                            globals.password = passwordController.text;
+                            setState(() {
+                              isDisabled = false;
+                            });
+                          } else if (validator == 101) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: const Text('Password doesnt match'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else if (validator == 102) {
+                            setState(() {
+                              isDisabled = false;
+                            });
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content:
+                                      const Text('Password length must be >8'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'sorry'),
+                                      child: const Text('sorry'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        }
+                      : null,
+                  child: const Text('Confirm'),
+                ),
+              ],
+            )));
   }
 
   Future<void> updatePassword(String password) async {
