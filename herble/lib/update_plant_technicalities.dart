@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:herble/individual_plant.dart';
 import 'package:herble/plant_page.dart';
 import 'package:herble/post_update_screen.dart';
@@ -82,6 +83,8 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextField(
                     controller: dayController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Days',
@@ -94,6 +97,8 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                   //te ganjau vajadzes kaut kādu check box ar dazadiem variantiem or smth un tad pedejais variants "Custom:"
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: volumeController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),

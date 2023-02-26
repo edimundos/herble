@@ -129,6 +129,8 @@ class _PlantFormState extends State<PlantForm> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: dayController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -142,6 +144,8 @@ class _PlantFormState extends State<PlantForm> {
                   //te ganjau vajadzes kaut kādu check box ar dazadiem variantiem or smth un tad pedejais variants "Custom:"
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextField(
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: volumeController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
