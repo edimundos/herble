@@ -158,7 +158,7 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
               );
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MainPage()),
+                MaterialPageRoute(builder: (context) => MainPage(index: 1)),
               );
             } else if (validator == 101) {
               showDialog(

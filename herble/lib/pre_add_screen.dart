@@ -38,7 +38,7 @@ class _PreAddScreenState extends State<PreAddScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MainPage()),
+              MaterialPageRoute(builder: (context) => MainPage(index: 1)),
             );
           },
           icon: const Icon(Icons.arrow_back_ios_new),

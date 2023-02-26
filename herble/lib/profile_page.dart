@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:herble/globals.dart';
+import 'package:herble/change_email.dart';
+import 'package:herble/change_pw.dart';
+import 'package:herble/change_username.dart';
 import 'package:herble/main.dart';
-import 'package:herble/notificationservice.dart';
 import 'globals.dart' as globals;
 
 class ProfilePage extends StatefulWidget {
@@ -41,9 +41,69 @@ class _ProfileBodyState extends State<ProfileBody> {
     return Scaffold(
         body: Column(
       children: [
+        Text("Hello, ${globals.username}!"),
+        const Text("Email"),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return const ChangeEmail();
+                },
+              ),
+            );
+          },
+          child: Container(
+            width: 400,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        const Text("Username"),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return const ChangeUsername();
+                },
+              ),
+            );
+          },
+          child: Container(
+            width: 400,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        const Text("Password"),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return const ChangePassword();
+                },
+              ),
+            );
+          },
+          child: Container(
+            width: 400,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
         TextButton(
           onPressed: () async {
-            //scheduleNotification();
             globals.isLoggedIn = false;
             globals.userID = 0;
             Navigator.of(context).push(
@@ -59,15 +119,4 @@ class _ProfileBodyState extends State<ProfileBody> {
       ],
     ));
   }
-
-  // Future<void> scheduleNotification() async {
-  //   String plant = 'monkey';
-  //   await NotificationService().scheduleNotification(
-  //     3, //id
-  //     'Fill up the water for $plant', //title
-  //     'Click the notification to confirm that you filled it', //text
-  //     Time(18, 35),
-  //     Duration(seconds: 30),
-  //   );
-  // }
 }

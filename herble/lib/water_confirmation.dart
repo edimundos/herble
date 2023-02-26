@@ -22,16 +22,7 @@ class _WaterConfirmState extends State<WaterConfirm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Confirm water fill-up"),
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const MainPage()),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
@@ -49,7 +40,8 @@ class _WaterConfirmState extends State<WaterConfirm> {
                     );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
+                      MaterialPageRoute(
+                          builder: (context) => MainPage(index: 1)),
                     );
                   },
                   child: const Text("yes")),
@@ -65,11 +57,12 @@ class _WaterConfirmState extends State<WaterConfirm> {
                       await scheduleReminder(
                         widget.plant.plantId,
                         widget.plant.plantName,
-                        Duration(hours: 1),
+                        selectedDuration,
                       );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
+                        MaterialPageRoute(
+                            builder: (context) => MainPage(index: 1)),
                       );
                     },
                     items: const [

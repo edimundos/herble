@@ -4,6 +4,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 bool isLoggedIn = false;
 int userID = 0;
+String username = '';
+String password = '';
+String email = '';
 Time wateringTime = Time(20, 0, 0);
 List<Tip>? allTips;
 List<Instruction>? allInstructions;

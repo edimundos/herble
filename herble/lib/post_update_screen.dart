@@ -55,7 +55,7 @@ class _ConnectInternetState extends State<PostUpdate> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const MainPage()),
+                            builder: (context) => MainPage(index: 1)),
                       );
                     } else {
                       showDialog(

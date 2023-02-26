@@ -28,7 +28,7 @@ class _IndividualPlantState extends State<IndividualPlant> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MainPage()),
+              MaterialPageRoute(builder: (context) => MainPage(index: 1)),
             );
           },
           icon: const Icon(Icons.arrow_back_ios_new),
@@ -98,7 +98,7 @@ class _bodyFormState extends State<bodyForm> {
               await deletePlant(widget.plant.plantId);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MainPage()),
+                MaterialPageRoute(builder: (context) => MainPage(index: 1)),
               );
             }
           },
