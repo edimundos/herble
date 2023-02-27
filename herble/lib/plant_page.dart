@@ -49,40 +49,44 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                 .map((data) =>
                     globals.Plant.fromJson(data as Map<String, dynamic>))
                 .toList();
-            return ListView.builder(
-                itemCount: plants.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(plants[index].plantName),
-                    subtitle: Text(plants[index].plantDescription),
-                    onTap: () {
-                      globals.currentPlant = plants[index];
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => IndividualPlant(
-                            plant: plants[index],
-                            pic: plantPicData[index]!,
+            if (plants.isNotEmpty) {
+              return ListView.builder(
+                  itemCount: plants.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text(plants[index].plantName),
+                      subtitle: Text(plants[index].plantDescription),
+                      onTap: () {
+                        globals.currentPlant = plants[index];
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => IndividualPlant(
+                              plant: plants[index],
+                              pic: plantPicData[index]!,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    leading: FutureBuilder(
-                      future: getImage(plants[index].picture),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          Uint8List picData = snapshot.data!;
-                          plantPicData[index] = picData;
-                          return Image.memory(picData);
-                        } else {
-                          return const Placeholder(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                        );
                       },
-                    ),
-                  );
-                });
+                      leading: FutureBuilder(
+                        future: getImage(plants[index].picture),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            Uint8List picData = snapshot.data!;
+                            plantPicData[index] = picData;
+                            return Image.memory(picData);
+                          } else {
+                            return const Placeholder(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                      ),
+                    );
+                  });
+            } else {
+              return Center(child: Text("No herble plant pots yet :("));
+            }
           } else {
             return const Center(
               child: CircularProgressIndicator(),
