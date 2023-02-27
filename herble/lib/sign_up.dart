@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/src/types.dart';
 import 'package:herble/main_page.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
@@ -45,6 +46,7 @@ class _LogInFormState extends State<LogInForm> {
   bool isDisabled = false;
   bool passwordVisible1 = false;
   bool passwordVisible2 = false;
+  late TimeOfDay selectedTime24Hour = const TimeOfDay(hour: 20, minute: 0);
 
   void dispose() {
     emailController.dispose();
@@ -137,6 +139,32 @@ class _LogInFormState extends State<LogInForm> {
                     ),
                   ),
                 ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextButton(
+                    onPressed: () async {
+                      selectedTime24Hour = (await showTimePicker(
+                        context: context,
+                        initialTime: const TimeOfDay(hour: 20, minute: 00),
+                        builder: (BuildContext context, Widget? child) {
+                          return MediaQuery(
+                            data: MediaQuery.of(context)
+                                .copyWith(alwaysUse24HourFormat: true),
+                            child: child!,
+                          );
+                        },
+                      ))!;
+                    },
+                    child: const Text(
+                      "Select what time of day do you want to recieve water fill-up notifications",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
                 TextButton(
                   onPressed: !isDisabled
                       ? () async {
@@ -152,8 +180,6 @@ class _LogInFormState extends State<LogInForm> {
                             emailController.text,
                           );
                           if (validator == 100) {
-                            Future.delayed(Duration.zero,
-                                () => _navigateToPlantList(context));
                             await postUser(
                               usernameController.text,
                               pwController2.text,
@@ -167,6 +193,8 @@ class _LogInFormState extends State<LogInForm> {
                             setState(() {
                               isDisabled = false;
                             });
+                            Future.delayed(Duration.zero,
+                                () => _navigateToPlantList(context));
                           } else if (validator == 101) {
                             setState(() {
                               isDisabled = false;
@@ -279,10 +307,13 @@ class _LogInFormState extends State<LogInForm> {
     globals.username = username;
     globals.password = pw;
     globals.email = email;
+    globals.wateringTime =
+        Time(selectedTime24Hour.hour, selectedTime24Hour.minute);
     await http.post(Uri.parse(url), body: {
       'username_flutter': username,
       'pw_flutter': pw,
       'email_flutter': email,
+      'time': '${selectedTime24Hour.hour}:${selectedTime24Hour.minute}:00',
     });
   }
 

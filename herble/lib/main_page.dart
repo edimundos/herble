@@ -39,32 +39,32 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.amber[800],
+        unselectedItemColor: Colors.blueGrey,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
               Icons.menu_book,
-              color: Colors.blueGrey,
             ),
             label: 'instructions',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.list_alt_outlined,
-              color: Colors.blueGrey,
             ),
             label: 'my plants',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.lightbulb,
-              color: Colors.blueGrey,
             ),
             label: 'tips',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person,
-              color: Colors.blueGrey,
             ),
             label: 'profile',
           ),
