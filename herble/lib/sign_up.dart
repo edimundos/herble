@@ -149,7 +149,10 @@ class _LogInFormState extends State<LogInForm> {
                     onPressed: () async {
                       selectedTime24Hour = (await showTimePicker(
                         context: context,
-                        initialTime: const TimeOfDay(hour: 20, minute: 00),
+                        initialTime:
+                            selectedTime24Hour != TimeOfDay(hour: 20, minute: 0)
+                                ? selectedTime24Hour
+                                : TimeOfDay(hour: 20, minute: 00),
                         builder: (BuildContext context, Widget? child) {
                           return MediaQuery(
                             data: MediaQuery.of(context)
@@ -158,10 +161,13 @@ class _LogInFormState extends State<LogInForm> {
                           );
                         },
                       ))!;
+                      setState(() {
+                        selectedTime24Hour = selectedTime24Hour;
+                      });
                     },
-                    child: const Text(
-                      "Select what time of day do you want to recieve water fill-up notifications",
-                      style: TextStyle(color: Colors.black),
+                    child: Text(
+                      "Select what time of day do you want to recieve water fill-up notifications (${selectedTime24Hour.hour.toString().length == 1 ? '0${selectedTime24Hour.hour}' : selectedTime24Hour.hour}:${selectedTime24Hour.minute.toString().length == 1 ? '0${selectedTime24Hour.minute}' : selectedTime24Hour.minute})",
+                      style: TextStyle(color: Colors.black54),
                     ),
                   ),
                 ),
@@ -313,7 +319,8 @@ class _LogInFormState extends State<LogInForm> {
       'username_flutter': username,
       'pw_flutter': pw,
       'email_flutter': email,
-      'time': '${selectedTime24Hour.hour}:${selectedTime24Hour.minute}:00',
+      'time':
+          '${selectedTime24Hour.hour.toString().length == 1 ? '0${selectedTime24Hour.hour}' : selectedTime24Hour.hour}:${selectedTime24Hour.minute.toString().length == 1 ? '0${selectedTime24Hour.minute}' : selectedTime24Hour.minute}:00',
     });
   }
 

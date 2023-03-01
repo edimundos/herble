@@ -47,8 +47,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   final emailController = TextEditingController();
   final pwController = TextEditingController();
   bool isLoading = false;
-
-  @override
+  bool check = false;
   bool passwordVisible = false;
 
   void dispose() {
@@ -65,103 +64,131 @@ class _MyCustomFormState extends State<MyCustomForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                isLoading ? const CircularProgressIndicator() : Container(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email/username',
-                      hintText: 'enter your email/username',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextField(
-                    obscureText: !passwordVisible,
-                    controller: pwController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      hintText: 'enter your password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Theme.of(context).primaryColorDark,
+                isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                        heightFactor: 20,
+                      )
+                    : Container(),
+                !isLoading
+                    ? Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        child: TextField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Email/username',
+                            hintText: 'enter your email/username',
+                          ),
                         ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
+                      )
+                    : Container(),
+                !isLoading
+                    ? Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        child: TextField(
+                          obscureText: !passwordVisible,
+                          controller: pwController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Password',
+                            hintText: 'enter your password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Theme.of(context).primaryColorDark,
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible variable
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(),
+                // !isLoading
+                //     ? Row(children: [
+                //         Checkbox(
+                //             value: check,
+                //             onChanged: ((bool? value) {
+                //               setState(() {
+                //                 check = value!;
+                //               });
+                //             })),
+                //         const Text("Remember me"),
+                //       ])
+                //     : Container(),
+                !isLoading
+                    ? TextButton(
+                        onPressed: () async {
                           setState(() {
-                            passwordVisible = !passwordVisible;
+                            isLoading = true;
                           });
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    var pass =
-                        checkPass(emailController.text, pwController.text);
-                    if (await pass) {
-                      globals.isLoggedIn = true;
-                      globals.password = pwController.text;
-                      globals.username = emailController.text;
-                      globals.userID = await getUserID(
-                        emailController.text,
-                      );
-                      await getEmailAndUsername();
-                      globals.wateringTime = await getUserTime(
-                        emailController.text,
-                      );
-
-                      setState(() {
-                        isLoading = false;
-                      });
-
-                      _navigateToPlantList(context);
-                    } else {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: const Text('Incorrect password/email'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'sorry'),
-                                  child: const Text('sorry'),
-                                ),
-                              ],
+                          var pass = checkPass(
+                              emailController.text, pwController.text);
+                          if (await pass) {
+                            globals.isLoggedIn = true;
+                            globals.password = pwController.text;
+                            globals.username = emailController.text;
+                            globals.userID = await getUserID(
+                              emailController.text,
                             );
-                          });
-                    }
-                  },
-                  child: const Text('Confirm'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const SignUpPage();
+                            await getEmailAndUsername();
+                            globals.wateringTime = await getUserTime(
+                              emailController.text,
+                            );
+
+                            setState(() {
+                              isLoading = false;
+                            });
+
+                            _navigateToPlantList(context);
+                          } else {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content:
+                                        const Text('Incorrect password/email'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'sorry'),
+                                        child: const Text('sorry'),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          }
                         },
-                      ),
-                    );
-                  },
-                  child: const Text('Sign up'),
-                ),
+                        child: const Text('Confirm'),
+                      )
+                    : Container(),
+                !isLoading
+                    ? TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return const SignUpPage();
+                              },
+                            ),
+                          );
+                        },
+                        child: const Text('Sign up'),
+                      )
+                    : Container(),
               ],
             )));
   }

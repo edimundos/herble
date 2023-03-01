@@ -310,6 +310,23 @@ class _PlantFormState extends State<PlantForm> {
                           );
                         },
                       );
+                    } else if (validator == 109) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text(
+                                'This pot cannot hold more than 1050ml'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'sorry'),
+                                child: const Text('sorry'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                   child: const Text('Confirm'),
@@ -328,6 +345,7 @@ class _PlantFormState extends State<PlantForm> {
     if (int.tryParse(days) == null) return 103;
     if (int.tryParse(volume) == null) return 104;
     if (!await checkIfUrlIsAccessible()) return 108;
+    if (int.parse(volume) > 1050) return 109;
     return 100;
   }
 
