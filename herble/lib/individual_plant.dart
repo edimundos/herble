@@ -52,6 +52,7 @@ class bodyForm extends StatefulWidget {
 }
 
 class _bodyFormState extends State<bodyForm> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -104,8 +105,74 @@ class _bodyFormState extends State<bodyForm> {
           },
           child: const Text('Delete plant'),
         ),
+        !isLoading
+            ? Center(
+                child: ElevatedButton(
+                  child: const Text("Water now"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green[300],
+                    elevation: 0,
+                  ),
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    if (await checkIfUrlIsAccessible()) {
+                      waterNow();
+                      setState(() {
+                        isLoading = false;
+                      });
+                    } else {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: const Text(
+                                  'Connect to the plant pot wifi to water it'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'sorry'),
+                                  child: const Text('sorry'),
+                                ),
+                              ],
+                            );
+                          });
+                    }
+                  },
+                ),
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ],
     );
+  }
+
+  Future<void> waterNow() async {
+    String url = 'http://192.168.4.1/?var1=-1&var2=-1';
+    await http.post(Uri.parse(url));
+  }
+
+  Future<bool> checkIfUrlIsAccessible() async {
+    try {
+      final response = await Future.any([
+        http.get(Uri.parse("http://192.168.4.1/")),
+        Future.delayed(const Duration(seconds: 3), () => null),
+      ]);
+      if (response == null) {
+        throw Exception("Request timed out");
+      }
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (_) {
+      return false;
+    }
+    return false;
   }
 
   Future<bool?> showConfirmationDialog(BuildContext context) {
