@@ -125,13 +125,14 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                 )),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-              child: TextField(
+              child: TextFormField(
                 controller: nameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Plant name',
                   hintText: 'enter your plants name',
                 ),
+                validator: validateName,
               ),
             ),
             Padding(
@@ -298,6 +299,17 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
       'picture': picture,
       'water_volume': volume.toString(),
     });
+  }
+
+  String? validateName(String? value) {
+    if (value!.length < 3) {
+      return 'Name must be more than 2 charaters';
+    }
+    if (value.length > 250) {
+      return 'Name cant be more than 250 characters';
+    } else {
+      return null;
+    }
   }
 
   int dataIsValid(String species, String desc, String days, String volume) {
