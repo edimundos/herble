@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 import 'package:google_fonts/google_fonts.dart';
 
+bool isLoading = false;
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -44,7 +46,6 @@ class _LogInFormState extends State<LogInForm> {
   final pwController1 = TextEditingController();
   final pwController2 = TextEditingController();
   final usernameController = TextEditingController();
-  bool isDisabled = false;
   bool passwordVisible1 = false;
   bool passwordVisible2 = false;
   late TimeOfDay selectedTime24Hour = const TimeOfDay(hour: 20, minute: 0);
@@ -60,277 +61,304 @@ class _LogInFormState extends State<LogInForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: emailController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Email',
-              hintText: 'enter your email',
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            controller: usernameController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Username',
-              hintText: 'enter your username',
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            obscureText: !passwordVisible1,
-            controller: pwController1,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Password',
-              hintText: 'enter your password',
-              suffixIcon: IconButton(
-                icon: Icon(
-                  // Based on passwordVisible state choose the icon
-                  passwordVisible1 ? Icons.visibility : Icons.visibility_off,
-                  color: Color.fromARGB(255, 56, 56, 56),
-                ),
-                onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible vari able
-                  setState(() {
-                    passwordVisible1 = !passwordVisible1;
-                  });
-                },
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-          child: TextField(
-            obscureText: !passwordVisible2,
-            controller: pwController2,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Repeat Password',
-              hintText: 'repeat your password',
-              suffixIcon: IconButton(
-                icon: Icon(
-                  // Based on passwordVisible state choose the icon
-                  passwordVisible2 ? Icons.visibility : Icons.visibility_off,
-                  color: Color.fromARGB(255, 56, 56, 56),
-                ),
-                onPressed: () {
-                  // Update the state i.e. toogle the state of passwordVisible variable
-                  setState(() {
-                    passwordVisible2 = !passwordVisible2;
-                  });
-                },
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: TextButton(
-              onPressed: () async {
-                selectedTime24Hour = (await showTimePicker(
-                  context: context,
-                  initialTime:
-                      selectedTime24Hour != TimeOfDay(hour: 20, minute: 0)
-                          ? selectedTime24Hour
-                          : TimeOfDay(hour: 20, minute: 00),
-                  builder: (BuildContext context, Widget? child) {
-                    return MediaQuery(
-                      data: MediaQuery.of(context)
-                          .copyWith(alwaysUse24HourFormat: true),
-                      child: child!,
-                    );
-                  },
-                ))!;
-                setState(() {
-                  selectedTime24Hour = selectedTime24Hour;
-                });
-              },
-              child: Text(
-                "Select what time of day do you want to recieve water fill-up notifications (${selectedTime24Hour.hour.toString().length == 1 ? '0${selectedTime24Hour.hour}' : selectedTime24Hour.hour}:${selectedTime24Hour.minute.toString().length == 1 ? '0${selectedTime24Hour.minute}' : selectedTime24Hour.minute})",
-                style: TextStyle(color: Colors.black54),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        TextButton(
-          onPressed: !isDisabled
-              ? () async {
-                  print(isDisabled);
-                  setState(() {
-                    isDisabled = true;
-                  });
-                  print(isDisabled);
-                  int validator = await dataIsValid(
-                    usernameController.text,
-                    pwController1.text,
-                    pwController2.text,
-                    emailController.text,
-                  );
-                  if (validator == 100) {
-                    await postUser(
-                      usernameController.text,
-                      pwController2.text,
-                      emailController.text,
-                    );
-                    globals.isLoggedIn = true;
-                    globals.username = usernameController.text;
-                    globals.userID = await getUserID(
-                      usernameController.text,
-                    );
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    Future.delayed(
-                        Duration.zero, () => _navigateToPlantList(context));
-                  } else if (validator == 101) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Password doesnt match'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 102) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Password length must be >8'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 103) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text('Email must contain @'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 104) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text(
-                              'A user with this username already exists'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else if (validator == 105) {
-                    setState(() {
-                      isDisabled = false;
-                    });
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text(
-                              'A user with this email already exists'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'sorry'),
-                              child: const Text('sorry'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                }
-              : null,
-          child: Center(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.black.withOpacity(0),
-              ),
-              child: Container(
-                width: 200,
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: <Color>[
-                      Color.fromARGB(255, 19, 37, 31),
-                      Color.fromARGB(255, 202, 207, 197),
-                    ],
+        isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(),
+        !isLoading
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                    hintText: 'enter your email',
                   ),
                 ),
-                child: Center(
-                  child: Text(
-                    'Confirm',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      height: 1,
-                      color: Color.fromARGB(255, 226, 233, 218),
+              )
+            : Container(),
+        !isLoading
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  controller: usernameController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Username',
+                    hintText: 'enter your username',
+                  ),
+                ),
+              )
+            : Container(),
+        !isLoading
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  obscureText: !passwordVisible1,
+                  controller: pwController1,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'enter your password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        passwordVisible1
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Color.fromARGB(255, 56, 56, 56),
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible vari able
+                        setState(() {
+                          passwordVisible1 = !passwordVisible1;
+                        });
+                      },
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
-        ),
+              )
+            : Container(),
+        !isLoading
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  obscureText: !passwordVisible2,
+                  controller: pwController2,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Repeat Password',
+                    hintText: 'repeat your password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        passwordVisible2
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Color.fromARGB(255, 56, 56, 56),
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          passwordVisible2 = !passwordVisible2;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+        !isLoading
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextButton(
+                    onPressed: () async {
+                      selectedTime24Hour = (await showTimePicker(
+                        context: context,
+                        initialTime:
+                            selectedTime24Hour != TimeOfDay(hour: 20, minute: 0)
+                                ? selectedTime24Hour
+                                : TimeOfDay(hour: 20, minute: 00),
+                        builder: (BuildContext context, Widget? child) {
+                          return MediaQuery(
+                            data: MediaQuery.of(context)
+                                .copyWith(alwaysUse24HourFormat: true),
+                            child: child!,
+                          );
+                        },
+                      ))!;
+                      setState(() {
+                        selectedTime24Hour = selectedTime24Hour;
+                      });
+                    },
+                    child: Text(
+                      "Select what time of day do you want to recieve water fill-up notifications (${selectedTime24Hour.hour.toString().length == 1 ? '0${selectedTime24Hour.hour}' : selectedTime24Hour.hour}:${selectedTime24Hour.minute.toString().length == 1 ? '0${selectedTime24Hour.minute}' : selectedTime24Hour.minute})",
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+        !isLoading
+            ? SizedBox(
+                height: 20,
+              )
+            : Container(),
+        !isLoading
+            ? TextButton(
+                onPressed: !isLoading
+                    ? () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        int validator = await dataIsValid(
+                          usernameController.text,
+                          pwController1.text,
+                          pwController2.text,
+                          emailController.text,
+                        );
+                        if (validator == 100) {
+                          await postUser(
+                            usernameController.text,
+                            pwController2.text,
+                            emailController.text,
+                          );
+                          globals.isLoggedIn = true;
+                          globals.username = usernameController.text;
+                          globals.userID = await getUserID(
+                            usernameController.text,
+                          );
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Future.delayed(Duration.zero,
+                              () => _navigateToPlantList(context));
+                        } else if (validator == 101) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: const Text('Password doesnt match'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'sorry'),
+                                    child: const Text('sorry'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (validator == 102) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content:
+                                    const Text('Password length must be >8'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'sorry'),
+                                    child: const Text('sorry'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (validator == 103) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: const Text('Email must contain @'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'sorry'),
+                                    child: const Text('sorry'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (validator == 104) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: const Text(
+                                    'A user with this username already exists'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'sorry'),
+                                    child: const Text('sorry'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (validator == 105) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: const Text(
+                                    'A user with this email already exists'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'sorry'),
+                                    child: const Text('sorry'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      }
+                    : null,
+                child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.black.withOpacity(0),
+                    ),
+                    child: Container(
+                      width: 200,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: <Color>[
+                            Color.fromARGB(255, 19, 37, 31),
+                            Color.fromARGB(255, 202, 207, 197),
+                          ],
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Confirm',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.cormorantGaramond(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                            color: Color.fromARGB(255, 226, 233, 218),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
       ],
     );
   }

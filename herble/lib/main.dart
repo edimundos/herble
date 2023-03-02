@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const backgroundImage = DecorationImage(
-      image: AssetImage('StartUpPage.png'),
+      image: AssetImage('assets/StartUpPage.png'),
       fit: BoxFit.cover,
     );
 
@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
           decoration: const BoxDecoration(
             image: backgroundImage,
           ),
-          // color: Colors.blue,
           child: MyHomePage(title: 'herble'),
         ),
       ),
