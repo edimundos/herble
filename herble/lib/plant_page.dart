@@ -40,7 +40,8 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
     return Scaffold(
       body: Column(
         children: [
-          Container(
+          // sis app bar container
+          SizedBox(
               height: 100,
               child: Row(
                 children: [
@@ -69,6 +70,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                   )
                 ],
               )),
+
           Expanded(
             child: FutureBuilder(
               future: getPlantsByUser(),
@@ -232,7 +234,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                   "Watering frequency: ",
                                                   style: GoogleFonts
                                                       .cormorantGaramond(
-                                                    fontSize: 30,
+                                                    fontSize: 20,
                                                     fontWeight: FontWeight.bold,
                                                     height: 1,
                                                     color: const Color.fromARGB(
@@ -244,7 +246,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                   overflow: TextOverflow.clip,
                                                   style: GoogleFonts
                                                       .cormorantGaramond(
-                                                    fontSize: 30,
+                                                    fontSize: 20,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     height: 1,
@@ -262,7 +264,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                   overflow: TextOverflow.clip,
                                                   style: GoogleFonts
                                                       .cormorantGaramond(
-                                                    fontSize: 30,
+                                                    fontSize: 20,
                                                     fontWeight: FontWeight.bold,
                                                     height: 1,
                                                     color: const Color.fromARGB(
@@ -273,7 +275,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                   "${plants[index].waterVolume.toString()} ml",
                                                   style: GoogleFonts
                                                       .cormorantGaramond(
-                                                    fontSize: 30,
+                                                    fontSize: 20,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     height: 1,

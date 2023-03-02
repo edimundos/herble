@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/change_email.dart';
 import 'package:herble/change_pw.dart';
 import 'package:herble/change_username.dart';
@@ -15,11 +16,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Scaffold build(BuildContext context) {
+    // ignore: prefer_const_constructors
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile page"),
-        automaticallyImplyLeading: false,
-      ),
       body: const ProfileBody(
         title: 'profile ',
       ),
@@ -41,6 +39,35 @@ class _ProfileBodyState extends State<ProfileBody> {
     return Scaffold(
         body: Column(
       children: [
+        SizedBox(
+            height: 100,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: Text(
+                    "Profile Page",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.cormorantGaramond(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                      height: 1,
+                      color: const Color.fromARGB(255, 32, 54, 50),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: EdgeInsets.all(25.0),
+                    child: Image(
+                      image: AssetImage("herble_logo.png"),
+                    ),
+                  ),
+                )
+              ],
+            )),
         Text("Hello, ${globals.username}!"),
         const Text("Email"),
         InkWell(
