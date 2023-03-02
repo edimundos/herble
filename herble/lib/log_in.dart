@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/main_page.dart';
 import 'package:herble/sign_up.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bcrypt/bcrypt.dart';
@@ -57,140 +58,152 @@ class _MyCustomFormState extends State<MyCustomForm> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            reverse: true,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                        heightFactor: 20,
-                      )
-                    : Container(),
-                !isLoading
-                    ? Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                        child: TextField(
-                          controller: emailController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Email/username',
-                            hintText: 'enter your email/username',
-                          ),
-                        ),
-                      )
-                    : Container(),
-                !isLoading
-                    ? Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                        child: TextField(
-                          obscureText: !passwordVisible,
-                          controller: pwController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Password',
-                            hintText: 'enter your password',
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                // Based on passwordVisible state choose the icon
-                                passwordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Theme.of(context).primaryColorDark,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+                heightFactor: 20,
+              )
+            : Container(),
+        !isLoading
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email/username',
+                    hintText: 'enter your email/username',
+                  ),
+                ),
+              )
+            : Container(),
+        !isLoading
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  obscureText: !passwordVisible,
+                  controller: pwController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'enter your password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Color.fromARGB(255, 56, 56, 56),
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          passwordVisible = !passwordVisible;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+        // !isLoading
+        //     ? Row(children: [
+        //         Checkbox(
+        //             value: check,
+        //             onChanged: ((bool? value) {
+        //               setState(() {
+        //                 check = value!;
+        //               });
+        //             })),
+        //         const Text("Remember me"),
+        //       ])
+        //     : Container(),
+        !isLoading
+            ? TextButton(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  var pass = checkPass(emailController.text, pwController.text);
+                  if (await pass) {
+                    globals.isLoggedIn = true;
+                    globals.password = pwController.text;
+                    globals.username = emailController.text;
+                    globals.userID = await getUserID(
+                      emailController.text,
+                    );
+                    await getEmailAndUsername();
+                    globals.wateringTime = await getUserTime(
+                      emailController.text,
+                    );
+
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    _navigateToPlantList(context);
+                  } else {
+                    setState(() {
+                      isLoading = false;
+                    });
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: const Text('Incorrect password/email'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'sorry'),
+                                child: const Text('sorry'),
                               ),
-                              onPressed: () {
-                                // Update the state i.e. toogle the state of passwordVisible variable
-                                setState(() {
-                                  passwordVisible = !passwordVisible;
-                                });
-                              },
-                            ),
+                            ],
+                          );
+                        });
+                  }
+                },
+                child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: Colors.black.withOpacity(0),
+                    ),
+                    child: Container(
+                      width: 200,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: <Color>[
+                            Color.fromARGB(255, 19, 37, 31),
+                            Color.fromARGB(255, 202, 207, 197),
+                          ],
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Confirm',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.cormorantGaramond(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                            color: Color.fromARGB(255, 226, 233, 218),
                           ),
                         ),
-                      )
-                    : Container(),
-                // !isLoading
-                //     ? Row(children: [
-                //         Checkbox(
-                //             value: check,
-                //             onChanged: ((bool? value) {
-                //               setState(() {
-                //                 check = value!;
-                //               });
-                //             })),
-                //         const Text("Remember me"),
-                //       ])
-                //     : Container(),
-                !isLoading
-                    ? TextButton(
-                        onPressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          var pass = checkPass(
-                              emailController.text, pwController.text);
-                          if (await pass) {
-                            globals.isLoggedIn = true;
-                            globals.password = pwController.text;
-                            globals.username = emailController.text;
-                            globals.userID = await getUserID(
-                              emailController.text,
-                            );
-                            await getEmailAndUsername();
-                            globals.wateringTime = await getUserTime(
-                              emailController.text,
-                            );
-
-                            setState(() {
-                              isLoading = false;
-                            });
-
-                            _navigateToPlantList(context);
-                          } else {
-                            setState(() {
-                              isLoading = false;
-                            });
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    content:
-                                        const Text('Incorrect password/email'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'sorry'),
-                                        child: const Text('sorry'),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          }
-                        },
-                        child: const Text('Confirm'),
-                      )
-                    : Container(),
-                !isLoading
-                    ? TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return const SignUpPage();
-                              },
-                            ),
-                          );
-                        },
-                        child: const Text('Sign up'),
-                      )
-                    : Container(),
-              ],
-            )));
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+      ],
+    );
   }
 
   Future<bool> checkPass(String username, String pw) async {

@@ -22,11 +22,24 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    const backgroundImage = DecorationImage(
+      image: AssetImage('StartUpPage.png'),
+      fit: BoxFit.cover,
+    );
+
+    return MaterialApp(
       title: 'Flutter Server',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(
-        title: 'herble',
+      theme: ThemeData(
+          primarySwatch: Colors.green, canvasColor: Colors.transparent),
+      home: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            image: backgroundImage,
+          ),
+          // color: Colors.blue,
+          child: MyHomePage(title: 'herble'),
+        ),
       ),
     );
   }
