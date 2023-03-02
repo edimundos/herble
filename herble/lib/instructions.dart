@@ -59,7 +59,7 @@ class _InstructionsFormState extends State<InstructionsForm> {
                     child: Padding(
                       padding: EdgeInsets.all(25.0),
                       child: Image(
-                        image: AssetImage("herble_logo.png"),
+                        image: AssetImage("assets/herble_logo.png"),
                       ),
                     ),
                   )

@@ -38,6 +38,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     const Color bgcolor = Color.fromARGB(255, 182, 172, 152);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: SizedBox(
         height: 75,
