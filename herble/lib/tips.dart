@@ -63,14 +63,24 @@ class _TipFormState extends State<TipForm> {
                   )
                 ],
               )),
+          // title: Text(globals.allTips![index].title),
+          //     subtitle: Text(
+          //         "${globals.allTips![index].description.substring(0, 50)}..."),
+          //  onTap: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => IndividualTip(
+          //             tip: globals.allTips![index],
+          //           ),
+          //         ),
+          //       );
+          //     },
           Expanded(
             child: ListView.builder(
               itemCount: globals.allTips!.length,
               itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(globals.allTips![index].title),
-                  subtitle: Text(
-                      "${globals.allTips![index].description.substring(0, 50)}..."),
+                return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -81,6 +91,79 @@ class _TipFormState extends State<TipForm> {
                       ),
                     );
                   },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 5.0),
+                    child: Container(
+                      height: 375,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: const Color.fromARGB(255, 240, 240, 240)),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 15, 5, 0),
+                                child: Text(
+                                  globals.allTips![index].title,
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.cormorantGaramond(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    height: 1,
+                                    color:
+                                        const Color.fromARGB(255, 32, 54, 50),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                                child: Center(
+                                  child: Container(
+                                      height: 250.0,
+                                      width: 400,
+                                      decoration: BoxDecoration(
+                                        // borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                          image: index == 0
+                                              ? const AssetImage(
+                                                  'assets/temperatureTip.png')
+                                              : const AssetImage('dr.jpg'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(15, 15, 5, 0),
+                                child: Text(
+                                  ("${globals.allTips![index].description.substring(0, 50)}..."),
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.cormorantGaramond(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1,
+                                    color:
+                                        const Color.fromARGB(255, 32, 54, 50),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 );
               },
             ),

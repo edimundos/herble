@@ -62,6 +62,7 @@ class _IndividualInstructionState extends State<IndividualInstruction> {
             padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
             child: Text(
               widget.instruction.question,
+              textAlign: TextAlign.center,
               style: GoogleFonts.cormorantGaramond(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,

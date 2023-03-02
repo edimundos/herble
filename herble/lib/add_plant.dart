@@ -58,32 +58,34 @@ class _PlantFormState extends State<PlantForm> {
     return Scaffold(
         body: Column(
       children: [
-        Container(
+        SizedBox(
             height: 100,
             child: Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MainPage(
-                                  index: 1,
-                                )),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: const DecorationImage(
-                          image: AssetImage('assets/backButton.png'),
-                          fit: BoxFit.cover,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainPage(
+                                    index: 1,
+                                  )),
+                        );
+                      },
+                      child: const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Image(
+                            image: AssetImage("assets/backButton.png"),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                  ),
+                      )),
+                ),
+                const SizedBox(
+                  width: 10,
                 ),
                 Text(
                   "Add Plant",
@@ -101,7 +103,7 @@ class _PlantFormState extends State<PlantForm> {
                   child: Padding(
                     padding: EdgeInsets.all(25.0),
                     child: Image(
-                      image: AssetImage("herble_logo.png"),
+                      image: AssetImage("assets/herble_logo.png"),
                     ),
                   ),
                 )

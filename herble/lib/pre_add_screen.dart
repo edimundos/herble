@@ -34,7 +34,7 @@ class _PreAddScreenState extends State<PreAddScreen> {
     return Scaffold(
       body: Column(
         children: [
-          Container(
+          SizedBox(
               height: 100,
               child: Row(
                 children: [
