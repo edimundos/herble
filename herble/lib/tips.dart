@@ -57,7 +57,7 @@ class _TipFormState extends State<TipForm> {
                     child: Padding(
                       padding: EdgeInsets.all(25.0),
                       child: Image(
-                        image: AssetImage("herble_logo.png"),
+                        image: AssetImage("assets/herble_logo.png"),
                       ),
                     ),
                   )
@@ -94,7 +94,7 @@ class _TipFormState extends State<TipForm> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 5.0),
                     child: Container(
-                      height: 375,
+                      height: 400,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: const Color.fromARGB(255, 240, 240, 240)),
@@ -134,7 +134,8 @@ class _TipFormState extends State<TipForm> {
                                           image: index == 0
                                               ? const AssetImage(
                                                   'assets/temperatureTip.png')
-                                              : const AssetImage('dr.jpg'),
+                                              : const AssetImage(
+                                                  'assets/dr.jpg'),
                                           fit: BoxFit.cover,
                                         ),
                                       )),
