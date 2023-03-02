@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/main_page.dart';
-import 'package:herble/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:herble/home_page.dart' as home;
 import 'dart:convert';
 import 'package:bcrypt/bcrypt.dart';
 import 'globals.dart' as globals;
 
 void main() => runApp(const LogInScreen());
+
+bool isLoading = false;
 
 class LogInScreen extends StatelessWidget {
   const LogInScreen({super.key});
@@ -47,7 +50,6 @@ class MyCustomForm extends StatefulWidget {
 class _MyCustomFormState extends State<MyCustomForm> {
   final emailController = TextEditingController();
   final pwController = TextEditingController();
-  bool isLoading = false;
   bool check = false;
   bool passwordVisible = false;
 
@@ -55,6 +57,12 @@ class _MyCustomFormState extends State<MyCustomForm> {
     emailController.dispose();
     pwController.dispose();
     super.dispose();
+    super.initState();
+    KeyboardVisibilityController().onChange.listen((visible) {
+      setState(() {
+        home.isKeyboard = visible;
+      });
+    });
   }
 
   Widget build(BuildContext context) {
@@ -64,7 +72,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
         isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
-                heightFactor: 20,
               )
             : Container(),
         !isLoading
