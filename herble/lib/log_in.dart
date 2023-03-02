@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -58,11 +57,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
     pwController.dispose();
     super.dispose();
     super.initState();
-    KeyboardVisibilityController().onChange.listen((visible) {
-      setState(() {
-        home.isKeyboard = visible;
-      });
-    });
   }
 
   Widget build(BuildContext context) {
