@@ -62,9 +62,17 @@ class _MyCustomFormState extends State<MyCustomForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-                heightFactor: 20,
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // ignore: prefer_const_literals_to_create_immutables
+                children: [
+                  const SizedBox(
+                    height: 200,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ],
               )
             : Container(),
         !isLoading
@@ -176,7 +184,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       height: 50,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: <Color>[
