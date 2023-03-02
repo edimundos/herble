@@ -126,13 +126,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // onPressed: showSignInButton==false ? null : () {
-            //   popUpSignIn();
-            //   print("log in");
-            //   setState(() {
-            //   showSignInButton = false;
-            //    showRegisterButton =false;
-            //    });}
             AnimatedOpacity(
               opacity: showSignInButton ? 1.0 : 0.0,
               duration: Duration(seconds: animLength),

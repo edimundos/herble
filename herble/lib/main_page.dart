@@ -36,41 +36,49 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    const Color bgcolor = Color.fromARGB(255, 182, 172, 152);
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Colors.blueGrey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.menu_book,
+      bottomNavigationBar: SizedBox(
+        height: 75,
+        child: BottomNavigationBar(
+          selectedItemColor: Color.fromARGB(255, 255, 255, 255),
+          unselectedItemColor: Color.fromARGB(255, 56, 60, 68),
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.menu_book,
+              ),
+              label: 'instructions',
+              backgroundColor: bgcolor,
             ),
-            label: 'instructions',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.list_alt_outlined,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.list_alt_outlined,
+              ),
+              label: 'my plants',
+              backgroundColor: bgcolor,
             ),
-            label: 'my plants',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.lightbulb,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.lightbulb,
+              ),
+              label: 'tips',
+              backgroundColor: bgcolor,
             ),
-            label: 'tips',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+              ),
+              label: 'profile',
+              backgroundColor: bgcolor,
             ),
-            label: 'profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

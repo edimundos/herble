@@ -8,6 +8,7 @@ import 'package:herble/main_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
+import 'package:google_fonts/google_fonts.dart';
 
 class AddPlantPage extends StatefulWidget {
   Uint8List pic;
@@ -23,22 +24,6 @@ class _AddPlantPageState extends State<AddPlantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Add a plant"),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => MainPage(
-                        index: 1,
-                      )),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-      ),
       body: PlantForm(pic: widget.pic, picId: widget.picId),
     );
   }
@@ -71,7 +56,58 @@ class _PlantFormState extends State<PlantForm> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
+        body: Column(
+      children: [
+        Container(
+            height: 100,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainPage(
+                                  index: 1,
+                                )),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                          image: AssetImage('assets/backButton.png'),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Text(
+                  "Add Plant",
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.cormorantGaramond(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: const Color.fromARGB(255, 32, 54, 50),
+                  ),
+                ),
+                const Spacer(),
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: EdgeInsets.all(25.0),
+                    child: Image(
+                      image: AssetImage("herble_logo.png"),
+                    ),
+                  ),
+                )
+              ],
+            )),
+        SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             reverse: true,
             child: Column(
@@ -332,7 +368,9 @@ class _PlantFormState extends State<PlantForm> {
                   child: const Text('Confirm'),
                 ),
               ],
-            )));
+            )),
+      ],
+    ));
   }
 
   Future<int> dataIsValid(
