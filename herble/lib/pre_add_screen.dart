@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page.dart';
 import 'package:herble/plant_page.dart';
 import 'add_plant.dart';
@@ -31,21 +32,59 @@ class _PreAddScreenState extends State<PreAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add a plant"),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MainPage(index: 1)),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-      ),
       body: Column(
         children: [
+          Container(
+              height: 100,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage(
+                                      index: 1,
+                                    )),
+                          );
+                        },
+                        child: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Image(
+                              image: AssetImage("assets/backButton.png"),
+                            ),
+                          ),
+                        )),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Add Plant",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.cormorantGaramond(
+                      fontSize: 50,
+                      fontWeight: FontWeight.bold,
+                      height: 1,
+                      color: const Color.fromARGB(255, 32, 54, 50),
+                    ),
+                  ),
+                  const Spacer(),
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: EdgeInsets.all(25.0),
+                      child: Image(
+                        image: AssetImage("assets/herble_logo.png"),
+                      ),
+                    ),
+                  )
+                ],
+              )),
           const Text("1. Turn on wifi on the herble pot "),
           const Text("2. Connect to the wifi from your device"),
           isLoading
