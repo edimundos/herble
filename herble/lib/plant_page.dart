@@ -85,217 +85,240 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Container(
-                              height: 350,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                gradient: const LinearGradient(
-                                  begin: Alignment.topRight,
-                                  end: Alignment.bottomLeft,
-                                  colors: <Color>[
-                                    Color.fromARGB(255, 204, 217, 191),
-                                    Color.fromARGB(255, 200, 223, 215),
-                                  ],
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(30.0),
-                                          child: Container(
-                                            height: 150,
-                                            width: 150,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(35),
-                                            ),
-                                            child: ClipRRect(
-                                              clipBehavior: Clip.hardEdge,
-                                              borderRadius:
-                                                  BorderRadius.circular(35),
-                                              child: FittedBox(
-                                                fit: BoxFit.cover,
-                                                child: FutureBuilder(
-                                                  future: getImage(
-                                                      plants[index].picture),
-                                                  builder: (context, snapshot) {
-                                                    if (snapshot.hasData) {
-                                                      Uint8List picData =
-                                                          snapshot.data!;
-                                                      plantPicData[index] =
-                                                          picData;
-                                                      return Image.memory(
-                                                          picData);
-                                                    } else {
-                                                      return const Placeholder(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      );
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.topCenter,
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0),
-                                                child: SizedBox(
-                                                  width: 150,
-                                                  child: Text(
-                                                    plants[index].plantName,
-                                                    textAlign: TextAlign.center,
-                                                    overflow: TextOverflow.clip,
-                                                    style: GoogleFonts
-                                                        .cormorantGaramond(
-                                                      fontSize: 35,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      height: 1,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255, 32, 54, 50),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 8,
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0),
-                                                child: SizedBox(
-                                                  width: 150,
-                                                  child: Text(
-                                                    plants[index]
-                                                        .plantDescription,
-                                                    textAlign: TextAlign.left,
-                                                    overflow: TextOverflow.clip,
-                                                    style: GoogleFonts
-                                                        .cormorantGaramond(
-                                                      fontSize: 23,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      height: 1,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255, 32, 54, 50),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                          child: GestureDetector(
+                            onTap: () {
+                              globals.currentPlant = plants[index];
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => IndividualPlant(
+                                    plant: plants[index],
+                                    pic: plantPicData[index]!,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 30.0),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Column(
+                                ),
+                              );
+                            },
+                            child: Container(
+                                height: 350,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft,
+                                    colors: <Color>[
+                                      Color.fromARGB(255, 204, 217, 191),
+                                      Color.fromARGB(255, 200, 223, 215),
+                                    ],
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Row(
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Watering frequency: ",
-                                                style: GoogleFonts
-                                                    .cormorantGaramond(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  height: 1,
-                                                  color: const Color.fromARGB(
-                                                      255, 32, 54, 50),
+                                          Padding(
+                                            padding: const EdgeInsets.all(30.0),
+                                            child: Container(
+                                              height: 150,
+                                              width: 150,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(35),
+                                              ),
+                                              child: ClipRRect(
+                                                clipBehavior: Clip.hardEdge,
+                                                borderRadius:
+                                                    BorderRadius.circular(35),
+                                                child: FittedBox(
+                                                  fit: BoxFit.cover,
+                                                  child: FutureBuilder(
+                                                    future: getImage(
+                                                        plants[index].picture),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      if (snapshot.hasData) {
+                                                        Uint8List picData =
+                                                            snapshot.data!;
+                                                        plantPicData[index] =
+                                                            picData;
+                                                        return Image.memory(
+                                                            picData);
+                                                      } else {
+                                                        return const Placeholder(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        );
+                                                      }
+                                                    },
+                                                  ),
                                                 ),
                                               ),
-                                              Text(
-                                                "${" every " + plants[index].dayCount.toString()} days",
-                                                overflow: TextOverflow.clip,
-                                                style: GoogleFonts
-                                                    .cormorantGaramond(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.normal,
-                                                  height: 1,
-                                                  color: const Color.fromARGB(
-                                                      255, 32, 54, 50),
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                          const SizedBox(height: 15),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Watering volume: ",
-                                                overflow: TextOverflow.clip,
-                                                style: GoogleFonts
-                                                    .cormorantGaramond(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  height: 1,
-                                                  color: const Color.fromARGB(
-                                                      255, 32, 54, 50),
+                                          Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child: SizedBox(
+                                                    width: 150,
+                                                    child: Text(
+                                                      plants[index].plantName,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      overflow:
+                                                          TextOverflow.clip,
+                                                      style: GoogleFonts
+                                                          .cormorantGaramond(
+                                                        fontSize: 35,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        height: 1,
+                                                        color: const Color
+                                                                .fromARGB(
+                                                            255, 32, 54, 50),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                "${plants[index].waterVolume.toString()} ml",
-                                                style: GoogleFonts
-                                                    .cormorantGaramond(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.normal,
-                                                  height: 1,
-                                                  color: const Color.fromARGB(
-                                                      255, 32, 54, 50),
+                                                const SizedBox(
+                                                  height: 8,
                                                 ),
-                                              ),
-                                            ],
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child: SizedBox(
+                                                    width: 150,
+                                                    child: Text(
+                                                      plants[index]
+                                                          .plantDescription,
+                                                      textAlign: TextAlign.left,
+                                                      overflow:
+                                                          TextOverflow.clip,
+                                                      style: GoogleFonts
+                                                          .cormorantGaramond(
+                                                        fontSize: 23,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        height: 1,
+                                                        color: const Color
+                                                                .fromARGB(
+                                                            255, 32, 54, 50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  )
-                                ],
-                              )
-                              // title: Text(plants[index].plantName),
-                              // subtitle: Text(plants[index].plantDescription),
-                              // onTap: () {
-                              //   globals.currentPlant = plants[index];
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) => IndividualPlant(
-                              //         plant: plants[index],
-                              //         pic: plantPicData[index]!,
-                              //       ),
-                              //     ),
-                              //   );
-                              // },
-                              // leading: FutureBuilder(
-                              //   future: getImage(plants[index].picture),
-                              //   builder: (context, snapshot) {
-                              //     if (snapshot.hasData) {
-                              //       Uint8List picData = snapshot.data!;
-                              //       plantPicData[index] = picData;
-                              //       return Image.memory(picData);
-                              //     } else {
-                              //       return const Placeholder(
-                              //         child: CircularProgressIndicator(),
-                              //       );
-                              //     }
-                              //   },
-                              // ),
-                              ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 30.0),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Watering frequency: ",
+                                                  style: GoogleFonts
+                                                      .cormorantGaramond(
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    height: 1,
+                                                    color: const Color.fromARGB(
+                                                        255, 32, 54, 50),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "${" every " + plants[index].dayCount.toString()} days",
+                                                  overflow: TextOverflow.clip,
+                                                  style: GoogleFonts
+                                                      .cormorantGaramond(
+                                                    fontSize: 30,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1,
+                                                    color: const Color.fromARGB(
+                                                        255, 32, 54, 50),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 15),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "Watering volume: ",
+                                                  overflow: TextOverflow.clip,
+                                                  style: GoogleFonts
+                                                      .cormorantGaramond(
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    height: 1,
+                                                    color: const Color.fromARGB(
+                                                        255, 32, 54, 50),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "${plants[index].waterVolume.toString()} ml",
+                                                  style: GoogleFonts
+                                                      .cormorantGaramond(
+                                                    fontSize: 30,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    height: 1,
+                                                    color: const Color.fromARGB(
+                                                        255, 32, 54, 50),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                                // title: Text(plants[index].plantName),
+                                // subtitle: Text(plants[index].plantDescription),
+                                // onTap: () {
+                                //   globals.currentPlant = plants[index];
+                                //   Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => IndividualPlant(
+                                //         plant: plants[index],
+                                //         pic: plantPicData[index]!,
+                                //       ),
+                                //     ),
+                                //   );
+                                // },
+                                // leading: FutureBuilder(
+                                //   future: getImage(plants[index].picture),
+                                //   builder: (context, snapshot) {
+                                //     if (snapshot.hasData) {
+                                //       Uint8List picData = snapshot.data!;
+                                //       plantPicData[index] = picData;
+                                //       return Image.memory(picData);
+                                //     } else {
+                                //       return const Placeholder(
+                                //         child: CircularProgressIndicator(),
+                                //       );
+                                //     }
+                                //   },
+                                // ),
+                                ),
+                          ),
                         );
                       },
                     );
