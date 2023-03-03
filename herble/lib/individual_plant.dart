@@ -81,6 +81,19 @@ class _IndividualPlantState extends State<IndividualPlant> {
         //         waterVolume: 1),
         //     pic: Uint8List(1))
       ]),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MainPage(index: 1)),
+            );
+          },
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
+        title: Text(widget.plant.plantName),
+      ),
+      body: bodyForm(plant: widget.plant, pic: widget.pic),
     );
   }
 }

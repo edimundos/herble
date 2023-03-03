@@ -45,35 +45,40 @@ packages:
     dependency: "direct main"
     description:
       name: camera
-      url: "https://pub.dartlang.org"
+      sha256: ad1c53c554a2f3e5708f3b01eb738d60b902bb61f7f4ad420c65c715e65a7379
+      url: "https://pub.dev"
     source: hosted
     version: "0.10.3+2"
   camera_android:
     dependency: transitive
     description:
       name: camera_android
-      url: "https://pub.dartlang.org"
+      sha256: df9c3376ccfce13c98a09c1d6433c64b0c6b2de81eeade8151884f8c8f08881f
+      url: "https://pub.dev"
     source: hosted
     version: "0.10.4+1"
   camera_avfoundation:
     dependency: transitive
     description:
       name: camera_avfoundation
-      url: "https://pub.dartlang.org"
+      sha256: a1ebce7132e2c1ffd3138e672538f6f2360715e181cf5b7eb5a073f1a735235e
+      url: "https://pub.dev"
     source: hosted
     version: "0.9.12"
   camera_platform_interface:
     dependency: transitive
     description:
       name: camera_platform_interface
-      url: "https://pub.dartlang.org"
+      sha256: "00d972adee2e8a282b4d7445e8e694aa1dc0c36b70455b99afa96fbf5e814119"
+      url: "https://pub.dev"
     source: hosted
     version: "2.4.1"
   camera_web:
     dependency: transitive
     description:
       name: camera_web
-      url: "https://pub.dartlang.org"
+      sha256: f7a949ce4d2e091234f2e6607557a0a65398c34c84c1161fb249498595e3b4ce
+      url: "https://pub.dev"
     source: hosted
     version: "0.3.1+2"
   characters:
@@ -160,7 +165,8 @@ packages:
     dependency: transitive
     description:
       name: cross_file
-      url: "https://pub.dartlang.org"
+      sha256: "0b0036e8cccbfbe0555fd83c1d31a6f30b77a96b598b35a5d36dd41f718695e9"
+      url: "https://pub.dev"
     source: hosted
     version: "0.3.3+4"
   crypto:
@@ -292,7 +298,8 @@ packages:
     dependency: transitive
     description:
       name: flutter_local_notifications_linux
-      url: "https://pub.dartlang.org"
+      sha256: ccb08b93703aeedb58856e5637450bf3ffec899adb66dc325630b68994734b89
+      url: "https://pub.dev"
     source: hosted
     version: "3.0.0+1"
   flutter_local_notifications_platform_interface:
@@ -307,7 +314,8 @@ packages:
     dependency: transitive
     description:
       name: flutter_plugin_android_lifecycle
-      url: "https://pub.dartlang.org"
+      sha256: "4bef634684b2c7f3468c77c766c831229af829a0cd2d4ee6c1b99558bd14e5d2"
+      url: "https://pub.dev"
     source: hosted
     version: "2.0.8"
   flutter_test:
@@ -356,35 +364,40 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker
-      url: "https://pub.dartlang.org"
+      sha256: "715d68a53d6bcc2eae26005097dc74c375a04c0d7c0e657da84deebbbbbf51ed"
+      url: "https://pub.dev"
     source: hosted
     version: "0.8.6+4"
   image_picker_android:
     dependency: transitive
     description:
       name: image_picker_android
-      url: "https://pub.dartlang.org"
+      sha256: "845f793834d5d3af887ce39e3c97186996928cd43c8350a23e5499268398cc16"
+      url: "https://pub.dev"
     source: hosted
     version: "0.8.5+8"
   image_picker_for_web:
     dependency: transitive
     description:
       name: image_picker_for_web
-      url: "https://pub.dartlang.org"
+      sha256: "66fc6e3877bbde82c33d122f3588777c3784ac5bd7d1cdd79213ef7aecb85b34"
+      url: "https://pub.dev"
     source: hosted
     version: "2.1.11"
   image_picker_ios:
     dependency: transitive
     description:
       name: image_picker_ios
-      url: "https://pub.dartlang.org"
+      sha256: "93b4403350b54f45a5061632721ee29a563c8b45b1e22feda9049b8329bd1337"
+      url: "https://pub.dev"
     source: hosted
     version: "0.8.7"
   image_picker_platform_interface:
     dependency: transitive
     description:
       name: image_picker_platform_interface
-      url: "https://pub.dartlang.org"
+      sha256: "1991219d9dbc42a99aff77e663af8ca51ced592cd6685c9485e3458302d3d4f8"
+      url: "https://pub.dev"
     source: hosted
     version: "2.6.3"
   js:
@@ -511,7 +524,8 @@ packages:
     dependency: transitive
     description:
       name: plugin_platform_interface
-      url: "https://pub.dartlang.org"
+      sha256: "6a2128648c854906c53fa8e33986fc0247a1116122f9534dd20e3ab9e16a32bc"
+      url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
   pointycastle:

@@ -270,6 +270,16 @@ class _ProfileBodyState extends State<ProfileBody> {
                     ],
                   ),
                 ),
+                const Spacer(),
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: EdgeInsets.all(25.0),
+                    child: Image(
+                      image: AssetImage("assets/herble_logo.png"),
+                    ),
+                  ),
+                )
               ],
             ),
           ],

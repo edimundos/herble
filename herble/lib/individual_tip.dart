@@ -16,6 +16,7 @@ class _IndividualTipState extends State<IndividualTip> {
   Widget build(BuildContext context) {
     // print(widget.tip.tipId);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           SizedBox(
