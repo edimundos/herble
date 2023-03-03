@@ -83,7 +83,7 @@ class _InstructionsFormState extends State<InstructionsForm> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
                     child: Container(
-                      height: 40,
+                      height: 70,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13),
                           color: const Color.fromARGB(255, 240, 240, 240)),
