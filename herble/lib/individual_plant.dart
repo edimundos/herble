@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page.dart';
 import 'package:herble/plant_page.dart';
 import 'package:herble/pre_update_screen.dart';
@@ -7,6 +8,8 @@ import 'package:herble/update_plant_basics.dart';
 import 'package:herble/update_plant_technicalities.dart';
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
+
+import 'globals.dart';
 
 class IndividualPlant extends StatefulWidget {
   final globals.Plant plant;
@@ -23,19 +26,61 @@ class _IndividualPlantState extends State<IndividualPlant> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MainPage(index: 1)),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-        title: Text(widget.plant.plantName),
-      ),
-      body: bodyForm(plant: widget.plant, pic: widget.pic),
+      backgroundColor: Colors.white,
+      body: Column(children: [
+        SizedBox(
+            height: 100,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainPage(
+                                    index: 2,
+                                  )),
+                        );
+                      },
+                      child: const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Image(
+                            image: AssetImage("assets/backButton.png"),
+                          ),
+                        ),
+                      )),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                const Spacer(),
+                const Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: EdgeInsets.all(25.0),
+                    child: Image(
+                      image: AssetImage("assets/herble_logo.png"),
+                    ),
+                  ),
+                )
+              ],
+            )),
+
+        bodyForm(plant: widget.plant, pic: widget.pic),
+        // bodyForm(
+        //     plant: Plant(
+        //         dayCount: 1,
+        //         picture: '',
+        //         plantDescription: '',
+        //         plantId: 1,
+        //         plantName: '',
+        //         waterVolume: 1),
+        //     pic: Uint8List(1))
+      ]),
     );
   }
 }
@@ -57,15 +102,77 @@ class _bodyFormState extends State<bodyForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.memory(
-          widget.pic,
-          width: 200.0,
-          height: 200.0,
-          fit: BoxFit.cover,
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+              width: 200.0,
+              height: 200.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(35),
+              ),
+              child: ClipRRect(
+                clipBehavior: Clip.hardEdge,
+                borderRadius: BorderRadius.circular(35),
+                child: Image.memory(
+                  widget.pic,
+                  width: 200.0,
+                  height: 200.0,
+                  fit: BoxFit.cover,
+                ),
+              )),
         ),
-        Text("plant name:${widget.plant.plantName}"),
-        Text("plant description:${widget.plant.plantDescription}"),
-        TextButton(
+        // Text("plant name:${widget.plant.plantName}"),
+        // Text("plant description:${widget.plant.plantDescription}"),
+
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(90.0, 10, 10, 10),
+            child: Text(
+              "Plant name: ${widget.plant.plantName}",
+              textAlign: TextAlign.left,
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                height: 1,
+                color: const Color.fromARGB(255, 32, 54, 50),
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(90.0, 10, 10, 10),
+            child: Text(
+              "Plant discription: ${widget.plant.plantDescription}",
+              textAlign: TextAlign.left,
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                height: 1,
+                color: const Color.fromARGB(255, 32, 54, 50),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          // ignore: sort_child_properties_last
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Edit plant basics",
+                style: GoogleFonts.cormorantGaramond(
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
+                  height: 1,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                )),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromARGB(255, 177, 177, 177),
+            elevation: 0,
+          ),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -76,11 +183,59 @@ class _bodyFormState extends State<bodyForm> {
               ),
             );
           },
-          child: const Text('Edit plant basics'),
         ),
-        Text("day count:${widget.plant.dayCount}"),
-        Text("water volume:${widget.plant.waterVolume}"),
-        TextButton(
+        const SizedBox(height: 20),
+        // Text("day count:${widget.plant.dayCount}"),
+        // Text("water volume:${widget.plant.waterVolume}"),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(90.0, 10, 10, 10),
+            child: Text(
+              "Day count: ${widget.plant.dayCount}",
+              textAlign: TextAlign.left,
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                height: 1,
+                color: const Color.fromARGB(255, 32, 54, 50),
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(90.0, 10, 10, 10),
+            child: Text(
+              "Water volume: ${widget.plant.waterVolume} ml",
+              textAlign: TextAlign.left,
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                height: 1,
+                color: const Color.fromARGB(255, 32, 54, 50),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          // ignore: sort_child_properties_last
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("Edit plant technicalities",
+                style: GoogleFonts.cormorantGaramond(
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
+                  height: 1,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                )),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromARGB(255, 177, 177, 177),
+            elevation: 0,
+          ),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -90,8 +245,8 @@ class _bodyFormState extends State<bodyForm> {
               ),
             );
           },
-          child: const Text('Edit plant technicalities'),
         ),
+        const SizedBox(height: 20),
         TextButton(
           onPressed: () async {
             bool? confirmed = await showConfirmationDialog(context);
@@ -103,14 +258,38 @@ class _bodyFormState extends State<bodyForm> {
               );
             }
           },
-          child: const Text('Delete plant'),
+          child: Center(
+            child: Text(
+              'Delete plant',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                height: 1,
+                color: Color.fromARGB(255, 168, 37, 37),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 20,
         ),
         !isLoading
             ? Center(
                 child: ElevatedButton(
-                  child: const Text("Water now"),
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Water now",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[300],
+                    backgroundColor: Color.fromARGB(255, 64, 67, 107),
                     elevation: 0,
                   ),
                   onPressed: () async {
@@ -189,13 +368,13 @@ class _bodyFormState extends State<bodyForm> {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
-                Navigator.of(context).pop(true);
+                // Navigator.of(context).pop(true);
               },
             ),
             TextButton(
               child: const Text('No'),
               onPressed: () {
-                Navigator.of(context).pop(false);
+                // Navigator.of(context).pop(false);
               },
             ),
           ],
