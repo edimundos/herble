@@ -74,6 +74,7 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             reverse: true,

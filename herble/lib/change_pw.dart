@@ -47,6 +47,7 @@ class _PasswordBodyState extends State<PasswordBody> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             reverse: true,
