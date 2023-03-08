@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/add_plant.dart';
 import 'globals.dart' as globals;
 import 'package:herble/camera.dart';
@@ -50,30 +51,7 @@ class _PicturePageState extends State<PicturePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Change picture"),
-        automaticallyImplyLeading: true,
-        leading: IconButton(
-          onPressed: () {
-            if (widget.cum == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddPlantPage(pic: pic)),
-              );
-            } else if (widget.cum == 2) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UpdatePlantBasics(
-                          pic: widget.pic!,
-                          plant: globals.currentPlant,
-                        )),
-              );
-            }
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-      ),
+      backgroundColor: Colors.white,
       body: PicForm(pic: widget.pic, cum: widget.cum),
     );
   }
@@ -110,177 +88,336 @@ class _PicFormState extends State<PicForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-              width: 3,
-            ),
-            shape: BoxShape.circle,
-          ),
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: currentPicture == null
-                  ? const FittedBox(
-                      fit: BoxFit.cover,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
+              height: 100,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UpdatePlantBasics(
+                                      pic: widget.pic!,
+                                      plant: globals.currentPlant,
+                                    )),
+                          );
+                        },
+                        child: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Image(
+                              image: AssetImage("assets/backButton.png"),
+                            ),
+                          ),
+                        )),
+                  ),
+                  // Padding(
+                  // padding: const EdgeInsets.only(left: 25.0),
+                  Text(
+                    "Change picture",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.cormorantGaramond(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      height: 1,
+                      color: const Color.fromARGB(255, 32, 54, 50),
+                    ),
+                  ),
+                  // ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Spacer(),
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: EdgeInsets.all(25.0),
                       child: Image(
-                        image: AssetImage('assets/default_plant-1.jpg'),
-                        width: 150,
-                        height: 150,
-                        fit: BoxFit.cover,
+                        image: AssetImage("assets/herble_logo.png"),
                       ),
-                    )
-                  : FittedBox(
-                      fit: BoxFit.cover,
-                      child: Image.memory(
-                        currentPicture!,
-                        width: 150,
-                        height: 150,
-                      ),
-                    )),
-        ),
-        Column(
-          children: [
-            const Text("Choose from default pictures"),
-            Row(children: [
-              GestureDetector(
-                onTap: () async {
-                  Uint8List newPicture =
-                      await loadImageFromAssets('assets/default_plant0.jpg');
-                  setState(() {
-                    currentPicture = newPicture;
-                  });
-                  picId = 0;
-                },
-                child: Image.asset(
-                  'assets/default_plant0.jpg',
-                  width: 100,
-                  height: 100,
+                    ),
+                  )
+                ],
+              )),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(35),
+                    border: Border.all(
+                      color: Colors.black45,
+                      width: 2,
+                    ),
+                  ),
+                  child: ClipRRect(
+                    clipBehavior: Clip.hardEdge,
+                    borderRadius: BorderRadius.circular(35),
+                    child: currentPicture == null
+                        ? const FittedBox(
+                            fit: BoxFit.cover,
+                            child: Image(
+                              image: AssetImage('assets/default_plant-1.jpg'),
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Image.memory(
+                            currentPicture!,
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  Uint8List newPicture =
-                      await loadImageFromAssets('assets/default_plant1.jpg');
-                  setState(() {
-                    currentPicture = newPicture;
-                  });
-                  picId = 1;
-                },
-                child: Image.asset(
-                  'assets/default_plant1.jpg',
-                  width: 100,
-                  height: 100,
+                const SizedBox(height: 20),
+                Column(
+                  children: [
+                    const Text("Choose from default pictures"),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Row(children: [
+                        const SizedBox(width: 20),
+                        GestureDetector(
+                          onTap: () async {
+                            Uint8List newPicture = await loadImageFromAssets(
+                                'assets/default_plant0.jpg');
+                            setState(() {
+                              currentPicture = newPicture;
+                            });
+                            picId = 0;
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(
+                                color: Colors.black26,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image.asset(
+                                'assets/default_plant0.jpg',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        GestureDetector(
+                          onTap: () async {
+                            Uint8List newPicture = await loadImageFromAssets(
+                                'assets/default_plant1.jpg');
+                            setState(() {
+                              currentPicture = newPicture;
+                            });
+                            picId = 1;
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(
+                                color: Colors.black26,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image.asset(
+                                'assets/default_plant1.jpg',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        GestureDetector(
+                          onTap: () async {
+                            Uint8List newPicture = await loadImageFromAssets(
+                                'assets/default_plant2.jpg');
+                            setState(() {
+                              currentPicture = newPicture;
+                            });
+                            picId = 2;
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(
+                                color: Colors.black26,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image.asset(
+                                'assets/default_plant2.jpg',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Row(children: [
+                        const SizedBox(width: 20),
+                        GestureDetector(
+                          onTap: () async {
+                            Uint8List newPicture = await loadImageFromAssets(
+                                'assets/default_plant3.jpg');
+                            setState(() {
+                              currentPicture = newPicture;
+                            });
+                            picId = 3;
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(
+                                color: Colors.black26,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image.asset(
+                                'assets/default_plant3.jpg',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        GestureDetector(
+                          onTap: () async {
+                            Uint8List newPicture = await loadImageFromAssets(
+                                'assets/default_plant4.jpg');
+                            setState(() {
+                              currentPicture = newPicture;
+                            });
+                            picId = 4;
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(
+                                color: Colors.black26,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image.asset(
+                                'assets/default_plant4.jpg',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        GestureDetector(
+                          onTap: () async {
+                            Uint8List newPicture = await loadImageFromAssets(
+                                'assets/default_plant5.jpg');
+                            setState(() {
+                              currentPicture = newPicture;
+                            });
+                            picId = 5;
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(35),
+                              border: Border.all(
+                                color: Colors.black26,
+                                width: 2,
+                              ),
+                            ),
+                            child: ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              borderRadius: BorderRadius.circular(35),
+                              child: Image.asset(
+                                'assets/default_plant5.jpg',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ],
                 ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  Uint8List newPicture =
-                      await loadImageFromAssets('assets/default_plant2.jpg');
-                  setState(() {
-                    currentPicture = newPicture;
-                  });
-                  picId = 2;
-                },
-                child: Image.asset(
-                  'assets/default_plant2.jpg',
-                  width: 100,
-                  height: 100,
+                TextButton(
+                    onPressed: _useGalery,
+                    child: const Text("Choose from gallery")),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CameraScreen(cum: widget.cum)),
+                    );
+                    picId = null;
+                  },
+                  child: const Text("Open camera"),
                 ),
-              ),
-            ]),
-            Row(children: [
-              GestureDetector(
-                onTap: () async {
-                  Uint8List newPicture =
-                      await loadImageFromAssets('assets/default_plant3.jpg');
-                  setState(() {
-                    currentPicture = newPicture;
-                  });
-                  picId = 3;
-                },
-                child: Image.asset(
-                  'assets/default_plant3.jpg',
-                  width: 100,
-                  height: 100,
+                TextButton(
+                  onPressed: () {
+                    if (widget.cum == 1) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddPlantPage(
+                                  pic: currentPicture!,
+                                  picId: picId,
+                                )),
+                      );
+                    } else if (widget.cum == 2) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UpdatePlantBasics(
+                                  pic: currentPicture!,
+                                  plant: globals.currentPlant,
+                                  picId: picId,
+                                )),
+                      );
+                    }
+                  },
+                  child: const Text("Save image"),
                 ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  Uint8List newPicture =
-                      await loadImageFromAssets('assets/default_plant4.jpg');
-                  setState(() {
-                    currentPicture = newPicture;
-                  });
-                  picId = 4;
-                },
-                child: Image.asset(
-                  'assets/default_plant4.jpg',
-                  width: 100,
-                  height: 100,
-                ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  Uint8List newPicture =
-                      await loadImageFromAssets('assets/default_plant5.jpg');
-                  setState(() {
-                    currentPicture = newPicture;
-                  });
-                  picId = 5;
-                },
-                child: Image.asset(
-                  'assets/default_plant5.jpg',
-                  width: 100,
-                  height: 100,
-                ),
-              ),
-            ]),
-          ],
-        ),
-        TextButton(
-            onPressed: _useGalery, child: const Text("Choose from gallery")),
-        TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CameraScreen(cum: widget.cum)),
-            );
-            picId = null;
-          },
-          child: const Text("Open camera"),
-        ),
-        TextButton(
-          onPressed: () {
-            if (widget.cum == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AddPlantPage(
-                          pic: currentPicture!,
-                          picId: picId,
-                        )),
-              );
-            } else if (widget.cum == 2) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UpdatePlantBasics(
-                          pic: currentPicture!,
-                          plant: globals.currentPlant,
-                          picId: picId,
-                        )),
-              );
-            }
-          },
-          child: const Text("Save image"),
-        ),
-      ],
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

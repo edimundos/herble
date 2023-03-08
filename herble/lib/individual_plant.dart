@@ -27,73 +27,62 @@ class _IndividualPlantState extends State<IndividualPlant> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(children: [
-        SizedBox(
-            height: 100,
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainPage(
-                                    index: 2,
-                                  )),
-                        );
-                      },
-                      child: const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: Image(
-                            image: AssetImage("assets/backButton.png"),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          SizedBox(
+              height: 100,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage(
+                                      index: 1,
+                                    )),
+                          );
+                        },
+                        child: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Image(
+                              image: AssetImage("assets/backButton.png"),
+                            ),
                           ),
-                        ),
-                      )),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Spacer(),
-                const Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.all(25.0),
-                    child: Image(
-                      image: AssetImage("assets/herble_logo.png"),
-                    ),
+                        )),
                   ),
-                )
-              ],
-            )),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Spacer(),
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: EdgeInsets.all(25.0),
+                      child: Image(
+                        image: AssetImage("assets/herble_logo.png"),
+                      ),
+                    ),
+                  )
+                ],
+              )),
 
-        bodyForm(plant: widget.plant, pic: widget.pic),
-        // bodyForm(
-        //     plant: Plant(
-        //         dayCount: 1,
-        //         picture: '',
-        //         plantDescription: '',
-        //         plantId: 1,
-        //         plantName: '',
-        //         waterVolume: 1),
-        //     pic: Uint8List(1))
-      ]),
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MainPage(index: 1)),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-        title: Text(widget.plant.plantName),
+          bodyForm(plant: widget.plant, pic: widget.pic),
+          // bodyForm(
+          //     plant: Plant(
+          //         dayCount: 1,
+          //         picture: '',
+          //         plantDescription: '',
+          //         plantId: 1,
+          //         plantName: '',
+          //         waterVolume: 1),
+          //     pic: Uint8List(1))
+        ]),
       ),
-      body: bodyForm(plant: widget.plant, pic: widget.pic),
     );
   }
 }
@@ -111,12 +100,14 @@ class bodyForm extends StatefulWidget {
 
 class _bodyFormState extends State<bodyForm> {
   bool isLoading = false;
+  double textSize = 25;
+  double paddingSize = 70;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
           child: Container(
               width: 200.0,
               height: 200.0,
@@ -140,12 +131,12 @@ class _bodyFormState extends State<bodyForm> {
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(90.0, 10, 10, 10),
+            padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
             child: Text(
               "Plant name: ${widget.plant.plantName}",
               textAlign: TextAlign.left,
               style: GoogleFonts.cormorantGaramond(
-                fontSize: 30,
+                fontSize: textSize,
                 fontWeight: FontWeight.bold,
                 height: 1,
                 color: const Color.fromARGB(255, 32, 54, 50),
@@ -156,12 +147,12 @@ class _bodyFormState extends State<bodyForm> {
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(90.0, 10, 10, 10),
+            padding: const EdgeInsets.fromLTRB(30.0, 10, 10, 10),
             child: Text(
-              "Plant discription: ${widget.plant.plantDescription}",
+              "Plant description: ${widget.plant.plantDescription}",
               textAlign: TextAlign.left,
               style: GoogleFonts.cormorantGaramond(
-                fontSize: 30,
+                fontSize: textSize,
                 fontWeight: FontWeight.bold,
                 height: 1,
                 color: const Color.fromARGB(255, 32, 54, 50),
@@ -169,7 +160,7 @@ class _bodyFormState extends State<bodyForm> {
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        // const SizedBox(height: 5),
         ElevatedButton(
           // ignore: sort_child_properties_last
           child: Padding(
@@ -197,18 +188,18 @@ class _bodyFormState extends State<bodyForm> {
             );
           },
         ),
-        const SizedBox(height: 20),
+        // const SizedBox(height: 10),
         // Text("day count:${widget.plant.dayCount}"),
         // Text("water volume:${widget.plant.waterVolume}"),
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(90.0, 10, 10, 10),
+            padding: const EdgeInsets.fromLTRB(30.0, 10, 10, 10),
             child: Text(
               "Day count: ${widget.plant.dayCount}",
               textAlign: TextAlign.left,
               style: GoogleFonts.cormorantGaramond(
-                fontSize: 30,
+                fontSize: textSize,
                 fontWeight: FontWeight.bold,
                 height: 1,
                 color: const Color.fromARGB(255, 32, 54, 50),
@@ -219,12 +210,12 @@ class _bodyFormState extends State<bodyForm> {
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(90.0, 10, 10, 10),
+            padding: const EdgeInsets.fromLTRB(30.0, 10, 10, 10),
             child: Text(
               "Water volume: ${widget.plant.waterVolume} ml",
               textAlign: TextAlign.left,
               style: GoogleFonts.cormorantGaramond(
-                fontSize: 30,
+                fontSize: textSize,
                 fontWeight: FontWeight.bold,
                 height: 1,
                 color: const Color.fromARGB(255, 32, 54, 50),
@@ -232,7 +223,7 @@ class _bodyFormState extends State<bodyForm> {
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        // const SizedBox(height: 10),
         ElevatedButton(
           // ignore: sort_child_properties_last
           child: Padding(
@@ -259,7 +250,7 @@ class _bodyFormState extends State<bodyForm> {
             );
           },
         ),
-        const SizedBox(height: 20),
+        // const SizedBox(height: 20),
         TextButton(
           onPressed: () async {
             bool? confirmed = await showConfirmationDialog(context);
@@ -276,7 +267,7 @@ class _bodyFormState extends State<bodyForm> {
               'Delete plant',
               textAlign: TextAlign.center,
               style: GoogleFonts.cormorantGaramond(
-                fontSize: 30,
+                fontSize: textSize - 5,
                 fontWeight: FontWeight.bold,
                 height: 1,
                 color: Color.fromARGB(255, 168, 37, 37),
@@ -284,9 +275,9 @@ class _bodyFormState extends State<bodyForm> {
             ),
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
+        // SizedBox(
+        //   height: 10,
+        // ),
         !isLoading
             ? Center(
                 child: ElevatedButton(

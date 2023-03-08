@@ -32,6 +32,7 @@ class _PreAddScreenState extends State<PreAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           SizedBox(

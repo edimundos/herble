@@ -33,6 +33,7 @@ class _ConnectInternetState extends State<PostUpdate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(automaticallyImplyLeading: false),
       body: Column(
         children: [

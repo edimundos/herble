@@ -25,6 +25,7 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Update plant"),
         automaticallyImplyLeading: false,

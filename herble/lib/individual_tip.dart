@@ -86,7 +86,7 @@ class _IndividualTipState extends State<IndividualTip> {
                   image: DecorationImage(
                     image: widget.tip.tipId == 1
                         ? const AssetImage('assets/temperatureTip.png')
-                        : const AssetImage('dr.jpg'),
+                        : const AssetImage('assets/dr.jpg'),
                     fit: BoxFit.cover,
                   ),
                 )),
