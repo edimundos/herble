@@ -14,7 +14,6 @@ class IndividualTip extends StatefulWidget {
 class _IndividualTipState extends State<IndividualTip> {
   @override
   Widget build(BuildContext context) {
-    // print(widget.tip.tipId);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -60,8 +59,6 @@ class _IndividualTipState extends State<IndividualTip> {
                   )
                 ],
               )),
-
-          // widget.tip.title,
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
             child: Text(
@@ -76,17 +73,13 @@ class _IndividualTipState extends State<IndividualTip> {
             ),
           ),
           const SizedBox(height: 15),
-
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
             child: Container(
                 height: 300,
                 decoration: BoxDecoration(
-                  // borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                    image: widget.tip.tipId == 1
-                        ? const AssetImage('assets/temperatureTip.png')
-                        : const AssetImage('assets/dr.jpg'),
+                    image: MemoryImage(widget.tip.picture),
                     fit: BoxFit.cover,
                   ),
                 )),

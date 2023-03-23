@@ -99,14 +99,25 @@ class _PicFormState extends State<PicForm> {
                     padding: const EdgeInsets.all(20.0),
                     child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UpdatePlantBasics(
-                                      pic: widget.pic!,
-                                      plant: globals.currentPlant,
-                                    )),
-                          );
+                          if (widget.cum == 2) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UpdatePlantBasics(
+                                        pic: widget.pic!,
+                                        plant: globals.currentPlant,
+                                      )),
+                            );
+                          }
+                          if (widget.cum == 1) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddPlantPage(
+                                        pic: widget.pic!,
+                                      )),
+                            );
+                          }
                         },
                         child: const Align(
                           alignment: Alignment.centerLeft,
@@ -181,7 +192,16 @@ class _PicFormState extends State<PicForm> {
                 const SizedBox(height: 20),
                 Column(
                   children: [
-                    const Text("Choose from default pictures"),
+                    Text(
+                      "Choose from default pictures",
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.cormorantGaramond(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                        color: const Color.fromARGB(255, 32, 54, 50),
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     Center(
                       child: Row(children: [
@@ -374,10 +394,43 @@ class _PicFormState extends State<PicForm> {
                     ),
                   ],
                 ),
-                TextButton(
-                    onPressed: _useGalery,
-                    child: const Text("Choose from gallery")),
-                TextButton(
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Choose from gallery",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    elevation: 0,
+                  ),
+                  onPressed: _useGalery,
+                ),
+                ElevatedButton(
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Open camera",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    elevation: 0,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -386,9 +439,23 @@ class _PicFormState extends State<PicForm> {
                     );
                     picId = null;
                   },
-                  child: const Text("Open camera"),
                 ),
-                TextButton(
+                ElevatedButton(
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Save image",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    elevation: 0,
+                  ),
                   onPressed: () {
                     if (widget.cum == 1) {
                       Navigator.push(
@@ -411,7 +478,6 @@ class _PicFormState extends State<PicForm> {
                       );
                     }
                   },
-                  child: const Text("Save image"),
                 ),
               ],
             ),

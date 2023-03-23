@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 import 'main_page.dart';
@@ -13,11 +14,7 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-        ),
-        body: const PasswordBody());
+    return const Scaffold(body: PasswordBody());
   }
 }
 
@@ -53,6 +50,47 @@ class _PasswordBodyState extends State<PasswordBody> {
             reverse: true,
             child: Column(
               children: [
+                SizedBox(
+                    height: 100,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MainPage(
+                                            index: 3,
+                                          )),
+                                );
+                              },
+                              child: const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.all(15.0),
+                                  child: Image(
+                                    image: AssetImage("assets/backButton.png"),
+                                  ),
+                                ),
+                              )),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Spacer(),
+                        const Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.all(25.0),
+                            child: Image(
+                              image: AssetImage("assets/herble_logo.png"),
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextField(
@@ -134,7 +172,22 @@ class _PasswordBodyState extends State<PasswordBody> {
                     ),
                   ),
                 ),
-                TextButton(
+                ElevatedButton(
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Confirm",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    elevation: 0,
+                  ),
                   onPressed: !isDisabled
                       ? () async {
                           setState(() {
@@ -197,7 +250,6 @@ class _PasswordBodyState extends State<PasswordBody> {
                           }
                         }
                       : null,
-                  child: const Text('Confirm'),
                 ),
               ],
             )));

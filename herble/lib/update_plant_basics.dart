@@ -190,7 +190,22 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                     ),
                   ),
                 ),
-                TextButton(
+                ElevatedButton(
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Confirm",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    elevation: 0,
+                  ),
                   onPressed: () async {
                     int validator = dataIsValid(
                       nameController.text,
@@ -327,7 +342,6 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                       );
                     }
                   },
-                  child: const Text('Confirm'),
                 ),
               ],
             ),

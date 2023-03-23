@@ -1,5 +1,8 @@
 library my_prj.globals;
 
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 bool isLoggedIn = false;
@@ -71,11 +74,13 @@ class Tip {
   final int tipId;
   final String title;
   final String description;
+  final Uint8List picture;
 
   Tip({
     required this.tipId,
     required this.title,
     required this.description,
+    required this.picture,
   });
 
   factory Tip.fromJson(Map<String, dynamic> json) {
@@ -83,6 +88,7 @@ class Tip {
       tipId: int.parse(json['id']),
       title: json['title'],
       description: json['description'],
+      picture: Uint8List.fromList(base64.decode(json['picture'])),
     );
   }
 }

@@ -70,17 +70,7 @@ class _IndividualPlantState extends State<IndividualPlant> {
                   )
                 ],
               )),
-
           bodyForm(plant: widget.plant, pic: widget.pic),
-          // bodyForm(
-          //     plant: Plant(
-          //         dayCount: 1,
-          //         picture: '',
-          //         plantDescription: '',
-          //         plantId: 1,
-          //         plantName: '',
-          //         waterVolume: 1),
-          //     pic: Uint8List(1))
         ]),
       ),
     );

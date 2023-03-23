@@ -319,6 +319,26 @@ class _LogInFormState extends State<LogInForm> {
                               );
                             },
                           );
+                        } else if (validator == 106) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: const Text(
+                                    'Username must be longer than 3 characters'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'sorry'),
+                                    child: const Text('sorry'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
                       }
                     : null,
@@ -386,6 +406,7 @@ class _LogInFormState extends State<LogInForm> {
     if (!email.contains('@')) return 103;
     if (await checkExists(username)) return 104;
     if (await checkExists(email)) return 105;
+    if (username.length <= 2) return 106;
     return 100;
   }
 
