@@ -53,6 +53,8 @@ class _EmailBodyState extends State<EmailBody> {
                           padding: const EdgeInsets.all(20.0),
                           child: GestureDetector(
                               onTap: () {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

@@ -58,6 +58,8 @@ class _PasswordBodyState extends State<PasswordBody> {
                           padding: const EdgeInsets.all(20.0),
                           child: GestureDetector(
                               onTap: () {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

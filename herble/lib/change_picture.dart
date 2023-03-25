@@ -129,8 +129,6 @@ class _PicFormState extends State<PicForm> {
                           ),
                         )),
                   ),
-                  // Padding(
-                  // padding: const EdgeInsets.only(left: 25.0),
                   Text(
                     "Change picture",
                     textAlign: TextAlign.left,
@@ -141,7 +139,6 @@ class _PicFormState extends State<PicForm> {
                       color: const Color.fromARGB(255, 32, 54, 50),
                     ),
                   ),
-                  // ),
                   const SizedBox(
                     width: 10,
                   ),

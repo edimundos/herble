@@ -51,6 +51,7 @@ class _UsernameBodyState extends State<UsernameBody> {
                         padding: const EdgeInsets.all(20.0),
                         child: GestureDetector(
                             onTap: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

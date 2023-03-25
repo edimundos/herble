@@ -74,279 +74,266 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          SizedBox(
-              height: 100,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => IndividualPlant(
-                                plant: globals.currentPlant,
-                                pic: widget.pic,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        reverse: true,
+        child: Column(
+          children: [
+            SizedBox(
+                height: 100,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => IndividualPlant(
+                                  plant: globals.currentPlant,
+                                  pic: widget.pic,
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.all(15.0),
+                              child: Image(
+                                image: AssetImage("assets/backButton.png"),
                               ),
                             ),
-                          );
-                        },
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Image(
-                              image: AssetImage("assets/backButton.png"),
-                            ),
-                          ),
-                        )),
-                  ),
-                  Text(
-                    "Update",
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      height: 1,
-                      color: const Color.fromARGB(255, 32, 54, 50),
+                          )),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Spacer(),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(25.0),
-                      child: Image(
-                        image: AssetImage("assets/herble_logo.png"),
+                    Text(
+                      "Update",
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.cormorantGaramond(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                        color: const Color.fromARGB(255, 32, 54, 50),
                       ),
                     ),
-                  )
-                ],
-              )),
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            reverse: true,
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              PicturePage(pic: widget.pic, cum: 2)),
-                    );
-                  },
-                  child: ClipRRect(
-                    clipBehavior: Clip.hardEdge,
-                    borderRadius: BorderRadius.circular(35),
-                    child: Stack(
-                      children: [
-                        Image.memory(
-                          widget.pic,
-                          width: 200.0,
-                          height: 200.0,
-                          fit: BoxFit.cover,
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Spacer(),
+                    const Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.all(25.0),
+                        child: Image(
+                          image: AssetImage("assets/herble_logo.png"),
                         ),
-                        const Positioned(
-                          bottom: 10,
-                          right: 10,
-                          child: Icon(
-                            Icons.edit,
-                            color: Colors.black45,
-                            size: 50.0,
-                          ),
-                        ),
-                      ],
+                      ),
+                    )
+                  ],
+                )),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          PicturePage(pic: widget.pic, cum: 2)),
+                );
+              },
+              child: ClipRRect(
+                clipBehavior: Clip.hardEdge,
+                borderRadius: BorderRadius.circular(35),
+                child: Stack(
+                  children: [
+                    Image.memory(
+                      widget.pic,
+                      width: 200.0,
+                      height: 200.0,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextFormField(
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Plant name',
-                      hintText: 'enter your plants name',
+                    const Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.black45,
+                        size: 50.0,
+                      ),
                     ),
-                    validator: validateName,
-                  ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                  child: TextField(
-                    controller: descriptionController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Description',
-                      hintText: 'enter your plants description',
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  // ignore: sort_child_properties_last
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Confirm",
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          height: 1,
-                          color: Color.fromARGB(255, 255, 255, 255),
-                        )),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
-                    elevation: 0,
-                  ),
-                  onPressed: () async {
-                    int validator = dataIsValid(
-                      nameController.text,
-                      descriptionController.text,
-                      dayController.text,
-                      volumeController.text,
-                    );
-                    if (validator == 100 && globals.isLoggedIn) {
-                      await updatePlant(
-                        nameController.text,
-                        descriptionController.text,
-                        int.parse(dayController.text),
-                        widget.pic,
-                        int.parse(volumeController.text),
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MainPage(index: 1)),
-                      );
-                    } else if (validator == 101) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content:
-                                const Text('Plant name length must be < 250'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 102) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text(
-                                'Plant description length must be < 2000'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 103) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('day count must be an int'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 104) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Water volume must be an int'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 105) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Plant name cant be empty'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 106) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Day count cant be empty'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 107) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Water volume cant be empty'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextFormField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Plant name',
+                  hintText: 'enter your plants name',
+                ),
+                validator: validateName,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Description',
+                  hintText: 'enter your plants description',
+                ),
+              ),
+            ),
+            ElevatedButton(
+              // ignore: sort_child_properties_last
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Confirm",
+                    style: GoogleFonts.cormorantGaramond(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      height: 1,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                    )),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                elevation: 0,
+              ),
+              onPressed: () async {
+                int validator = dataIsValid(
+                  nameController.text,
+                  descriptionController.text,
+                  dayController.text,
+                  volumeController.text,
+                );
+                if (validator == 100 && globals.isLoggedIn) {
+                  await updatePlant(
+                    nameController.text,
+                    descriptionController.text,
+                    int.parse(dayController.text),
+                    widget.pic,
+                    int.parse(volumeController.text),
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage(index: 1)),
+                  );
+                } else if (validator == 101) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Plant name length must be < 250'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 102) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text(
+                            'Plant description length must be < 2000'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 103) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('day count must be an int'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 104) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Water volume must be an int'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 105) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Plant name cant be empty'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 106) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Day count cant be empty'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (validator == 107) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Water volume cant be empty'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'sorry'),
+                            child: const Text('sorry'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
