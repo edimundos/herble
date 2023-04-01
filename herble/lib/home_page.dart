@@ -237,127 +237,44 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     ]);
   }
 
+  Future<bool> _exitApp() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit the App'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   void popUpSignIn() async {
     final result = await showBottomSheet(
+      enableDrag: false,
       context: context,
       transitionAnimationController: controller,
       builder: (BuildContext context) {
-        return Opacity(
-          opacity: 1,
-          child: AnimatedContainer(
-            height: MediaQuery.of(context).size.height * 0.6,
-            duration: Duration(seconds: animLength),
-            curve: Curves.easeInOut,
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.85),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(40.0),
-                topLeft: Radius.circular(40.0),
-              ),
-            ),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  !login.isLoading ? const SizedBox(height: 30) : Container(),
-                  !login.isLoading
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                              Text(
-                                "Sign in ",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.bold,
-                                    height: 1,
-                                    color: Color.fromARGB(255, 98, 123, 119)),
-                              ),
-                              Text(
-                                " to your",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 35,
-                                    height: 1,
-                                    color: Color.fromARGB(255, 98, 123, 119)),
-                              ),
-                            ])
-                      : Container(),
-                  !login.isLoading
-                      ? Text(
-                          "account",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.cormorantGaramond(
-                              fontSize: 35,
-                              height: 1,
-                              color: Color.fromARGB(255, 98, 123, 119)),
-                        )
-                      : Container(),
-                  SizedBox(height: 15),
-                  MyCustomForm(),
-                  SizedBox(height: 20),
-                  Center(
-                    child: !login.isLoading
-                        ? TextButton(
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Don't have an account yet?",
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.cormorantGaramond(
-                                      fontSize: 20,
-                                      height: 1,
-                                      color:
-                                          Color.fromARGB(255, 116, 129, 127)),
-                                ),
-                                Text(
-                                  "Register here!",
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.cormorantGaramond(
-                                      fontSize: 20,
-                                      decoration: TextDecoration.underline,
-                                      height: 1,
-                                      color:
-                                          Color.fromARGB(255, 116, 129, 127)),
-                                ),
-                              ],
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Future.delayed(
-                                  Duration(
-                                      seconds: animLength,
-                                      milliseconds: 300), () {
-                                popUpRegister();
-                              });
-                            },
-                          )
-                        : Container(),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void popUpRegister() async {
-    final result = await showBottomSheet(
-        context: context,
-        transitionAnimationController: controller,
-        builder: (BuildContext context) {
-          return Opacity(
+        return WillPopScope(
+          onWillPop: _exitApp,
+          child: Opacity(
             opacity: 1,
             child: AnimatedContainer(
-              height: MediaQuery.of(context).size.height * 0.8,
+              height: MediaQuery.of(context).size.height * 0.6,
               duration: Duration(seconds: animLength),
               curve: Curves.easeInOut,
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.85),
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topRight: Radius.circular(40.0),
                   topLeft: Radius.circular(40.0),
                 ),
@@ -367,15 +284,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    !signup.isLoading
-                        ? const SizedBox(height: 30)
-                        : Container(),
-                    !signup.isLoading
+                    !login.isLoading ? const SizedBox(height: 30) : Container(),
+                    !login.isLoading
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                                 Text(
-                                  "Register ",
+                                  "Sign in ",
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cormorantGaramond(
                                       fontSize: 35,
@@ -393,7 +308,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 ),
                               ])
                         : Container(),
-                    !signup.isLoading
+                    !login.isLoading
                         ? Text(
                             "account",
                             textAlign: TextAlign.center,
@@ -404,15 +319,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           )
                         : Container(),
                     SizedBox(height: 15),
-                    LogInForm(),
+                    MyCustomForm(),
                     SizedBox(height: 20),
                     Center(
-                      child: !signup.isLoading
+                      child: !login.isLoading
                           ? TextButton(
                               child: Column(
                                 children: [
                                   Text(
-                                    "Already have an account?",
+                                    "Don't have an account yet?",
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.cormorantGaramond(
                                         fontSize: 20,
@@ -421,7 +336,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                             Color.fromARGB(255, 116, 129, 127)),
                                   ),
                                   Text(
-                                    "Sign in here!",
+                                    "Register here!",
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.cormorantGaramond(
                                         fontSize: 20,
@@ -438,13 +353,129 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     Duration(
                                         seconds: animLength,
                                         milliseconds: 300), () {
-                                  popUpSignIn();
+                                  popUpRegister();
                                 });
                               },
                             )
                           : Container(),
                     ),
                   ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void popUpRegister() async {
+    final result = await showBottomSheet(
+        enableDrag: false,
+        context: context,
+        transitionAnimationController: controller,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: _exitApp,
+            child: Opacity(
+              opacity: 1,
+              child: AnimatedContainer(
+                height: MediaQuery.of(context).size.height * 0.8,
+                duration: Duration(seconds: animLength),
+                curve: Curves.easeInOut,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.85),
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(40.0),
+                    topLeft: Radius.circular(40.0),
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      !signup.isLoading
+                          ? const SizedBox(height: 30)
+                          : Container(),
+                      !signup.isLoading
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                  Text(
+                                    "Register ",
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.cormorantGaramond(
+                                        fontSize: 35,
+                                        fontWeight: FontWeight.bold,
+                                        height: 1,
+                                        color:
+                                            Color.fromARGB(255, 98, 123, 119)),
+                                  ),
+                                  Text(
+                                    " to your",
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.cormorantGaramond(
+                                        fontSize: 35,
+                                        height: 1,
+                                        color:
+                                            Color.fromARGB(255, 98, 123, 119)),
+                                  ),
+                                ])
+                          : Container(),
+                      !signup.isLoading
+                          ? Text(
+                              "account",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.cormorantGaramond(
+                                  fontSize: 35,
+                                  height: 1,
+                                  color: Color.fromARGB(255, 98, 123, 119)),
+                            )
+                          : Container(),
+                      SizedBox(height: 15),
+                      LogInForm(),
+                      SizedBox(height: 20),
+                      Center(
+                        child: !signup.isLoading
+                            ? TextButton(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Already have an account?",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.cormorantGaramond(
+                                          fontSize: 20,
+                                          height: 1,
+                                          color: Color.fromARGB(
+                                              255, 116, 129, 127)),
+                                    ),
+                                    Text(
+                                      "Sign in here!",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.cormorantGaramond(
+                                          fontSize: 20,
+                                          decoration: TextDecoration.underline,
+                                          height: 1,
+                                          color: Color.fromARGB(
+                                              255, 116, 129, 127)),
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Future.delayed(
+                                      Duration(
+                                          seconds: animLength,
+                                          milliseconds: 300), () {
+                                    popUpSignIn();
+                                  });
+                                },
+                              )
+                            : Container(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -133,7 +133,7 @@ class _PicFormState extends State<PicForm> {
                     "Change picture",
                     textAlign: TextAlign.left,
                     style: GoogleFonts.cormorantGaramond(
-                      fontSize: 30,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                       height: 1,
                       color: const Color.fromARGB(255, 32, 54, 50),

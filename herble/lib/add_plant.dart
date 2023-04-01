@@ -141,35 +141,6 @@ class _PlantFormState extends State<PlantForm> {
                             ),
                           ),
                         ),
-                        //         child: Container(
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.circular(35),
-                        //     border: Border.all(
-                        //       color: Colors.black45,
-                        //       width: 2,
-                        //     ),
-                        //   ),
-                        //   child: ClipRRect(
-                        //     clipBehavior: Clip.hardEdge,
-                        //     borderRadius: BorderRadius.circular(35),
-                        //     child: currentPicture == null
-                        //         ? const FittedBox(
-                        //             fit: BoxFit.cover,
-                        //             child: Image(
-                        //               image: AssetImage('assets/default_plant-1.jpg'),
-                        //               width: 200,
-                        //               height: 200,
-                        //               fit: BoxFit.cover,
-                        //             ),
-                        //           )
-                        //         : Image.memory(
-                        //             currentPicture!,
-                        //             width: 200,
-                        //             height: 200,
-                        //             fit: BoxFit.cover,
-                        //           ),
-                        //   ),
-                        // ),
                       ),
                       Padding(
                         padding:

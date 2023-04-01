@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/individual_plant.dart';
 import 'package:herble/plant_page.dart';
 import 'package:herble/post_update_screen.dart';
@@ -23,16 +24,6 @@ class _UpdatePageState extends State<UpdatePlantTechnicalities> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Update"),
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios_new),
-          ),
-        ),
         body: PlantUpdateForm(plant: widget.plant, pic: widget.pic));
   }
 }
@@ -80,6 +71,48 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
             reverse: true,
             child: Column(
               children: [
+                SizedBox(
+                    height: 100,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.all(15.0),
+                                  child: Image(
+                                    image: AssetImage("assets/backButton.png"),
+                                  ),
+                                ),
+                              )),
+                        ),
+                        Text(
+                          "Update",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.cormorantGaramond(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          ),
+                        ),
+                        const Spacer(),
+                        const Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.all(25.0),
+                            child: Image(
+                              image: AssetImage("assets/herble_logo.png"),
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextField(
@@ -95,7 +128,6 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                   ),
                 ),
                 Padding(
-                  //te ganjau vajadzes kaut kādu check box ar dazadiem variantiem or smth un tad pedejais variants "Custom:"
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextField(
                     keyboardType: TextInputType.number,
@@ -108,112 +140,126 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () async {
-                    int validator = dataIsValid(
-                      dayController.text,
-                      volumeController.text,
-                    );
-                    if (validator == 100 && globals.isLoggedIn) {
-                      sendToChip(
-                        int.parse(dayController.text),
-                        int.parse(volumeController.text),
+                ElevatedButton(
+                    // ignore: sort_child_properties_last
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Confirm",
+                          style: GoogleFonts.cormorantGaramond(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                            height: 1,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                          )),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                      elevation: 0,
+                    ),
+                    onPressed: () async {
+                      int validator = dataIsValid(
+                        dayController.text,
+                        volumeController.text,
                       );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PostUpdate(
-                                  plant: widget.plant,
-                                  days: int.parse(dayController.text),
-                                  volume: int.parse(volumeController.text),
-                                  picture: widget.pic,
-                                )),
-                      );
-                    } else if (validator == 103) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('day count must be an int'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 104) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Water volume must be an int'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 106) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Day count cant be empty'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 107) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Water volume cant be empty'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (validator == 108) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text(
-                                'This pot cannot hold more than 1050ml'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  },
-                  child: const Text('Confirm'),
-                ),
+                      if (validator == 100 && globals.isLoggedIn) {
+                        sendToChip(
+                          int.parse(dayController.text),
+                          int.parse(volumeController.text),
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PostUpdate(
+                                    plant: widget.plant,
+                                    days: int.parse(dayController.text),
+                                    volume: int.parse(volumeController.text),
+                                    picture: widget.pic,
+                                  )),
+                        );
+                      } else if (validator == 103) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: const Text('day count must be an int'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'sorry'),
+                                  child: const Text('sorry'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else if (validator == 104) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content:
+                                  const Text('Water volume must be an int'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'sorry'),
+                                  child: const Text('sorry'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else if (validator == 106) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: const Text('Day count cant be empty'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'sorry'),
+                                  child: const Text('sorry'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else if (validator == 107) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: const Text('Water volume cant be empty'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'sorry'),
+                                  child: const Text('sorry'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else if (validator == 108) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: const Text(
+                                  'This pot cannot hold more than 1050ml'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'sorry'),
+                                  child: const Text('sorry'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    }),
               ],
             )));
   }

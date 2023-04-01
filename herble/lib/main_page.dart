@@ -34,51 +34,58 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  Future<bool> _onWillPop() async {
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     const Color bgcolor = Color.fromARGB(255, 182, 172, 152);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: SizedBox(
-        height: 75,
-        child: BottomNavigationBar(
-          selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-          unselectedItemColor: Color.fromARGB(255, 56, 60, 68),
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.menu_book,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: SizedBox(
+          height: 75,
+          child: BottomNavigationBar(
+            selectedItemColor: Color.fromARGB(255, 255, 255, 255),
+            unselectedItemColor: Color.fromARGB(255, 56, 60, 68),
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.menu_book,
+                ),
+                label: 'instructions',
+                backgroundColor: bgcolor,
               ),
-              label: 'instructions',
-              backgroundColor: bgcolor,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.list_alt_outlined,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.list_alt_outlined,
+                ),
+                label: 'my plants',
+                backgroundColor: bgcolor,
               ),
-              label: 'my plants',
-              backgroundColor: bgcolor,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.lightbulb,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.lightbulb,
+                ),
+                label: 'tips',
+                backgroundColor: bgcolor,
               ),
-              label: 'tips',
-              backgroundColor: bgcolor,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person,
+                ),
+                label: 'profile',
+                backgroundColor: bgcolor,
               ),
-              label: 'profile',
-              backgroundColor: bgcolor,
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
+            ],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );
