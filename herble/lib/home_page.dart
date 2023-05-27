@@ -1,7 +1,10 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:herble/log_in.dart';
+import 'package:herble/main_page.dart';
 import 'glassmorphism.dart';
 import 'package:herble/log_in.dart' as login;
 import 'package:herble/sign_up.dart' as signup;
@@ -404,7 +407,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           )
                         : Container(),
                     SizedBox(height: 15),
-                    LogInForm(),
+                    StreamBuilder<User?>(
+                        stream: FirebaseAuth.instance.authStateChanges(),
+                        builder: (context, snapshot) {
+                          // if (snapshot.hasData) {
+                          //   return MainPage(
+                          //     index: 1,
+                          //   );
+                          // }
+                          return LogInForm();
+                        }),
                     SizedBox(height: 20),
                     Center(
                       child: !signup.isLoading

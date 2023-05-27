@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "766729968420",
+    "project_id": "herble-efae7",
+    "storage_bucket": "herble-efae7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766729968420:android:122f4ced4c312a130cf1b1",
+        "android_client_info": {
+          "package_name": "com.example.herble"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766729968420-473of34d5696b6bjhu4tr6db1rot3424.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9lfAdaZa8zzrHoTh41dG2Onctjc_isJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766729968420-473of34d5696b6bjhu4tr6db1rot3424.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "766729968420-l5ei3ka6lqf2hscjgm6le4i93r1itmfe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.herble"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,22 +1,52 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:herble/firebase_options.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/home_page.dart';
 import 'package:herble/notificationservice.dart';
-import 'package:herble/tips.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
-import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
+import 'package:timezone/data/latest.dart' as tz;
+
+import 'globals.dart' as globals;
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
   await NotificationService().initNotification();
   tz.initializeTimeZones();
   globals.allInstructions = await getAllInstructions();
   globals.allTips = await getAllTips();
+
+  FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out!');
+    } else {
+      print('User is signed in!');
+    }
+  });
+
+  FirebaseAuth.instance.idTokenChanges().listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out! token');
+    } else {
+      print('User is signed in! token');
+    }
+  });
+
+  FirebaseAuth.instance.userChanges().listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out! uc');
+    } else {
+      print('User is signed in! uc');
+    }
+  });
 }
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -28,6 +58,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Flutter Server',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
