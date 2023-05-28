@@ -131,11 +131,8 @@ class _TipFormState extends State<TipForm> {
                                       decoration: BoxDecoration(
                                         // borderRadius: BorderRadius.circular(20),
                                         image: DecorationImage(
-                                          image: index == 0
-                                              ? const AssetImage(
-                                                  'assets/temperatureTip.png')
-                                              : const AssetImage(
-                                                  'assets/dr.jpg'),
+                                          image: MemoryImage(
+                                              globals.allTips![index].picture),
                                           fit: BoxFit.cover,
                                         ),
                                       )),

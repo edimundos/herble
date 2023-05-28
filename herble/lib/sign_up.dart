@@ -6,6 +6,7 @@ import 'package:herble/main_page.dart';
 import 'package:herble/verif_email_page.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
+import 'package:email_auth/email_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 bool isLoading = false;
@@ -51,6 +52,7 @@ class _LogInFormState extends State<LogInForm> {
   bool passwordVisible1 = false;
   bool passwordVisible2 = false;
   late TimeOfDay selectedTime24Hour = const TimeOfDay(hour: 20, minute: 0);
+  bool submitValid = false;
 
   void dispose() {
     emailController.dispose();
@@ -58,6 +60,34 @@ class _LogInFormState extends State<LogInForm> {
     pwController2.dispose();
     usernameController.dispose();
     super.dispose();
+  }
+
+  late EmailAuth emailAuth;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the package
+    emailAuth = EmailAuth(
+      sessionName: "Sample session",
+    );
+
+    /// Configuring the remote server
+    emailAuth.config({"server": "https://www.herble.eu/"});
+  }
+
+  /// a void funtion to send the OTP to the user
+  /// Can also be converted into a Boolean function and render accordingly for providers
+  void sendOtp(String email) async {
+    bool result = await emailAuth.sendOtp(recipientMail: email, otpLength: 5);
+    if (result) {
+      print("Email Verified!");
+      setState(() {
+        submitValid = true;
+      });
+    } else {
+      print("Invalid Verification Code");
+    }
   }
 
   Widget build(BuildContext context) {
@@ -334,6 +364,26 @@ class _LogInFormState extends State<LogInForm> {
                               );
                             },
                           );
+                        } else if (validator == 106) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: const Text(
+                                    'Username must be longer than 3 characters'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'sorry'),
+                                    child: const Text('sorry'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
                       }
                     : null,
@@ -423,6 +473,7 @@ class _LogInFormState extends State<LogInForm> {
     if (!email.contains('@')) return 103;
     if (await checkExists(username)) return 104;
     if (await checkExists(email)) return 105;
+    if (username.length <= 2) return 106;
     return 100;
   }
 

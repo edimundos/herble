@@ -7,6 +7,7 @@ import 'package:herble/firebase_options.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/home_page.dart';
 import 'package:herble/notificationservice.dart';
+import 'package:herble/water_confirmation.dart';
 import 'package:http/http.dart' as http;
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -17,7 +18,6 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
   await NotificationService().initNotification();
-  tz.initializeTimeZones();
   globals.allInstructions = await getAllInstructions();
   globals.allTips = await getAllTips();
 
@@ -50,6 +50,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     const backgroundImage = DecorationImage(

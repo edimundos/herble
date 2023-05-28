@@ -1,9 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page.dart';
 import 'package:herble/notificationservice.dart';
 import 'package:herble/plant_page.dart';
 import 'globals.dart' as globals;
+
+Duration other = Duration(seconds: 1);
+late globals.Plant plant;
+Duration selectedDuration = Duration(hours: 1);
 
 class WaterConfirm extends StatefulWidget {
   final globals.Plant plant;
@@ -15,93 +22,201 @@ class WaterConfirm extends StatefulWidget {
 }
 
 class _WaterConfirmState extends State<WaterConfirm> {
-  Duration selectedDuration = Duration(hours: 1);
+  @override
+  void initState() {
+    super.initState();
+    plant = widget.plant;
+  }
+
+  double opacity = 1.0; // Initial opacity value
+
+  void fadeScreenToBlack() {
+    setState(() {
+      opacity = 0.0; // Update opacity to trigger fade
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Confirm water fill-up"),
-          automaticallyImplyLeading: false,
-        ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          reverse: true,
-          child: Column(
-            children: [
-              Text(
-                  "did you fill up the water for your plant: ${widget.plant.plantName}?"),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () async {
-                        await scheduleNotification(
-                          widget.plant.dayCount,
-                          widget.plant.waterVolume,
-                          widget.plant.plantId,
-                          widget.plant.plantName,
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainPage(index: 1)),
-                        );
-                      },
-                      child: const Text("yes")),
-                  TextButton(
-                    onPressed: () {},
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<Duration>(
-                        value: selectedDuration,
-                        onChanged: (Duration? duration) async {
-                          setState(() {
-                            selectedDuration = duration!;
-                          });
-                          await scheduleReminder(
-                            widget.plant.plantId,
-                            widget.plant.plantName,
-                            selectedDuration,
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage(index: 1)),
-                          );
-                        },
-                        items: const [
-                          DropdownMenuItem(
-                            value: Duration(minutes: 30),
-                            child: Text('30 minutes'),
+    return AnimatedOpacity(
+      duration: Duration(seconds: 2), // Fade duration
+      opacity: opacity,
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            reverse: true,
+            child: Column(
+              children: [
+                SizedBox(
+                    height: 100,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25.0),
+                          child: Text(
+                            "Water confirmation",
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.cormorantGaramond(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                              color: const Color.fromARGB(255, 32, 54, 50),
+                            ),
                           ),
-                          DropdownMenuItem(
-                            value: Duration(hours: 1),
-                            child: Text('1 hour'),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Spacer(),
+                        const Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.all(25.0),
+                            child: Image(
+                              image: AssetImage("assets/herble_logo.png"),
+                            ),
                           ),
-                          DropdownMenuItem(
-                            value: Duration(hours: 2),
-                            child: Text('2 hours'),
-                          ),
-                          DropdownMenuItem(
-                            value: Duration(hours: 2),
-                            child: Text('3 hours'),
-                          ),
-                          DropdownMenuItem(
-                            value: Duration(hours: 5),
-                            child: Text('5 hours'),
-                          ),
-                          DropdownMenuItem(
-                            value: Duration(hours: 10),
-                            child: Text('10 hours'),
-                          ),
-                        ],
+                        )
+                      ],
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
+                    child: Text(
+                      "Did you fill up the water for your plant: ${widget.plant.plantName}?",
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.cormorantGaramond(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                        color: const Color.fromARGB(255, 32, 54, 50),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
-        ));
+                ),
+                ElevatedButton(
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Yes",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 21,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 214, 180, 180),
+                    elevation: 0,
+                  ),
+                  onPressed: () async {
+                    await scheduleNotification(
+                      widget.plant.dayCount,
+                      widget.plant.waterVolume,
+                      widget.plant.plantId,
+                      widget.plant.plantName,
+                    );
+                    Navigator.pop(context);
+                    fadeScreenToBlack();
+                    Future.delayed(Duration(seconds: 2));
+                    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 145, 198, 136),
+                    elevation: 0,
+                  ),
+                  onPressed: () async {
+                    _showDialog(
+                      Column(
+                        children: [
+                          CupertinoTimerPicker(
+                            mode: CupertinoTimerPickerMode.hm,
+                            initialTimerDuration: selectedDuration,
+                            onTimerDurationChanged: (Duration newDuration) {
+                              setState(() => selectedDuration = newDuration);
+                            },
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 100, 100, 100),
+                              elevation: 0,
+                            ),
+                            onPressed: () async {
+                              await scheduleReminder(
+                                widget.plant.plantId,
+                                widget.plant.plantName,
+                                selectedDuration,
+                              );
+                              Navigator.pop(context);
+                              fadeScreenToBlack();
+                              SystemChannels.platform
+                                  .invokeMethod('SystemNavigator.pop');
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Set",
+                                  style: GoogleFonts.cormorantGaramond(
+                                    fontSize: 21,
+                                    fontWeight: FontWeight.normal,
+                                    height: 1,
+                                    color: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Remind me later",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 21,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                ),
+              ],
+            ),
+          )),
+    );
+  }
+
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 300,
+        padding: const EdgeInsets.only(top: 6.0),
+        // The bottom margin is provided to align the popup above the system
+        // navigation bar.
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom +
+              MediaQuery.of(context).size.height / 2,
+        ),
+        // Provide a background color for the popup.
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        // Use a SafeArea widget to avoid system overlaps.
+        child: SafeArea(
+          top: false,
+          child: child,
+        ),
+      ),
+    );
   }
 
   int getRefilDayCount(double days, double volume) {
@@ -124,7 +239,7 @@ class _WaterConfirmState extends State<WaterConfirm> {
     await NotificationService().scheduleNotification(
       plantId, //id
       'Fill up the water for $plant', //title
-      'Click the notification to confirm that you filled it', //text
+      'Click to confirm that you filled it', //text
       notificationTime,
       repeatInterval,
     );
@@ -136,7 +251,7 @@ class _WaterConfirmState extends State<WaterConfirm> {
     await NotificationService().scheduleReminder(
       plantId, //id
       'Fill up the water for $plant', //title
-      'Click the notification to confirm that you filled it', //text
+      'Click to confirm that you filled it', //text
       repeatInterval,
     );
   }

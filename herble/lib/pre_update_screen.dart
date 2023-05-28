@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page.dart';
 import 'package:herble/update_plant_technicalities.dart';
 
@@ -26,26 +27,103 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text("Update plant"),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MainPage(index: 1)),
-            );
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-      ),
       body: Column(
         children: [
-          const Text("1. Turn on wifi on the herble pot "),
-          const Text("2. Connect to the wifi from your device"),
+          SizedBox(
+              height: 100,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage(
+                                      index: 1,
+                                    )),
+                          );
+                        },
+                        child: const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: Image(
+                              image: AssetImage("assets/backButton.png"),
+                            ),
+                          ),
+                        )),
+                  ),
+                  Text(
+                    "Update",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.cormorantGaramond(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      height: 1,
+                      color: const Color.fromARGB(255, 32, 54, 50),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Spacer(),
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: EdgeInsets.all(25.0),
+                      child: Image(
+                        image: AssetImage("assets/herble_logo.png"),
+                      ),
+                    ),
+                  )
+                ],
+              )),
+          Text(
+            "1. Turn on wifi on your herble pot ",
+            textAlign: TextAlign.left,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              height: 1,
+              color: const Color.fromARGB(255, 32, 54, 50),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+            "2. Connect to the wifi from your device",
+            textAlign: TextAlign.left,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              height: 1,
+              color: const Color.fromARGB(255, 32, 54, 50),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           isLoading
               ? const CircularProgressIndicator()
-              : TextButton(
+              : ElevatedButton(
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Continue",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    elevation: 0,
+                  ),
                   onPressed: () async {
                     setState(() {
                       isLoading = true;
@@ -79,7 +157,7 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
                       isLoading = false;
                     });
                   },
-                  child: const Text("Continue")),
+                ),
         ],
       ),
     );

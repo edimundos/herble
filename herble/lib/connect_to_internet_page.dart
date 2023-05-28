@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page.dart';
 import 'package:herble/notificationservice.dart';
 import 'package:http/http.dart' as http;
@@ -38,13 +39,69 @@ class _ConnectInternetState extends State<ConnectInternet> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(automaticallyImplyLeading: false),
       body: Column(
         children: [
-          const Text("Reconect to the internet to finish"),
+          SizedBox(
+            height: 100,
+            child: Row(
+              children: const [
+                SizedBox(
+                  width: 10,
+                ),
+                Spacer(),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: EdgeInsets.all(25.0),
+                    child: Image(
+                      image: AssetImage("assets/herble_logo.png"),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Text(
+            "1. Reconect to the internet to finish",
+            textAlign: TextAlign.left,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              height: 1,
+              color: const Color.fromARGB(255, 32, 54, 50),
+            ),
+          ),
+          Text(
+            "2. Please fill up the water in your pot now",
+            textAlign: TextAlign.left,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              height: 1,
+              color: const Color.fromARGB(255, 32, 54, 50),
+            ),
+          ),
           isLoading
               ? const CircularProgressIndicator()
-              : TextButton(
+              : ElevatedButton(
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Continue",
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          height: 1,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        )),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    elevation: 0,
+                  ),
                   onPressed: () async {
                     setState(() {
                       isLoading = true;
@@ -84,7 +141,7 @@ class _ConnectInternetState extends State<ConnectInternet> {
                       isLoading = false;
                     });
                   },
-                  child: const Text("Continue")),
+                ),
         ],
       ),
     );

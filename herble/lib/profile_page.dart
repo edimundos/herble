@@ -18,9 +18,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Scaffold build(BuildContext context) {
-    // ignore: prefer_const_constructors
-    return Scaffold(
-      body: const ProfileBody(
+    return const Scaffold(
+      body: ProfileBody(
         title: 'profile ',
       ),
     );
@@ -84,163 +83,141 @@ class _ProfileBodyState extends State<ProfileBody> {
               color: const Color.fromARGB(255, 0, 0, 0),
             ),
           ),
-        ),
-        Column(
-          children: [
-            Container(
-              height: 15,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Email",
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      height: 1,
-                      color: const Color.fromARGB(255, 32, 54, 50),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-              child: Column(
-                children: [
-                  Container(
-                    // height: 20,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        children: [
-                          Text(
-                            " ${globals.email}",
-                            textAlign: TextAlign.left,
-                            style: GoogleFonts.cormorantGaramond(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              height: 1,
-                              color: Color.fromARGB(255, 0, 0, 0),
-                            ),
-                          ),
-                          // const Spacer(),
-                          // Align(
-                          //   alignment: Alignment.centerRight,
-                          Container(
-                              height: 20,
-                              decoration: const BoxDecoration(
-                                // borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                    image: AssetImage('pencil.png')),
-                              )),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  const Divider(
-                    color: Colors.grey,
-                    thickness: 3.0,
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              height: 30,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Username",
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      height: 1,
-                      color: const Color.fromARGB(255, 32, 54, 50),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const ChangeUsername();
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: Column(
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return const ChangeEmail();
+                          },
+                        ),
+                      );
                     },
-                  ),
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                child: Column(
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    // alignment: Alignment.centerRight,
-                    // Row(
-                    //   children: [
-                    //     const Spacer(),
-                    //     Align(
-                    //       alignment: Alignment.centerRight,
-                    //       child: Container(
-                    //           height: 40,
-                    //           decoration: const BoxDecoration(
-                    //             // borderRadius: BorderRadius.circular(20),
-                    //             image: DecorationImage(
-                    //                 image: AssetImage('pencil.png')),
-                    //           )),
-                    //     ),
-                    //   ],
-                    // ),
-
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    const Divider(
-                      color: Colors.grey,
-                      thickness: 3.0,
-                    )
-                  ],
+                    child: Column(
+                      children: [
+                        Text(
+                          "Change Email",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.cormorantGaramond(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+                          child: Column(
+                            children: const [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 3.0,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(
+                  height: 15,
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              height: 30,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Password",
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      height: 1,
-                      color: const Color.fromARGB(255, 32, 54, 50),
-                    ),
-                  ),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return const ChangeUsername();
+                          },
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Text(
+                          "Change Username",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.cormorantGaramond(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+                          child: Column(
+                            children: const [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 3.0,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return const ChangePassword();
+                          },
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Text(
+                          "Change Password",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.cormorantGaramond(
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+                          child: Column(
+                            children: const [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 3.0,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    )),
+                const SizedBox(
+                  height: 15,
                 ),
               ),
             ),

@@ -61,14 +61,11 @@ class _PreAddScreenState extends State<PreAddScreen> {
                           ),
                         )),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
                   Text(
                     "Add Plant",
                     textAlign: TextAlign.left,
                     style: GoogleFonts.cormorantGaramond(
-                      fontSize: 50,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                       height: 1,
                       color: const Color.fromARGB(255, 32, 54, 50),
@@ -86,8 +83,26 @@ class _PreAddScreenState extends State<PreAddScreen> {
                   )
                 ],
               )),
-          const Text("1. Turn on wifi on the herble pot "),
-          const Text("2. Connect to the wifi from your device"),
+          Text(
+            "1. Turn on wifi on your herble pot ",
+            textAlign: TextAlign.left,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              height: 1,
+              color: const Color.fromARGB(255, 32, 54, 50),
+            ),
+          ),
+          Text(
+            "2. Connect to the wifi from your device",
+            textAlign: TextAlign.left,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              height: 1,
+              color: const Color.fromARGB(255, 32, 54, 50),
+            ),
+          ),
           isLoading
               ? const CircularProgressIndicator()
               : TextButton(
