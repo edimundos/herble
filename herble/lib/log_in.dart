@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/main_page.dart';
@@ -10,8 +12,11 @@ import 'package:bcrypt/bcrypt.dart';
 import 'globals.dart' as globals;
 
 void main() => runApp(const LogInScreen());
+bool stop = false;
 
 bool isLoading = false;
+
+String correctEmail = "";
 
 class LogInScreen extends StatelessWidget {
   const LogInScreen({super.key});
@@ -152,6 +157,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       emailController.text,
                     );
 
+                    signInFirebase();
+
                     setState(() {
                       isLoading = false;
                     });
@@ -239,6 +246,19 @@ class _MyCustomFormState extends State<MyCustomForm> {
     }
   }
 
+  Future signInFirebase() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: correctEmail,
+        password: pwController.text.trim(),
+      );
+      return true;
+    } on FirebaseAuthException catch (e) {
+      stop = true;
+      print(e);
+    }
+  }
+
   Future<int> getUserID(String username) async {
     String url = 'https://herbledb.000webhostapp.com/get_user_id.php';
     var response =
@@ -264,6 +284,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
     if (response.statusCode == 200 && response.body.length > 6) {
       List<dynamic> user = jsonDecode(response.body);
       Map<String, dynamic> userMap = user[0];
+      correctEmail = (userMap["email"]).toString().trim();
+      print(correctEmail);
       globals.username = (userMap["username"]).toString();
       globals.email = (userMap["email"]).toString();
     } else {
@@ -293,7 +315,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
     }
   }
 
-  void _navigateToPlantList(BuildContext context) {
+  Future<void> _navigateToPlantList(BuildContext context) async {
+    await signInFirebase();
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MainPage(index: 1)),

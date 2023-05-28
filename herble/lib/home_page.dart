@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:herble/log_in.dart';
 import 'package:herble/notificationservice.dart';
 import 'package:herble/water_confirmation.dart';
+import 'package:herble/main_page.dart';
 import 'glassmorphism.dart';
 import 'package:herble/log_in.dart' as login;
 import 'package:herble/sign_up.dart' as signup;
@@ -323,9 +326,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 color: Color.fromARGB(255, 98, 123, 119)),
                           )
                         : Container(),
-                    const SizedBox(height: 15),
-                    const MyCustomForm(),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 15),
+                    StreamBuilder<User?>(
+                        stream: FirebaseAuth.instance.authStateChanges(),
+                        builder: (context, snapshot) {
+                          // if (snapshot.hasData) {
+                          //   return MainPage(
+                          //     index: 1,
+                          //   );
+                          // }
+                          return LogInForm();
+                        }),
+                    SizedBox(height: 20),
                     Center(
                       child: !login.isLoading
                           ? TextButton(

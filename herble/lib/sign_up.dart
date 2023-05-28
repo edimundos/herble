@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/src/types.dart';
 import 'package:herble/main_page.dart';
+import 'package:herble/verif_email_page.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 import 'package:email_auth/email_auth.dart';
@@ -235,22 +237,35 @@ class _LogInFormState extends State<LogInForm> {
                           pwController2.text,
                           emailController.text,
                         );
+
+                        // Future.delayed(
+                        //     Duration.zero,
+                        //     () => _navigateToEmailVerify(
+                        //         context, emailController.text));
+                        print(emailController.text);
                         if (validator == 100) {
-                          await postUser(
-                            usernameController.text,
-                            pwController2.text,
-                            emailController.text,
-                          );
-                          globals.isLoggedIn = true;
-                          globals.username = usernameController.text;
-                          globals.userID = await getUserID(
-                            usernameController.text,
-                          );
+                          signUpFirebase(
+                              userEmail: emailController.text.trim(),
+                              password: pwController1.text.trim(),
+                              context: context);
+                          print(emailController.text);
                           setState(() {
                             isLoading = false;
                           });
-                          Future.delayed(Duration.zero,
-                              () => _navigateToPlantList(context));
+                          print(emailController.text);
+                          String email = emailController.text;
+                          String password = pwController1.text.trim();
+                          Future.delayed(
+                              Duration.zero,
+                              () => _navigateToEmailVerify(
+                                    context,
+                                    email,
+                                    usernameController.text.trim(),
+                                    password,
+                                    selectedTime24Hour,
+                                  ));
+                          // Future.delayed(Duration.zero,
+                          //     () => _navigateToPlantList(context));
                         } else if (validator == 101) {
                           setState(() {
                             isLoading = false;
@@ -413,6 +428,28 @@ class _LogInFormState extends State<LogInForm> {
     );
   }
 
+  Future<User?> signUpFirebase(
+      {required String userEmail,
+      required String password,
+      required BuildContext context}) async {
+    print("signUpFirebase");
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: pwController1.text.trim());
+      return userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+    return null;
+
+    // await FirebaseAuth.instance.signInWithEmailAndPassword(
+    //   email: emailController.text.trim(),
+    //   password: pwController1.text.trim(),
+    // );
+  }
+
   Future<void> postUser(String username, String pw, String email) async {
     String url = 'https://herbledb.000webhostapp.com/post_user.php';
     globals.username = username;
@@ -473,6 +510,25 @@ class _LogInFormState extends State<LogInForm> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MainPage(index: 1)),
+    );
+  }
+
+  void _navigateToEmailVerify(
+    BuildContext context,
+    String text,
+    String username,
+    String password,
+    TimeOfDay selectedTime24Hour,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => VerifyEmail(
+                email: text,
+                username: username,
+                password: password,
+                timeOfDay: selectedTime24Hour,
+              )),
     );
   }
 }
