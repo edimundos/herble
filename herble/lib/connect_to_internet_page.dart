@@ -65,7 +65,17 @@ class _ConnectInternetState extends State<ConnectInternet> {
             height: 20,
           ),
           Text(
-            "Reconect to the internet to finish",
+            "1. Reconect to the internet to finish",
+            textAlign: TextAlign.left,
+            style: GoogleFonts.cormorantGaramond(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              height: 1,
+              color: const Color.fromARGB(255, 32, 54, 50),
+            ),
+          ),
+          Text(
+            "2. Please fill up the water in your pot now",
             textAlign: TextAlign.left,
             style: GoogleFonts.cormorantGaramond(
               fontSize: 25,

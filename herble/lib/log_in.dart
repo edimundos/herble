@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:herble/notificationservice.dart';
 import 'package:http/http.dart' as http;
-import 'package:herble/home_page.dart' as home;
 import 'dart:convert';
 import 'package:bcrypt/bcrypt.dart';
 import 'globals.dart' as globals;
@@ -15,7 +15,6 @@ bool isLoading = false;
 
 class LogInScreen extends StatelessWidget {
   const LogInScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Log in';
@@ -56,6 +55,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
     emailController.dispose();
     pwController.dispose();
     super.dispose();
+    super.initState();
+  }
+
+  @override
+  void initState() {
     super.initState();
   }
 
@@ -119,18 +123,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 ),
               )
             : Container(),
-        // !isLoading
-        //     ? Row(children: [
-        //         Checkbox(
-        //             value: check,
-        //             onChanged: ((bool? value) {
-        //               setState(() {
-        //                 check = value!;
-        //               });
-        //             })),
-        //         const Text("Remember me"),
-        //       ])
-        //     : Container(),
         !isLoading
             ? TextButton(
                 onPressed: () async {
@@ -139,7 +131,17 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   });
                   var pass = checkPass(emailController.text, pwController.text);
                   if (await pass) {
-                    globals.isLoggedIn = true;
+                    // DateTime now = DateTime.now();
+                    // Time notificationTime = Time(now.hour, now.minute + 1, 0);
+                    // Duration repeatInterval = const Duration(seconds: 10);
+                    // await NotificationService().scheduleNotification(
+                    //   3, //id
+                    //   'test', //title
+                    //   'Click the notification to confirm that you filled it', //text
+                    //   notificationTime,
+                    //   repeatInterval,
+                    // );
+                    // globals.isLoggedIn = true;
                     globals.password = pwController.text;
                     globals.username = emailController.text;
                     globals.userID = await getUserID(

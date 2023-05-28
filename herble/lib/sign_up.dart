@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/src/types.dart';
 import 'package:herble/main_page.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
+import 'package:email_auth/email_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 bool isLoading = false;
@@ -49,6 +50,7 @@ class _LogInFormState extends State<LogInForm> {
   bool passwordVisible1 = false;
   bool passwordVisible2 = false;
   late TimeOfDay selectedTime24Hour = const TimeOfDay(hour: 20, minute: 0);
+  bool submitValid = false;
 
   void dispose() {
     emailController.dispose();
@@ -56,6 +58,34 @@ class _LogInFormState extends State<LogInForm> {
     pwController2.dispose();
     usernameController.dispose();
     super.dispose();
+  }
+
+  late EmailAuth emailAuth;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the package
+    emailAuth = EmailAuth(
+      sessionName: "Sample session",
+    );
+
+    /// Configuring the remote server
+    emailAuth.config({"server": "https://www.herble.eu/"});
+  }
+
+  /// a void funtion to send the OTP to the user
+  /// Can also be converted into a Boolean function and render accordingly for providers
+  void sendOtp(String email) async {
+    bool result = await emailAuth.sendOtp(recipientMail: email, otpLength: 5);
+    if (result) {
+      print("Email Verified!");
+      setState(() {
+        submitValid = true;
+      });
+    } else {
+      print("Invalid Verification Code");
+    }
   }
 
   Widget build(BuildContext context) {

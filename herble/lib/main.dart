@@ -4,22 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/home_page.dart';
 import 'package:herble/notificationservice.dart';
-import 'package:herble/tips.dart';
+import 'package:herble/water_confirmation.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
 Future<void> main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
   await NotificationService().initNotification();
-  tz.initializeTimeZones();
   globals.allInstructions = await getAllInstructions();
   globals.allTips = await getAllTips();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     const backgroundImage = DecorationImage(

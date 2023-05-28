@@ -1,12 +1,16 @@
-import 'dart:ui';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:herble/log_in.dart';
+import 'package:herble/notificationservice.dart';
+import 'package:herble/water_confirmation.dart';
 import 'glassmorphism.dart';
 import 'package:herble/log_in.dart' as login;
 import 'package:herble/sign_up.dart' as signup;
 import 'package:herble/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'globals.dart' as globals;
+import 'package:http/http.dart' as http;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -29,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    listenToNotification();
     controller = BottomSheet.createAnimationController(this);
     controller.duration = Duration(seconds: animLength);
     controller.reverseDuration = Duration(seconds: animLength);
@@ -274,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               curve: Curves.easeInOut,
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.85),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(40.0),
                   topLeft: Radius.circular(40.0),
                 ),
@@ -318,9 +323,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 color: Color.fromARGB(255, 98, 123, 119)),
                           )
                         : Container(),
-                    SizedBox(height: 15),
-                    MyCustomForm(),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 15),
+                    const MyCustomForm(),
+                    const SizedBox(height: 20),
                     Center(
                       child: !login.isLoading
                           ? TextButton(
@@ -367,6 +372,43 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         );
       },
     );
+  }
+
+  void listenToNotification() => NotificationService()
+      .onNotificationClick
+      .stream
+      .listen(onNotificationListener);
+
+  Future<void> onNotificationListener(String? payload) async {
+    if (payload != null && payload.isNotEmpty) {
+      //globals.Plant plant = await getPlantsById(int.parse(payload));
+      globals.Plant plant = await getPlantsById(int.parse(payload));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => WaterConfirm(plant: plant))));
+    }
+  }
+
+  Future<globals.Plant> getPlantsById(int id) async {
+    String url = 'https://herbledb.000webhostapp.com/get_plant_by_id.php';
+    try {
+      var response =
+          await http.post(Uri.parse(url), body: {'id': id.toString()});
+
+      if (response.statusCode == 200) {
+        List<dynamic> plants = json
+            .decode(response.body)
+            .map((data) => globals.Plant.fromJson(data as Map<String, dynamic>))
+            .toList();
+        return plants[0];
+      } else {
+        throw Exception('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle exceptions here
+      throw e;
+    }
   }
 
   void popUpRegister() async {

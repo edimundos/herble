@@ -1,15 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:herble/water_confirmation.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'globals.dart' as globals;
-import 'package:http/http.dart' as http;
 
-void main() {
-  tz.initializeTimeZones();
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+  final int? payload = notificationResponse.id;
+  if (payload != null) {
+    NotificationService().onNotificationClick.add(payload.toString());
+  }
 }
 
 class NotificationService {
@@ -20,75 +21,53 @@ class NotificationService {
     return _notificationService;
   }
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
   NotificationService._internal();
 
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
+
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
   Future<void> initNotification() async {
+    tz.initializeTimeZones();
     // Android initialization
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_notification');
 
     // ios initialization
-    const DarwinInitializationSettings initializationSettingsIOS =
+    DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
+      requestAlertPermission: true, // Request permission on iOS
+      requestBadgePermission: true, // Request permission on iOS
+      requestSoundPermission: true, // Request permission on iOS
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
 
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
-    // the initialization settings are initialized after they are setted
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) async {
+        final int? payload = notificationResponse.id;
+        if (payload != null) {
+          onNotificationClick.add(payload.toString());
+        }
+      },
     );
   }
 
-  void onDidReceiveNotificationResponse(
-      NotificationResponse notificationResponse) async {
-    final String? payload = notificationResponse.payload;
-    if (notificationResponse.payload != null) {
-      globals.Plant plant =
-          await getPlantsById(int.parse(notificationResponse.payload!));
-      (BuildContext context) => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => WaterConfirm(plant: plant)),
-          );
-    }
-  }
-
-  Future<globals.Plant> getPlantsById(int id) async {
-    String url = 'https://herbledb.000webhostapp.com/get_plant_by_id.php';
-    try {
-      var response =
-          await http.post(Uri.parse(url), body: {'id': id.toString()});
-
-      if (response.statusCode == 200) {
-        List<dynamic> plants = json
-            .decode(response.body)
-            .map((data) => globals.Plant.fromJson(data as Map<String, dynamic>))
-            .toList();
-        return plants[0];
-      } else {
-        throw Exception('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Handle exceptions here
-      throw e;
-    }
+  void onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) {
+    print("");
   }
 
   tz.TZDateTime _nextInstanceOfTime(Time notificationTime) {
-    tz.initializeTimeZones();
     final timeZone = tz.getLocation('Europe/Riga');
-    final now = tz.TZDateTime.now(tz.local);
+    final now = tz.TZDateTime.now(timeZone);
     tz.TZDateTime scheduledDate = tz.TZDateTime(
-      tz.local,
+      timeZone,
       now.year,
       now.month,
       // now.day + 1,
@@ -105,73 +84,79 @@ class NotificationService {
 
   Future<void> scheduleReminder(int notificationId, String title, String body,
       Duration repeatInterval) async {
-    await initNotification();
+    if (await Permission.notification.isDenied) {
+      await Permission.notification.request();
+    }
     requestIOSPermissions;
-    tz.initializeTimeZones();
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId,
-      title,
-      body,
-      tz.TZDateTime.now(tz.local).add(repeatInterval),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'reminder notification channel id',
-          'reminder notification',
-          channelDescription: 'reminder for water fill-up',
-          importance: Importance.max,
-          priority: Priority.max,
+    try {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        notificationId,
+        title,
+        body,
+        tz.TZDateTime.now(tz.local).add(repeatInterval),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'reminder notification channel id',
+            'reminder notification',
+            channelDescription: 'reminder for water fill-up',
+            importance: Importance.max,
+            priority: Priority.max,
+            playSound: true,
+          ),
+          iOS: DarwinNotificationDetails(
+            sound: 'default.wav',
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          ),
         ),
-        iOS: DarwinNotificationDetails(
-          sound: 'default.wav',
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        ),
-      ),
-      payload: notificationId.toString(),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
+        payload: notificationId.toString(),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    } catch (e) {
+      print('Error scheduling notification: $e');
+    }
   }
 
   Future<void> scheduleNotification(int notificationId, String title,
       String body, Time notificationTime, Duration repeatInterval) async {
-    await initNotification();
+    if (await Permission.notification.isDenied) {
+      await Permission.notification.request();
+    }
     requestIOSPermissions;
-    tz.initializeTimeZones();
-    print(tz.TZDateTime.now(tz.local));
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId,
-      title,
-      body,
-      //tz.TZDateTime.now(tz.local).add(Duration(seconds: 3)),
-      _nextInstanceOfTime(notificationTime).add(repeatInterval),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'repeating notification channel id',
-          'repeating notification',
-          channelDescription: 'notifications for water fill-up',
-          importance: Importance.max,
-          priority: Priority.max,
+    try {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        notificationId,
+        title,
+        body,
+        _nextInstanceOfTime(notificationTime).add(repeatInterval),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'scheduled notification channel id',
+            'scheduled notification',
+            channelDescription: 'notifications for water fill-up',
+            importance: Importance.max,
+            priority: Priority.max,
+            playSound: true,
+          ),
+          iOS: DarwinNotificationDetails(
+            sound: 'default.wav',
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          ),
         ),
-        iOS: DarwinNotificationDetails(
-          sound: 'default.wav',
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        ),
-      ),
-      payload: notificationId.toString(),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-    );
+        payload: notificationId.toString(),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    } catch (e) {
+      print('Error scheduling notification: $e');
+    }
   }
 
   Future<void> logActiveNotifications() async {
-    initNotification();
-    print(tz.TZDateTime.now(tz.local));
     final List<PendingNotificationRequest> pendingNotificationRequests =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
     print(
@@ -183,12 +168,10 @@ class NotificationService {
   }
 
   Future<void> cancelNotificationById(int id) async {
-    initNotification();
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
   Future<void> cancelAllNotifications() async {
-    initNotification();
     await flutterLocalNotificationsPlugin.cancelAll();
   }
 
