@@ -96,7 +96,7 @@ class _TipFormState extends State<TipForm> {
                     child: Container(
                       height: 400,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(10),
                           color: const Color.fromARGB(255, 240, 240, 240)),
                       child: Center(
                         child: Column(

@@ -82,20 +82,23 @@ class _InstructionsFormState extends State<InstructionsForm> {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
+                    padding: const EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
                     child: Container(
                       height: 70,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(13),
+                          borderRadius: BorderRadius.circular(8),
                           color: const Color.fromARGB(255, 240, 240, 240)),
                       child: Center(
-                        child: Text(
-                          globals.allInstructions![index].question,
-                          style: GoogleFonts.cormorantGaramond(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            height: 1,
-                            color: const Color.fromARGB(255, 32, 54, 50),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5.0),
+                          child: Text(
+                            globals.allInstructions![index].question,
+                            style: GoogleFonts.cormorantGaramond(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                              color: const Color.fromARGB(255, 32, 54, 50),
+                            ),
                           ),
                         ),
                       ),

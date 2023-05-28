@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
           decoration: const BoxDecoration(
             image: backgroundImage,
           ),
-          child: MyHomePage(title: 'herble'),
+          child: MyHomePage(),
         ),
       ),
     );

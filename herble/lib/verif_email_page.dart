@@ -136,6 +136,7 @@ class _verifyEmailState extends State<VerifyEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           SizedBox(
@@ -175,7 +176,7 @@ class _verifyEmailState extends State<VerifyEmail> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                 child: Text(
-                  "Check your email ($email2) to find verification link.",
+                  "Check your email ($email2) to find verification link. (might be in spam)",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.cormorantGaramond(
                     fontSize: 30,

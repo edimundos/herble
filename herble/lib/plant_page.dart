@@ -104,7 +104,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                             child: Container(
                                 height: 350,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(20),
                                   gradient: const LinearGradient(
                                     begin: Alignment.topRight,
                                     end: Alignment.bottomLeft,
@@ -127,12 +127,12 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                               width: 150,
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                    BorderRadius.circular(35),
+                                                    BorderRadius.circular(20),
                                               ),
                                               child: ClipRRect(
                                                 clipBehavior: Clip.hardEdge,
                                                 borderRadius:
-                                                    BorderRadius.circular(35),
+                                                    BorderRadius.circular(20),
                                                 child: FittedBox(
                                                   fit: BoxFit.cover,
                                                   child: FutureBuilder(
@@ -166,7 +166,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 8.0),
+                                                          left: 0.0),
                                                   child: SizedBox(
                                                     width: 150,
                                                     child: Text(
@@ -194,7 +194,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 8.0),
+                                                          left: 0.0),
                                                   child: SizedBox(
                                                     width: 150,
                                                     child: Text(
