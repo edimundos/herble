@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>766729968420-l5ei3ka6lqf2hscjgm6le4i93r1itmfe.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.766729968420-l5ei3ka6lqf2hscjgm6le4i93r1itmfe</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB5h6Vo2I-X3Xix8ENAY82x1FtFt8zsAnU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>766729968420</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.herble</string>
+	<key>PROJECT_ID</key>
+	<string>herble-efae7</string>
+	<key>STORAGE_BUCKET</key>
+	<string>herble-efae7.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:766729968420:ios:83a961ae9b6022d30cf1b1</string>
+</dict>
+</plist>

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:herble/instructions.dart';
 import 'package:herble/plant_page.dart';
@@ -14,10 +15,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
-
+  // final user = FirebaseAuth.instance.currentUser!;
   @override
   void initState() {
     super.initState();
+
     _selectedIndex = widget.index ?? 0;
   }
 
@@ -36,6 +38,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+
     const Color bgcolor = Color.fromARGB(255, 182, 172, 152);
     return Scaffold(
       backgroundColor: Colors.white,
