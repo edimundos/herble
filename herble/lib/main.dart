@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:herble/firebase_options.dart';
+import 'package:herble/start_page/firebase_options.dart';
 import 'package:herble/globals.dart';
-import 'package:herble/home_page.dart';
-import 'package:herble/notificationservice.dart';
-import 'package:herble/water_confirmation.dart';
+import 'package:herble/start_page/home_page.dart';
+import 'package:herble/notifications/notificationservice.dart';
+import 'package:herble/notifications/water_confirmation.dart';
 import 'package:http/http.dart' as http;
 import 'package:timezone/data/latest.dart' as tz;
 

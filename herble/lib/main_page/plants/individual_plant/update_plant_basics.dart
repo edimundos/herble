@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/change_picture.dart';
-import 'package:herble/individual_plant.dart';
-import 'package:herble/main_page.dart';
-import 'package:herble/plant_page.dart';
+import 'package:herble/main_page/plants/change_picture.dart';
+import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
+import 'package:herble/main_page/main_page.dart';
+import 'package:herble/main_page/plants/plant_page.dart';
 import 'package:http/http.dart' as http;
-import 'globals.dart' as globals;
+import 'package:herble/globals.dart' as globals;
 import 'package:flutter/material.dart';
 
 class UpdatePlantBasics extends StatefulWidget {

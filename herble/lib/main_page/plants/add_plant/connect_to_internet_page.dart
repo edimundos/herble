@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/main_page.dart';
-import 'package:herble/notificationservice.dart';
+import 'package:herble/main_page/main_page.dart';
+import 'package:herble/notifications/notificationservice.dart';
 import 'package:http/http.dart' as http;
-import 'package:herble/plant_page.dart';
-import 'globals.dart' as globals;
+import 'package:herble/main_page/plants/plant_page.dart';
+import '../../../globals.dart' as globals;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -75,7 +75,7 @@ class _ConnectInternetState extends State<ConnectInternet> {
             ),
           ),
           Text(
-            "2. Please fill up the water in your pot now",
+            "2. Make sure the water for your pot is full",
             textAlign: TextAlign.left,
             style: GoogleFonts.cormorantGaramond(
               fontSize: 25,

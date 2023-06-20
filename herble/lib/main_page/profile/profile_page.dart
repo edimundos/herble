@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/change_email.dart';
-import 'package:herble/change_pw.dart';
-import 'package:herble/change_username.dart';
+import 'package:herble/main_page/profile/change_email.dart';
+import 'package:herble/main_page/profile/change_pw.dart';
+import 'package:herble/main_page/profile/change_username.dart';
 import 'package:herble/main.dart';
-import 'globals.dart' as globals;
-import 'home_page.dart';
+import '../../globals.dart' as globals;
+import '../../start_page/home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

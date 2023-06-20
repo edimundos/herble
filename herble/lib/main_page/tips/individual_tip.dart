@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'globals.dart' as globals;
-import 'main_page.dart';
+import '../../globals.dart' as globals;
+import '../main_page.dart';
 
 class IndividualTip extends StatefulWidget {
   globals.Tip tip;

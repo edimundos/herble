@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/main_page.dart';
-import 'package:herble/notificationservice.dart';
-import 'package:herble/plant_page.dart';
-import 'globals.dart' as globals;
+import 'package:herble/main_page/main_page.dart';
+import 'package:herble/notifications/notificationservice.dart';
+import 'package:herble/main_page/plants/plant_page.dart';
+import '../globals.dart' as globals;
 
 Duration other = Duration(seconds: 1);
 late globals.Plant plant;

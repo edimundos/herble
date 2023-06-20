@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/src/types.dart';
-import 'package:herble/main_page.dart';
-import 'package:herble/verif_email_page.dart';
+import 'package:herble/main_page/main_page.dart';
+import 'package:herble/start_page/verif_email_page.dart';
 import 'package:http/http.dart' as http;
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
 import 'package:email_auth/email_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 

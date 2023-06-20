@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'globals.dart' as globals;
-import 'main_page.dart';
+import 'package:herble/globals.dart' as globals;
+import 'package:herble/main_page/main_page.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});

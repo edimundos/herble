@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/individual_plant.dart';
-import 'package:herble/plant_page.dart';
-import 'package:herble/post_update_screen.dart';
+import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
+import 'package:herble/main_page/plants/plant_page.dart';
+import 'package:herble/main_page/plants/individual_plant/post_update_screen.dart';
 import 'package:http/http.dart' as http;
-import 'globals.dart' as globals;
+import 'package:herble/globals.dart' as globals;
 import 'package:flutter/material.dart';
 
 class UpdatePlantTechnicalities extends StatefulWidget {

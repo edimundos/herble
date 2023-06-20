@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:herble/individual_plant.dart';
-import 'package:herble/pre_add_screen.dart';
-import 'globals.dart' as globals;
+import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
+import 'package:herble/main_page/plants/add_plant/pre_add_screen.dart';
+import '../../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 

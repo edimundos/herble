@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:herble/log_in.dart';
-import 'package:herble/notificationservice.dart';
-import 'package:herble/water_confirmation.dart';
-import 'package:herble/main_page.dart';
-import 'glassmorphism.dart';
-import 'package:herble/log_in.dart' as login;
-import 'package:herble/sign_up.dart' as signup;
-import 'package:herble/sign_up.dart';
+import 'package:herble/start_page/log_in.dart';
+import 'package:herble/notifications/notificationservice.dart';
+import 'package:herble/notifications/water_confirmation.dart';
+import 'package:herble/main_page/main_page.dart';
+import '../glassmorphism.dart';
+import 'package:herble/start_page/log_in.dart' as login;
+import 'package:herble/start_page/sign_up.dart' as signup;
+import 'package:herble/start_page/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
 class MyHomePage extends StatefulWidget {

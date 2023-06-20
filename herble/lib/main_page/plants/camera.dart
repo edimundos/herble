@@ -5,7 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/services.dart'
     show SystemChrome, SystemUiMode, rootBundle;
 import 'package:flutter/material.dart';
-import 'package:herble/change_picture.dart';
+import 'package:herble/main_page/plants/change_picture.dart';
 import 'dart:ui' as ui;
 import 'dart:async';
 import 'dart:math' as math;

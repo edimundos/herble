@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/individual_instruction.dart';
-import 'globals.dart' as globals;
+import 'package:herble/main_page/instructions/individual_instruction.dart';
+import '../../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
 class Instructions extends StatefulWidget {

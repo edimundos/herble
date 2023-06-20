@@ -1,12 +1,9 @@
 import 'dart:typed_data';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/main_page.dart';
-import 'package:herble/update_plant_technicalities.dart';
-
-import 'globals.dart' as globals;
+import 'package:herble/main_page/main_page.dart';
+import 'package:herble/main_page/plants/individual_plant/update_plant_technicalities.dart';
+import 'package:herble/globals.dart' as globals;
 import 'package:flutter/material.dart';
-import 'package:herble/plant_page.dart';
-import 'add_plant.dart';
 import 'package:http/http.dart' as http;
 
 class PreUpdateScreen extends StatefulWidget {

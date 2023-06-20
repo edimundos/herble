@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:herble/change_picture.dart';
-import 'package:herble/connect_to_internet_page.dart';
-import 'package:herble/main_page.dart';
+import 'package:herble/main_page/plants/change_picture.dart';
+import 'package:herble/main_page/plants/add_plant/connect_to_internet_page.dart';
+import 'package:herble/main_page/main_page.dart';
 import 'package:http/http.dart' as http;
-import 'package:herble/plant_page.dart';
-import 'globals.dart' as globals;
+import 'package:herble/main_page/plants/plant_page.dart';
+import '../../../globals.dart' as globals;
 import 'package:google_fonts/google_fonts.dart';
 
 class AddPlantPage extends StatefulWidget {

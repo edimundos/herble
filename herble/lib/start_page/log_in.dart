@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:herble/main_page.dart';
+import 'package:herble/main_page/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/notificationservice.dart';
+import 'package:herble/notifications/notificationservice.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bcrypt/bcrypt.dart';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
 
 void main() => runApp(const LogInScreen());
 bool stop = false;

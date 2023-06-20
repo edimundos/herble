@@ -3,10 +3,10 @@ import 'package:camera/camera.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/add_plant.dart';
-import 'globals.dart' as globals;
-import 'package:herble/camera.dart';
-import 'package:herble/update_plant_basics.dart';
+import 'package:herble/main_page/plants/add_plant/add_plant.dart';
+import 'package:herble/globals.dart' as globals;
+import 'package:herble/main_page/plants/camera.dart';
+import 'package:herble/main_page/plants/individual_plant/update_plant_basics.dart';
 import 'package:image_picker/image_picker.dart';
 
 List<CameraDescription> cameras = [];

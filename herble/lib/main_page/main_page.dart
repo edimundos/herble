@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:herble/instructions.dart';
-import 'package:herble/plant_page.dart';
-import 'package:herble/profile_page.dart';
-import 'package:herble/tips.dart';
+import 'package:herble/main_page/instructions/instructions.dart';
+import 'package:herble/main_page/plants/plant_page.dart';
+import 'package:herble/main_page/profile/profile_page.dart';
+import 'package:herble/main_page/tips/tips.dart';
 
 class MainPage extends StatefulWidget {
   int? index;

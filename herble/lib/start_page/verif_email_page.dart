@@ -7,11 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/globals.dart';
-import 'globals.dart' as globals;
+import 'package:herble/globals.dart' as globals;
 import 'package:http/http.dart' as http;
-
-import 'globals.dart';
-import 'main_page.dart';
+import 'package:herble/main_page/main_page.dart';
 
 class VerifyEmail extends StatefulWidget {
   String? email;
