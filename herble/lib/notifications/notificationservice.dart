@@ -1,9 +1,13 @@
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+// final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse notificationResponse) {
@@ -26,8 +30,6 @@ class NotificationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
 
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
   Future<void> initNotification() async {
     tz.initializeTimeZones();
     // Android initialization
@@ -45,6 +47,7 @@ class NotificationService {
 
     InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
@@ -56,6 +59,30 @@ class NotificationService {
         }
       },
     );
+
+    //FIREBASE
+    // await firebaseMessaging.requestPermission(
+    //   alert: true,
+    //   announcement: false,
+    //   badge: true,
+    //   carPlay: false,
+    //   criticalAlert: false,
+    //   provisional: false,
+    //   sound: true,
+    // );
+    // firebaseMessaging.getToken().then((value) => print(value));
+    // firebaseMessaging.configure(
+    //   onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
+    //   onMessage: (message) async {
+    //     print("onMessage: $message");
+    //   },
+    //   onLaunch: (message) async {
+    //     print("onLaunch: $message");
+    //   },
+    //   onResume: (message) async {
+    //     print("onResume: $message");
+    //   },
+    // );
   }
 
   void onDidReceiveLocalNotification(

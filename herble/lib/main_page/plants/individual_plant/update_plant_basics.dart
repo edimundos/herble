@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page/plants/change_picture.dart';
 import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
 import 'package:herble/main_page/main_page.dart';
-import 'package:herble/main_page/plants/plant_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/globals.dart' as globals;
 import 'package:flutter/material.dart';
@@ -12,9 +11,9 @@ import 'package:flutter/material.dart';
 class UpdatePlantBasics extends StatefulWidget {
   final globals.Plant plant;
   final Uint8List pic;
-  int? picId;
+  final int? picId;
 
-  UpdatePlantBasics(
+  const UpdatePlantBasics(
       {Key? key, required this.plant, required this.pic, this.picId})
       : super(key: key);
 

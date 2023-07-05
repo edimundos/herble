@@ -38,6 +38,7 @@ dependencies:
   bcrypt: any
   get: ^4.6.5 
   flutter_keyboard_visibility: ^5.0.2
+  shared_preferences: ^2.1.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -49,8 +50,10 @@ dependencies:
   timezone: ^0.9.1
   google_fonts: ^4.0.3
   email_auth: ^1.0.0
-  firebase_core: ^2.13.0
+  firebase_core: ^2.14.0
   firebase_auth: ^4.6.1
+  restart_app: ^1.2.1
+  # firebase_messaging: ^7.0.3
   
 dev_dependencies:
   flutter_launcher_icons: ^0.12.0

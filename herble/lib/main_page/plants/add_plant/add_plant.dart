@@ -6,15 +6,15 @@ import 'package:herble/main_page/plants/change_picture.dart';
 import 'package:herble/main_page/plants/add_plant/connect_to_internet_page.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:http/http.dart' as http;
-import 'package:herble/main_page/plants/plant_page.dart';
 import '../../../globals.dart' as globals;
 import 'package:google_fonts/google_fonts.dart';
 
 class AddPlantPage extends StatefulWidget {
-  Uint8List pic;
-  int? picId;
+  final Uint8List pic;
+  final int? picId;
 
-  AddPlantPage({Key? key, required this.pic, this.picId}) : super(key: key);
+  const AddPlantPage({Key? key, required this.pic, this.picId})
+      : super(key: key);
 
   @override
   State<AddPlantPage> createState() => _AddPlantPageState();
@@ -30,10 +30,10 @@ class _AddPlantPageState extends State<AddPlantPage> {
 }
 
 class PlantForm extends StatefulWidget {
-  Uint8List pic;
-  int? picId;
+  final Uint8List pic;
+  final int? picId;
 
-  PlantForm({super.key, required this.pic, this.picId});
+  const PlantForm({super.key, required this.pic, this.picId});
 
   @override
   State<PlantForm> createState() => _PlantFormState();
@@ -203,17 +203,21 @@ class _PlantFormState extends State<PlantForm> {
                       ),
                       TextButton(
                         onPressed: () async {
+                          print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                           int validator = await dataIsValid(
                             nameController.text,
                             descriptionController.text,
                             dayController.text,
                             volumeController.text,
                           );
+                          print(validator);
+                          print(globals.isLoggedIn);
                           if (validator == 100 && globals.isLoggedIn) {
                             sendToChip(
                               int.parse(dayController.text),
                               int.parse(volumeController.text),
                             );
+                            print("######################################");
                             Navigator.push(
                               context,
                               MaterialPageRoute(

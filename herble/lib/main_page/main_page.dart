@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:herble/main_page/instructions/instructions.dart';
@@ -42,8 +44,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-
     const Color bgcolor = Color.fromARGB(255, 182, 172, 152);
     return WillPopScope(
       onWillPop: _onWillPop,

@@ -7,9 +7,7 @@ import 'package:herble/start_page/firebase_options.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/start_page/home_page.dart';
 import 'package:herble/notifications/notificationservice.dart';
-import 'package:herble/notifications/water_confirmation.dart';
 import 'package:http/http.dart' as http;
-import 'package:timezone/data/latest.dart' as tz;
 
 import 'globals.dart' as globals;
 
@@ -53,24 +51,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const backgroundImage = DecorationImage(
-      image: AssetImage('assets/StartUpPage.png'),
-      fit: BoxFit.cover,
-    );
-
+    // const backgroundImage = DecorationImage(
+    //   image: AssetImage('assets/StartUpPage.png'),
+    //   fit: BoxFit.cover,
+    // );
     return MaterialApp(
       navigatorKey: navigatorKey,
       title: 'Flutter Server',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.green, canvasColor: Colors.transparent),
-      home: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            image: backgroundImage,
-          ),
-          child: MyHomePage(),
-        ),
+      home: const Scaffold(
+        body: AppStartPage(),
       ),
     );
   }

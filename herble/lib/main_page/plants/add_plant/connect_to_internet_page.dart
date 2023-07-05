@@ -5,19 +5,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:herble/notifications/notificationservice.dart';
 import 'package:http/http.dart' as http;
-import 'package:herble/main_page/plants/plant_page.dart';
 import '../../../globals.dart' as globals;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 class ConnectInternet extends StatefulWidget {
-  String plant;
-  String desc;
-  int days;
-  String pic;
-  int volume;
-  int? picId;
+  final String plant;
+  final String desc;
+  final int days;
+  final String pic;
+  final int volume;
+  final int? picId;
   ConnectInternet({
     super.key,
     required this.plant,

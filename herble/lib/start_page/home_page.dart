@@ -1,17 +1,16 @@
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:herble/main_page/main_page.dart';
 import 'package:herble/start_page/log_in.dart';
 import 'package:herble/notifications/notificationservice.dart';
 import 'package:herble/notifications/water_confirmation.dart';
-import 'package:herble/main_page/main_page.dart';
-import '../glassmorphism.dart';
+import 'package:herble/glassmorphism.dart';
 import 'package:herble/start_page/log_in.dart' as login;
 import 'package:herble/start_page/sign_up.dart' as signup;
 import 'package:herble/start_page/sign_up.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
@@ -23,10 +22,85 @@ class MyHomePage extends StatefulWidget {
 }
 
 bool isKeyboard = false;
+Future<void> rememberMeLogic(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int userIDRemembered = prefs.getInt('userID') ?? 0;
+  String? userPWRemembered = prefs.getString('password');
+  if (userIDRemembered != 0) {
+    globals.userID = userIDRemembered;
+    globals.isLoggedIn = true;
+    getEmailAndUsername();
+    globals.password = userPWRemembered!;
+    print("remember me initieated, userID: $userIDRemembered");
+    await signInFirebase(globals.email, globals.password);
+    _navigateToPlantList(context);
+  }
+}
+
+Future<void> _navigateToPlantList(BuildContext context) async {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => MainPage(index: 1)),
+  );
+}
+
+Future signInFirebase(String email, String pw) async {
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: pw,
+    );
+    return true;
+  } on FirebaseAuthException catch (e) {
+    stop = true;
+    print(e);
+  }
+}
+
+Future<void> getEmailAndUsername() async {
+  String url = 'https://herbledb.000webhostapp.com/get_user_credentials.php';
+  var response = await http
+      .post(Uri.parse(url), body: {'user_id': globals.userID.toString()});
+
+  if (response.statusCode == 200 && response.body.length > 6) {
+    List<dynamic> user = jsonDecode(response.body);
+    Map<String, dynamic> userMap = user[0];
+    correctEmail = (userMap["email"]).toString().trim();
+    globals.username = (userMap["username"]).toString();
+    globals.email = (userMap["email"]).toString();
+  } else {
+    debugPrint('Request failed with status: ${response.statusCode}');
+  }
+}
+
+class AppStartPage extends StatefulWidget {
+  const AppStartPage({super.key});
+
+  @override
+  State<AppStartPage> createState() => _AppStartPageState();
+}
+
+class _AppStartPageState extends State<AppStartPage> {
+  static const backgroundImage = DecorationImage(
+    image: AssetImage('assets/StartUpPage.png'),
+    fit: BoxFit.cover,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: backgroundImage,
+        ),
+        child: const MyHomePage(),
+      ),
+    );
+  }
+}
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   late AnimationController controller;
-  late Animation<Offset> _animation;
   bool isSignIn = false;
   int animLength = 1;
   bool showSignInButton = true;
@@ -39,15 +113,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     controller = BottomSheet.createAnimationController(this);
     controller.duration = Duration(seconds: animLength);
     controller.reverseDuration = Duration(seconds: animLength);
-    _animation = Tween<Offset>(
-      begin: const Offset(0, -1),
-      end: const Offset(-2.8, -6.6),
-    ).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: Curves.easeInOut,
-      ),
-    );
+    rememberMeLogic(context);
   }
 
   @override
@@ -182,60 +248,45 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               ),
             ),
             const SizedBox(height: 20),
-            // popUpRegister();
-            //     print("sign in");
-            //     setState(() {
-            //     showSignInButton = false;
-            //     showRegisterButton =false;
-
             AnimatedOpacity(
               opacity: showSignInButton ? 1.0 : 0.0,
               duration: Duration(seconds: animLength),
-              child: Container(
-                // decoration: BoxDecoration(
-                //    borderRadius: BorderRadius.circular(10),
-                //    color: Colors.black.withOpacity(0),
-                // ),
-                child: Glassmorphism(
-                  blur: 5,
-                  opacity: 1,
-                  radius: 50.0,
-                  color: Colors.white,
-                  child: TextButton(
-                    onPressed: showSignInButton == false
-                        ? null
-                        : () {
-                            popUpRegister();
-                            setState(() {
-                              showSignInButton = false;
-                              showRegisterButton = false;
-                            });
-                          },
-                    child: Container(
-                      width: 250,
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(30),
-                      // ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 20,
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Register',
-                          style: GoogleFonts.cormorantGaramond(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            height: 1,
-                            color: Color.fromARGB(255, 98, 123, 119),
-                          ),
+              child: Glassmorphism(
+                blur: 5,
+                opacity: 1,
+                radius: 50.0,
+                color: Colors.white,
+                child: TextButton(
+                  onPressed: showSignInButton == false
+                      ? null
+                      : () {
+                          popUpRegister();
+                          setState(() {
+                            showSignInButton = false;
+                            showRegisterButton = false;
+                          });
+                        },
+                  child: Container(
+                    width: 250,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 20,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Register',
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          height: 1,
+                          color: Color.fromARGB(255, 98, 123, 119),
                         ),
                       ),
                     ),
                   ),
-                  // ),
                 ),
+                // ),
               ),
             ),
           ],
@@ -256,13 +307,52 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 child: new Text('No'),
               ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () => {
+                  Navigator.of(context).pop(true),
+                  Navigator.of(context).pop(true),
+                },
                 child: new Text('Yes'),
               ),
             ],
           ),
         )) ??
         false;
+  }
+
+  void listenToNotification() => NotificationService()
+      .onNotificationClick
+      .stream
+      .listen(onNotificationListener);
+
+  Future<void> onNotificationListener(String? payload) async {
+    if (payload != null && payload.isNotEmpty) {
+      globals.Plant plant = await getPlantsById(int.parse(payload));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => WaterConfirm(plant: plant))));
+    }
+  }
+
+  Future<globals.Plant> getPlantsById(int id) async {
+    String url = 'https://herbledb.000webhostapp.com/get_plant_by_id.php';
+    try {
+      var response =
+          await http.post(Uri.parse(url), body: {'id': id.toString()});
+
+      if (response.statusCode == 200) {
+        List<dynamic> plants = json
+            .decode(response.body)
+            .map((data) => globals.Plant.fromJson(data as Map<String, dynamic>))
+            .toList();
+        return plants[0];
+      } else {
+        throw Exception('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle exceptions here
+      throw e;
+    }
   }
 
   void popUpSignIn() async {
@@ -383,43 +473,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         );
       },
     );
-  }
-
-  void listenToNotification() => NotificationService()
-      .onNotificationClick
-      .stream
-      .listen(onNotificationListener);
-
-  Future<void> onNotificationListener(String? payload) async {
-    if (payload != null && payload.isNotEmpty) {
-      //globals.Plant plant = await getPlantsById(int.parse(payload));
-      globals.Plant plant = await getPlantsById(int.parse(payload));
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: ((context) => WaterConfirm(plant: plant))));
-    }
-  }
-
-  Future<globals.Plant> getPlantsById(int id) async {
-    String url = 'https://herbledb.000webhostapp.com/get_plant_by_id.php';
-    try {
-      var response =
-          await http.post(Uri.parse(url), body: {'id': id.toString()});
-
-      if (response.statusCode == 200) {
-        List<dynamic> plants = json
-            .decode(response.body)
-            .map((data) => globals.Plant.fromJson(data as Map<String, dynamic>))
-            .toList();
-        return plants[0];
-      } else {
-        throw Exception('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Handle exceptions here
-      throw e;
-    }
   }
 
   void popUpRegister() async {

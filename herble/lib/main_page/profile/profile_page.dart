@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page/profile/change_email.dart';
 import 'package:herble/main_page/profile/change_pw.dart';
 import 'package:herble/main_page/profile/change_username.dart';
 import 'package:herble/main.dart';
+import 'package:herble/start_page/home_page.dart';
+import 'package:restart_app/restart_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../globals.dart' as globals;
-import '../../start_page/home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -203,48 +206,51 @@ class _ProfileBodyState extends State<ProfileBody> {
           const SizedBox(
             height: 15,
           ),
-          // TextButton(
-          //   onPressed: () async {
-          //     FirebaseAuth.instance.signOut();
-          //     globals.isLoggedIn = false;
-          //     globals.userID = 0;
-          //     Navigator.of(context).pushAndRemoveUntil(
-          //       MaterialPageRoute(
-          //         builder: (BuildContext context) =>
-          //             MyApp(), // Replace with your initial screen
-          //       ),
-          //       (Route<dynamic> route) =>
-          //           false, // Remove all previous routes from the stack
-          //     );
-          //   },
-          //   child: Container(
-          //     width: 200,
-          //     height: 50,
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(50),
-          //       gradient: const LinearGradient(
-          //         begin: Alignment.topRight,
-          //         end: Alignment.bottomLeft,
-          //         colors: <Color>[
-          //           Color.fromARGB(255, 39, 39, 39),
-          //           Color.fromARGB(255, 202, 207, 197),
-          //         ],
-          //       ),
-          //     ),
-          //     child: Center(
-          //       child: Text(
-          //         'Sign out',
-          //         textAlign: TextAlign.center,
-          //         style: GoogleFonts.cormorantGaramond(
-          //           fontSize: 30,
-          //           fontWeight: FontWeight.bold,
-          //           height: 1,
-          //           color: Color.fromARGB(255, 226, 233, 218),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          TextButton(
+            onPressed: () async {
+              FirebaseAuth.instance.signOut();
+              globals.isLoggedIn = false;
+              globals.userID = 0;
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.remove("userID");
+              await prefs.remove("password");
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      const AppStartPage(), // Replace with your initial screen
+                ),
+                (Route<dynamic> route) =>
+                    false, // Remove all previous routes from the stack
+              );
+            },
+            child: Container(
+              width: 200,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                gradient: const LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: <Color>[
+                    Color.fromARGB(255, 39, 39, 39),
+                    Color.fromARGB(255, 202, 207, 197),
+                  ],
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'Sign out',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.cormorantGaramond(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: Color.fromARGB(255, 226, 233, 218),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

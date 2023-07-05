@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/notifications/notificationservice.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:bcrypt/bcrypt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart' as globals;
 
 void main() => runApp(const LogInScreen());
@@ -53,6 +52,7 @@ class MyCustomForm extends StatefulWidget {
 class _MyCustomFormState extends State<MyCustomForm> {
   final emailController = TextEditingController();
   final pwController = TextEditingController();
+  bool rememberMe = false;
   bool check = false;
   bool passwordVisible = false;
 
@@ -129,6 +129,32 @@ class _MyCustomFormState extends State<MyCustomForm> {
               )
             : Container(),
         !isLoading
+            ? Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                child: Row(
+                  children: [
+                    Text(
+                      "Remember me",
+                      style: GoogleFonts.cormorantGaramond(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        height: 1,
+                        color: const Color.fromARGB(255, 32, 54, 50),
+                      ),
+                    ),
+                    Checkbox(
+                      value: rememberMe,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          rememberMe = value!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              )
+            : Container(),
+        !isLoading
             ? TextButton(
                 onPressed: () async {
                   setState(() {
@@ -149,6 +175,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     // globals.isLoggedIn = true;
                     globals.password = pwController.text;
                     globals.username = emailController.text;
+                    globals.isLoggedIn = true;
                     globals.userID = await getUserID(
                       emailController.text,
                     );
@@ -162,6 +189,16 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     setState(() {
                       isLoading = false;
                     });
+
+                    final prefs =
+                        await SharedPreferences.getInstance(); //remember me
+                    if (rememberMe) {
+                      await prefs.setInt('userID', globals.userID);
+                      await prefs.setString('password', globals.password);
+                    } else {
+                      await prefs.remove("userID");
+                      await prefs.remove("password");
+                    }
 
                     _navigateToPlantList(context);
                   } else {
