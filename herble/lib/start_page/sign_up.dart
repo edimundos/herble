@@ -99,94 +99,140 @@ class _LogInFormState extends State<LogInForm> {
               )
             : Container(),
         !isLoading
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'enter your email',
-                  ),
-                ),
-              )
-            : Container(),
-        !isLoading
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextField(
-                  controller: usernameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
-                    hintText: 'enter your username',
-                  ),
-                ),
-              )
-            : Container(),
-        !isLoading
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextField(
-                  obscureText: !passwordVisible1,
-                  controller: pwController1,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'enter your password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        passwordVisible1
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Color.fromARGB(255, 56, 56, 56),
+            ? Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: globals.height * 0.02,
+                        width: globals.width * 0.27,
+                        child: TextField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Email',
+                            labelStyle: TextStyle(
+                              fontFamily: 'GoogleFonts.inter',
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
                       ),
-                      onPressed: () {
-                        // Update the state i.e. toogle the state of passwordVisible vari able
-                        setState(() {
-                          passwordVisible1 = !passwordVisible1;
-                        });
-                      },
-                    ),
-                  ),
-                ),
+                      SizedBox(height: globals.height * 0.005),
+                    ]),
               )
             : Container(),
         !isLoading
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextField(
-                  obscureText: !passwordVisible2,
-                  controller: pwController2,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Repeat Password',
-                    hintText: 'repeat your password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        passwordVisible2
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Color.fromARGB(255, 56, 56, 56),
+            ? Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: globals.height * 0.02,
+                        width: globals.width * 0.27,
+                        child: TextField(
+                          controller: usernameController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Username',
+                            labelStyle: TextStyle(
+                              fontFamily: 'GoogleFonts.inter',
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
                       ),
-                      onPressed: () {
-                        // Update the state i.e. toogle the state of passwordVisible variable
-                        setState(() {
-                          passwordVisible2 = !passwordVisible2;
-                        });
-                      },
-                    ),
-                  ),
-                ),
+                      SizedBox(height: globals.height * 0.005),
+                    ]),
               )
             : Container(),
         !isLoading
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
+            ? Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: globals.height * 0.02,
+                        width: globals.width * 0.27,
+                        child: TextField(
+                          obscureText: !passwordVisible1,
+                          controller: pwController1,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Password',
+                            labelStyle: TextStyle(
+                              fontFamily: 'GoogleFonts.inter',
+                              color: Colors.grey,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                passwordVisible1
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Color.fromARGB(255, 56, 56, 56),
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible vari able
+                                setState(() {
+                                  passwordVisible1 = !passwordVisible1;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: globals.height * 0.005),
+                    ]),
+              )
+            : Container(),
+        !isLoading
+            ? Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: globals.height * 0.02,
+                        width: globals.width * 0.27,
+                        child: TextField(
+                          obscureText: !passwordVisible2,
+                          controller: pwController2,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Repeat Password',
+                            labelStyle: TextStyle(
+                              fontFamily: 'GoogleFonts.inter',
+                              color: Colors.grey,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                passwordVisible2
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Color.fromARGB(255, 56, 56, 56),
+                              ),
+                              onPressed: () {
+                                // Update the state i.e. toogle the state of passwordVisible variable
+                                setState(() {
+                                  passwordVisible2 = !passwordVisible2;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: globals.height * 0.007),
+                    ]),
+              )
+            : Container(),
+        !isLoading
+            ? SizedBox(
+                height: globals.height * 0.03,
+                width: globals.width * 0.27,
+                // padding: const EdgeInsets.all(10.0),
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  // height: globals.height * 0.03,
                   decoration: BoxDecoration(
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(8),
@@ -211,9 +257,23 @@ class _LogInFormState extends State<LogInForm> {
                         selectedTime24Hour = selectedTime24Hour;
                       });
                     },
-                    child: Text(
-                      "Select what time of day do you want to recieve water fill-up notifications (${selectedTime24Hour.hour.toString().length == 1 ? '0${selectedTime24Hour.hour}' : selectedTime24Hour.hour}:${selectedTime24Hour.minute.toString().length == 1 ? '0${selectedTime24Hour.minute}' : selectedTime24Hour.minute})",
-                      style: TextStyle(color: Colors.black54),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text:
+                                "Select time of day to receive water refill notifications",
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                          TextSpan(
+                            text:
+                                " (${selectedTime24Hour.hour.toString().padLeft(2, '0')}:${selectedTime24Hour.minute.toString().padLeft(2, '0')})",
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 34, 65, 54)),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -221,7 +281,7 @@ class _LogInFormState extends State<LogInForm> {
             : Container(),
         !isLoading
             ? SizedBox(
-                height: 20,
+                height: globals.height * 0.003,
               )
             : Container(),
         !isLoading
@@ -237,18 +297,11 @@ class _LogInFormState extends State<LogInForm> {
                           pwController2.text,
                           emailController.text,
                         );
-
-                        // Future.delayed(
-                        //     Duration.zero,
-                        //     () => _navigateToEmailVerify(
-                        //         context, emailController.text));
-                        print(emailController.text);
                         if (validator == 100) {
                           signUpFirebase(
                               userEmail: emailController.text.trim(),
                               password: pwController1.text.trim(),
                               context: context);
-                          print(emailController.text);
                           setState(() {
                             isLoading = false;
                           });
@@ -264,8 +317,6 @@ class _LogInFormState extends State<LogInForm> {
                                     password,
                                     selectedTime24Hour,
                                   ));
-                          // Future.delayed(Duration.zero,
-                          //     () => _navigateToPlantList(context));
                         } else if (validator == 101) {
                           setState(() {
                             isLoading = false;
@@ -274,7 +325,7 @@ class _LogInFormState extends State<LogInForm> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                content: const Text('Password doesnt match'),
+                                content: const Text('Password does not match'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
@@ -387,37 +438,23 @@ class _LogInFormState extends State<LogInForm> {
                         }
                       }
                     : null,
-                child: Center(
+                child: SizedBox(
+                  height: globals.height * 0.02,
+                  width: globals.width * 0.27,
                   child: Container(
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.black.withOpacity(0),
+                      borderRadius: BorderRadius.circular(5),
+                      color: Color.fromARGB(255, 34, 65, 54),
                     ),
-                    child: Container(
-                      width: 200,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: <Color>[
-                            Color.fromARGB(255, 19, 37, 31),
-                            Color.fromARGB(255, 202, 207, 197),
-                          ],
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Confirm',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.cormorantGaramond(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            height: 1,
-                            color: Color.fromARGB(255, 226, 233, 218),
-                          ),
-                        ),
+                    child: Text(
+                      'Register',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        fontSize: globals.width * 0.011,
+                        fontWeight: FontWeight.w500,
+                        height: 1,
+                        color: Color.fromARGB(255, 226, 233, 218),
                       ),
                     ),
                   ),

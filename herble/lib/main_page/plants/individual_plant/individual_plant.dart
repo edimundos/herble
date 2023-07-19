@@ -7,8 +7,6 @@ import 'package:herble/main_page/plants/individual_plant/update_plant_basics.dar
 import '../../../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
-import '../../../globals.dart';
-
 class IndividualPlant extends StatefulWidget {
   final globals.Plant plant;
   final Uint8List pic;
@@ -266,59 +264,59 @@ class _bodyFormState extends State<bodyForm> {
         // SizedBox(
         //   height: 10,
         // ),
-        !isLoading
-            ? Center(
-                child: ElevatedButton(
-                  // ignore: sort_child_properties_last
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Water now",
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          height: 1,
-                          color: Color.fromARGB(255, 255, 255, 255),
-                        )),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 64, 67, 107),
-                    elevation: 0,
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    if (await checkIfUrlIsAccessible()) {
-                      waterNow();
-                      setState(() {
-                        isLoading = false;
-                      });
-                    } else {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: const Text(
-                                  'Connect to the plant pot wifi to water it'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'sorry'),
-                                  child: const Text('sorry'),
-                                ),
-                              ],
-                            );
-                          });
-                    }
-                  },
-                ),
-              )
-            : const Center(
-                child: CircularProgressIndicator(),
-              ),
+        // !isLoading
+        //     ? Center(
+        //         child: ElevatedButton(
+        //           // ignore: sort_child_properties_last
+        //           child: Padding(
+        //             padding: const EdgeInsets.all(8.0),
+        //             child: Text("Water now",
+        //                 style: GoogleFonts.cormorantGaramond(
+        //                   fontSize: 20,
+        //                   fontWeight: FontWeight.normal,
+        //                   height: 1,
+        //                   color: Color.fromARGB(255, 255, 255, 255),
+        //                 )),
+        //           ),
+        //           style: ElevatedButton.styleFrom(
+        //             backgroundColor: Color.fromARGB(255, 64, 67, 107),
+        //             elevation: 0,
+        //           ),
+        //           onPressed: () async {
+        //             setState(() {
+        //               isLoading = true;
+        //             });
+        //             if (await checkIfUrlIsAccessible()) {
+        //               waterNow();
+        //               setState(() {
+        //                 isLoading = false;
+        //               });
+        //             } else {
+        //               setState(() {
+        //                 isLoading = false;
+        //               });
+        //               showDialog(
+        //                   context: context,
+        //                   builder: (BuildContext context) {
+        //                     return AlertDialog(
+        //                       content: const Text(
+        //                           'Connect to the plant pot wifi to water it'),
+        //                       actions: <Widget>[
+        //                         TextButton(
+        //                           onPressed: () =>
+        //                               Navigator.pop(context, 'sorry'),
+        //                           child: const Text('sorry'),
+        //                         ),
+        //                       ],
+        //                     );
+        //                   });
+        //             }
+        //           },
+        //         ),
+        //       )
+        //     : const Center(
+        //         child: CircularProgressIndicator(),
+        //       ),
       ],
     );
   }

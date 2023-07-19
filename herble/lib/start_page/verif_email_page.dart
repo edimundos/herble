@@ -1,26 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:email_auth/email_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/globals.dart';
 import 'package:herble/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:herble/main_page/main_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VerifyEmail extends StatefulWidget {
-  String? email;
+  final String? email;
+  final String? password;
+  final String? username;
+  final TimeOfDay? timeOfDay;
 
-  String? password;
-
-  String? username;
-
-  TimeOfDay? timeOfDay;
-
-  VerifyEmail({
+  const VerifyEmail({
     super.key,
     this.email,
     this.username,
@@ -42,7 +37,6 @@ class _verifyEmailState extends State<VerifyEmail> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     email2 = widget.email!;
     selectedTime24Hour = widget.timeOfDay!;
@@ -65,9 +59,8 @@ class _verifyEmailState extends State<VerifyEmail> {
 
     if (isEmailVerified) {
       // TODO: implement your code after email verification
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Email Successfully Verified")));
-      Future.delayed(Duration.zero, () => _navigateToPlantList(context));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Email Successfully Verified")));
       await postUser(
         username,
         password,
@@ -79,8 +72,15 @@ class _verifyEmailState extends State<VerifyEmail> {
       globals.userID = await getUserID(
         username,
       );
-
+      globals.password = password;
+      globals.isLoggedIn = true;
+      globals.email = email;
+      globals.wateringTime = selectedTime24Hour as Time;
+      final prefs = await SharedPreferences.getInstance(); //remember me
+      await prefs.setInt('userID', globals.userID);
+      await prefs.setString('password', globals.password);
       timer?.cancel();
+      Future.delayed(Duration.zero, () => _navigateToPlantList(context));
     }
   }
 

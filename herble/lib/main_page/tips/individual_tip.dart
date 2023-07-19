@@ -4,8 +4,8 @@ import '../../globals.dart' as globals;
 import '../main_page.dart';
 
 class IndividualTip extends StatefulWidget {
-  globals.Tip tip;
-  IndividualTip({super.key, required this.tip});
+  final globals.Tip tip;
+  const IndividualTip({super.key, required this.tip});
 
   @override
   State<IndividualTip> createState() => _IndividualTipState();

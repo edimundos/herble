@@ -1,14 +1,13 @@
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:herble/colors.dart';
 import 'package:herble/start_page/firebase_options.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/start_page/home_page.dart';
 import 'package:herble/notifications/notificationservice.dart';
 import 'package:http/http.dart' as http;
-
 import 'globals.dart' as globals;
 
 Future<void> main() async {
@@ -51,16 +50,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // const backgroundImage = DecorationImage(
-    //   image: AssetImage('assets/StartUpPage.png'),
-    //   fit: BoxFit.cover,
-    // );
     return MaterialApp(
       navigatorKey: navigatorKey,
       title: 'Flutter Server',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.green, canvasColor: Colors.transparent),
+        canvasColor: Colors.transparent,
+        primaryColor: Color.fromARGB(255, 34, 65, 54),
+        primarySwatch: mainpallete,
+      ),
       home: const Scaffold(
         body: AppStartPage(),
       ),

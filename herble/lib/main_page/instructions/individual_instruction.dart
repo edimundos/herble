@@ -4,8 +4,8 @@ import '../../globals.dart' as globals;
 import '../main_page.dart';
 
 class IndividualInstruction extends StatefulWidget {
-  globals.Instruction instruction;
-  IndividualInstruction({super.key, required this.instruction});
+  final globals.Instruction instruction;
+  const IndividualInstruction({super.key, required this.instruction});
 
   @override
   State<IndividualInstruction> createState() => _IndividualInstructionState();

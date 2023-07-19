@@ -36,9 +36,9 @@ class _UpdatePageState extends State<UpdatePlantBasics> {
 class PlantUpdateForm extends StatefulWidget {
   final globals.Plant plant;
   final Uint8List pic;
-  int? picId;
+  final int? picId;
 
-  PlantUpdateForm(
+  const PlantUpdateForm(
       {Key? key, required this.plant, required this.pic, required this.picId})
       : super(key: key);
 

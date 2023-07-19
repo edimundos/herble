@@ -7,9 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:herble/notifications/notificationservice.dart';
 import 'package:http/http.dart' as http;
-import 'package:herble/main_page/plants/plant_page.dart';
 import 'package:herble/globals.dart' as globals;
-import 'package:connectivity/connectivity.dart';
 
 class PostUpdate extends StatefulWidget {
   final globals.Plant plant;

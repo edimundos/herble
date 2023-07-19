@@ -2,13 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:camera/camera.dart';
-import 'package:flutter/services.dart'
-    show SystemChrome, SystemUiMode, rootBundle;
+import 'package:flutter/services.dart' show SystemChrome, SystemUiMode;
 import 'package:flutter/material.dart';
 import 'package:herble/main_page/plants/change_picture.dart';
 import 'dart:ui' as ui;
 import 'dart:async';
-import 'dart:math' as math;
 
 List<CameraDescription> cameras = [];
 
@@ -82,7 +80,6 @@ class _CameraScreenState extends State<CameraScreen> {
     super.dispose();
   }
 
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final CameraController? cameraController = controller;
 
@@ -198,7 +195,6 @@ class _CameraScreenState extends State<CameraScreen> {
                   try {
                     final path = (await controller!.takePicture()).path;
                     final imageData = await File(path).readAsBytes();
-                    final cropedImage = await cropToCircle(imageData, 10);
                     Navigator.push(
                       context,
                       MaterialPageRoute(

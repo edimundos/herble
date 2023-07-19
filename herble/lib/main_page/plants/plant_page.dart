@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:herble/colors.dart';
 import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
 import 'package:herble/main_page/plants/add_plant/pre_add_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
@@ -40,9 +42,10 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
     return Scaffold(
       body: Column(
         children: [
+          SizedBox(height: globals.height * 0.004),
           // sis app bar container
           SizedBox(
-              height: 100,
+              height: globals.height * 0.04,
               child: Row(
                 children: [
                   Padding(
@@ -50,9 +53,8 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                     child: Text(
                       "My plants",
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
+                      style: GoogleFonts.caudex(
+                        fontSize: globals.width * 0.03,
                         height: 1,
                         color: const Color.fromARGB(255, 32, 54, 50),
                       ),
@@ -101,16 +103,14 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                               );
                             },
                             child: Container(
-                                height: 350,
+                                height: globals.height * 0.11,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft,
-                                    colors: <Color>[
-                                      Color.fromARGB(255, 204, 217, 191),
-                                      Color.fromARGB(255, 200, 223, 215),
-                                    ],
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: mainpallete.shade100,
+                                  border: Border.all(
+                                    color: mainpallete
+                                        .shade200, // Set the color of the outline
+                                    width: 0.2, // Set the width of the outline
                                   ),
                                 ),
                                 child: Column(
@@ -120,10 +120,10 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                       child: Row(
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.all(30.0),
+                                            padding: const EdgeInsets.all(15.0),
                                             child: Container(
-                                              height: 150,
-                                              width: 150,
+                                              height: globals.height * 0.05,
+                                              width: globals.width * 0.09,
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(20),
@@ -167,18 +167,18 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                       const EdgeInsets.only(
                                                           left: 0.0),
                                                   child: SizedBox(
-                                                    width: 150,
+                                                    width: globals.width * 0.1,
                                                     child: Text(
                                                       plants[index].plantName,
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                      textAlign: TextAlign.left,
                                                       overflow:
                                                           TextOverflow.clip,
-                                                      style: GoogleFonts
-                                                          .cormorantGaramond(
-                                                        fontSize: 35,
+                                                      style: GoogleFonts.inter(
+                                                        fontSize:
+                                                            globals.width *
+                                                                0.017,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                            FontWeight.w600,
                                                         height: 1,
                                                         color: const Color
                                                                 .fromARGB(
@@ -187,31 +187,35 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                     ),
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  height: 8,
+                                                SizedBox(
+                                                  height:
+                                                      globals.height * 0.001,
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 0.0),
-                                                  child: SizedBox(
-                                                    width: 150,
-                                                    child: Text(
-                                                      plants[index]
-                                                          .plantDescription,
-                                                      textAlign: TextAlign.left,
-                                                      overflow:
-                                                          TextOverflow.clip,
-                                                      style: GoogleFonts
-                                                          .cormorantGaramond(
-                                                        fontSize: 23,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                        height: 1,
-                                                        color: const Color
-                                                                .fromARGB(
-                                                            255, 32, 54, 50),
-                                                      ),
+                                                SizedBox(
+                                                  width: globals.width * 0.1,
+                                                  child: Text(
+                                                    plants[index]
+                                                                .plantDescription
+                                                                .length >=
+                                                            10
+                                                        ? plants[index]
+                                                                .plantDescription
+                                                                .substring(
+                                                                    0, 10) +
+                                                            "..."
+                                                        : plants[index]
+                                                            .plantDescription,
+                                                    textAlign: TextAlign.left,
+                                                    overflow: TextOverflow.clip,
+                                                    style: GoogleFonts
+                                                        .cormorantGaramond(
+                                                      fontSize: 23,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      height: 1,
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 32, 54, 50),
                                                     ),
                                                   ),
                                                 ),
@@ -325,7 +329,49 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                       },
                     );
                   } else {
-                    return Center(child: Text("No herble plant pots yet :("));
+                    return Center(
+                        child: Column(
+                      children: [
+                        const Flexible(
+                          child: FractionallySizedBox(
+                            heightFactor: 0.45,
+                          ),
+                        ),
+                        Text(
+                          "No herble plant pots yet",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            fontSize: globals.width * 0.01,
+                            height: 1,
+                            color: Color.fromARGB(255, 116, 129, 127),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            final Uri url = Uri.parse(
+                                'https://www.herble.eu/products/self-watering-plant-pot');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              print("shit dont work");
+                            }
+                            if (!await launchUrl(url)) {
+                              throw Exception('Could not launch $url');
+                            }
+                          },
+                          child: Text(
+                            "Order now",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.inter(
+                              fontSize: globals.width * 0.01,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                              color: Color.fromARGB(255, 34, 65, 54),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ));
                   }
                 } else {
                   return const Center(
@@ -345,10 +391,11 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
       //     }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 15,
-          horizontal: 5,
-        ),
+        // padding: const EdgeInsets.symmetric(
+        //   vertical: 4,
+        //   horizontal: 14,
+        // ),
+        padding: const EdgeInsets.only(bottom: 7),
         alignment: Alignment.bottomCenter,
         child: TextButton(
           onPressed: () {
@@ -359,23 +406,32 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
           },
           child: Container(
             alignment: Alignment.bottomCenter,
-            height: 75,
-            // width: MediaQuery.of(context).size.width - 20,
+            width: globals.width * 0.17,
+            height: globals.height * 0.025,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Color.fromARGB(255, 182, 172, 152),
-            ),
-            child: Center(
-              child: Text(
-                '+',
-                style: GoogleFonts.lilitaOne(
-                  fontSize: 80,
-                  fontWeight: FontWeight.bold,
-                  height: 1,
-                  color: Color(0xffffffff),
-                ),
+              borderRadius: BorderRadius.circular(10),
+              color: mainpallete.shade400,
+              border: Border.all(
+                color: mainpallete, // Set the color of the outline
+                width: 1.0, // Set the width of the outline
               ),
             ),
+            child: Center(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                Text(" Add plant",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: globals.width * 0.015,
+                      color: Colors.white,
+                    ))
+              ],
+            )),
           ),
         ),
       ),
