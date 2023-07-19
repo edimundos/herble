@@ -1,15 +1,14 @@
-import 'dart:math';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:herble/colors.dart';
 import 'package:herble/main_page/instructions/instructions.dart';
 import 'package:herble/main_page/plants/plant_page.dart';
 import 'package:herble/main_page/profile/profile_page.dart';
 import 'package:herble/main_page/tips/tips.dart';
+import '../globals.dart' as globals;
 
 class MainPage extends StatefulWidget {
-  int? index;
-  MainPage({super.key, this.index});
+  final int? index;
+  const MainPage({super.key, this.index});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -51,39 +50,41 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: SizedBox(
-          height: 75,
+          height: globals.height * 0.025,
           child: BottomNavigationBar(
-            selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-            unselectedItemColor: Color.fromARGB(255, 56, 60, 68),
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: mainpallete.shade300,
+            unselectedItemColor: Color.fromARGB(255, 20, 20, 20),
             showSelectedLabels: true,
             showUnselectedLabels: true,
+            backgroundColor: Colors.white,
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.menu_book,
                 ),
-                label: 'instructions',
+                label: 'Instructions',
                 backgroundColor: bgcolor,
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.list_alt_outlined,
+                  Icons.list,
                 ),
-                label: 'my plants',
+                label: 'My plants',
                 backgroundColor: bgcolor,
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.lightbulb,
                 ),
-                label: 'tips',
+                label: 'Tips',
                 backgroundColor: bgcolor,
               ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.person,
                 ),
-                label: 'profile',
+                label: 'Profile',
                 backgroundColor: bgcolor,
               ),
             ],

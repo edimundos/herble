@@ -1,26 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:email_auth/email_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/globals.dart';
 import 'package:herble/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:herble/main_page/main_page.dart';
 
 class VerifyEmail extends StatefulWidget {
-  String? email;
+  final String? email;
+  final String? password;
+  final String? username;
+  final TimeOfDay? timeOfDay;
 
-  String? password;
-
-  String? username;
-
-  TimeOfDay? timeOfDay;
-
-  VerifyEmail({
+  const VerifyEmail({
     super.key,
     this.email,
     this.username,

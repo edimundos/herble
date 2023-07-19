@@ -3,8 +3,12 @@ library my_prj.globals;
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+Size screenSize = WidgetsBinding.instance.window.physicalSize;
+double width = screenSize.width;
+double height = screenSize.height;
 bool isLoggedIn = false;
 int userID = 0;
 String username = '';

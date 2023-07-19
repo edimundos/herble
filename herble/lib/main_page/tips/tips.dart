@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page/tips/individual_tip.dart';
-import 'dart:convert';
 import '../../globals.dart' as globals;
-import 'package:http/http.dart' as http;
 
 class Tips extends StatefulWidget {
   const Tips({super.key});

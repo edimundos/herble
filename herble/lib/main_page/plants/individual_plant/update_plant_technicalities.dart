@@ -1,8 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
-import 'package:herble/main_page/plants/plant_page.dart';
 import 'package:herble/main_page/plants/individual_plant/post_update_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/globals.dart' as globals;
