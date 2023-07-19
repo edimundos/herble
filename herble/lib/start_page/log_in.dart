@@ -105,6 +105,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           ),
                         ),
                       ),
+                    ),
                     SizedBox(height: globals.height * 0.005),
                   ],
                 ),
@@ -150,7 +151,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                 ],
               ))
             : Container(),
-            !isLoading
+        !isLoading
             ? Column(
                 children: [
                   Padding(
@@ -160,13 +161,19 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         "Forgot Password?",
                         textAlign: TextAlign.left,
                         style: GoogleFonts.cormorantGaramond(
-                            fontSize: 20,
-                            decoration: TextDecoration.underline,
-                            height: 1,
-                            color: Color.fromARGB(255, 116, 129, 127)),
-                                          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ForgotPasswordPage())),
-                    ): Container(),
+                          fontSize: 20,
+                          decoration: TextDecoration.underline,
+                          height: 1,
+                          color: Color.fromARGB(255, 116, 129, 127),
+                        ),
+                      ),
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordPage())),
+                    ),
+                  ),
+                ],
+              )
+            : Container(),
         !isLoading
             ? TextButton(
                 onPressed: () async {
