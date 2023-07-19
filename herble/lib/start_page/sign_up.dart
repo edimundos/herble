@@ -297,18 +297,11 @@ class _LogInFormState extends State<LogInForm> {
                           pwController2.text,
                           emailController.text,
                         );
-
-                        // Future.delayed(
-                        //     Duration.zero,
-                        //     () => _navigateToEmailVerify(
-                        //         context, emailController.text));
-                        print(emailController.text);
                         if (validator == 100) {
                           signUpFirebase(
                               userEmail: emailController.text.trim(),
                               password: pwController1.text.trim(),
                               context: context);
-                          print(emailController.text);
                           setState(() {
                             isLoading = false;
                           });
@@ -324,8 +317,6 @@ class _LogInFormState extends State<LogInForm> {
                                     password,
                                     selectedTime24Hour,
                                   ));
-                          // Future.delayed(Duration.zero,
-                          //     () => _navigateToPlantList(context));
                         } else if (validator == 101) {
                           setState(() {
                             isLoading = false;

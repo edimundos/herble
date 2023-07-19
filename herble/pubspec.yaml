@@ -53,6 +53,7 @@ dependencies:
   firebase_core: ^2.14.0
   firebase_auth: ^4.6.1
   restart_app: ^1.2.1
+  url_launcher: ^6.1.12 
   # firebase_messaging: ^7.0.3
   
 dev_dependencies:

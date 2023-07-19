@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:herble/colors.dart';
 import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
 import 'package:herble/main_page/plants/add_plant/pre_add_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
@@ -328,7 +329,49 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                       },
                     );
                   } else {
-                    return Center(child: Text("No herble plant pots yet"));
+                    return Center(
+                        child: Column(
+                      children: [
+                        const Flexible(
+                          child: FractionallySizedBox(
+                            heightFactor: 0.45,
+                          ),
+                        ),
+                        Text(
+                          "No herble plant pots yet",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            fontSize: globals.width * 0.01,
+                            height: 1,
+                            color: Color.fromARGB(255, 116, 129, 127),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            final Uri url = Uri.parse(
+                                'https://www.herble.eu/products/self-watering-plant-pot');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url);
+                            } else {
+                              print("shit dont work");
+                            }
+                            if (!await launchUrl(url)) {
+                              throw Exception('Could not launch $url');
+                            }
+                          },
+                          child: Text(
+                            "Order now",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.inter(
+                              fontSize: globals.width * 0.01,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                              color: Color.fromARGB(255, 34, 65, 54),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ));
                   }
                 } else {
                   return const Center(
