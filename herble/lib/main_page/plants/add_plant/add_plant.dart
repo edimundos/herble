@@ -203,7 +203,6 @@ class _PlantFormState extends State<PlantForm> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                           int validator = await dataIsValid(
                             nameController.text,
                             descriptionController.text,
@@ -217,7 +216,6 @@ class _PlantFormState extends State<PlantForm> {
                               int.parse(dayController.text),
                               int.parse(volumeController.text),
                             );
-                            print("######################################");
                             Navigator.push(
                               context,
                               MaterialPageRoute(

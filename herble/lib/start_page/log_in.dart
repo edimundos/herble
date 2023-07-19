@@ -52,7 +52,7 @@ class MyCustomForm extends StatefulWidget {
 class _MyCustomFormState extends State<MyCustomForm> {
   final emailController = TextEditingController();
   final pwController = TextEditingController();
-  bool rememberMe = false;
+  bool rememberMe = true;
   bool check = false;
   bool passwordVisible = false;
 
@@ -73,11 +73,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         isLoading
-            ? Column(
+            ? const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                // ignore: prefer_const_literals_to_create_immutables
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 200,
                     child: Center(
                       child: CircularProgressIndicator(),
@@ -87,72 +86,69 @@ class _MyCustomFormState extends State<MyCustomForm> {
               )
             : Container(),
         !isLoading
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email/username',
-                    hintText: 'enter your email/username',
-                  ),
-                ),
-              )
-            : Container(),
-        !isLoading
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                child: TextField(
-                  obscureText: !passwordVisible,
-                  controller: pwController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'enter your password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        // Based on passwordVisible state choose the icon
-                        passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Color.fromARGB(255, 56, 56, 56),
-                      ),
-                      onPressed: () {
-                        // Update the state i.e. toogle the state of passwordVisible variable
-                        setState(() {
-                          passwordVisible = !passwordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              )
-            : Container(),
-        !isLoading
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                child: Row(
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Remember me",
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        height: 1,
-                        color: const Color.fromARGB(255, 32, 54, 50),
+                    SizedBox(
+                      height: globals.height * 0.02,
+                      width: globals.width * 0.27,
+                      child: TextField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Email/Username',
+                          labelStyle: TextStyle(
+                            fontFamily: 'GoogleFonts.inter',
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                     ),
-                    Checkbox(
-                      value: rememberMe,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          rememberMe = value!;
-                        });
-                      },
-                    ),
+                    SizedBox(height: globals.height * 0.005),
                   ],
                 ),
               )
+            : Container(),
+        !isLoading
+            ? Center(
+                child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      height: globals.height * 0.02,
+                      width: globals.width * 0.27,
+                      child: TextField(
+                        obscureText: !passwordVisible,
+                        controller: pwController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                          labelStyle: TextStyle(
+                            fontFamily: 'GoogleFonts.inter',
+                            fontSize: globals.width * 0.011,
+                            color: Colors.grey,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              // Based on passwordVisible state choose the icon
+                              passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Color.fromARGB(255, 56, 56, 56),
+                            ),
+                            onPressed: () {
+                              // Update the state i.e. toogle the state of passwordVisible variable
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                      )),
+                  SizedBox(height: globals.height * 0.005),
+                ],
+              ))
             : Container(),
         !isLoading
             ? TextButton(
@@ -221,37 +217,23 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         });
                   }
                 },
-                child: Center(
+                child: SizedBox(
+                  height: globals.height * 0.02,
+                  width: globals.width * 0.27,
                   child: Container(
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.black.withOpacity(0),
+                      borderRadius: BorderRadius.circular(5),
+                      color: Color.fromARGB(255, 34, 65, 54),
                     ),
-                    child: Container(
-                      width: 200,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        gradient: const LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: <Color>[
-                            Color.fromARGB(255, 19, 37, 31),
-                            Color.fromARGB(255, 202, 207, 197),
-                          ],
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Confirm',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.cormorantGaramond(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            height: 1,
-                            color: Color.fromARGB(255, 226, 233, 218),
-                          ),
-                        ),
+                    child: Text(
+                      'Log in',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        fontSize: globals.width * 0.011,
+                        fontWeight: FontWeight.w500,
+                        height: 1,
+                        color: Color.fromARGB(255, 226, 233, 218),
                       ),
                     ),
                   ),
