@@ -5,9 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page/profile/change_email.dart';
 import 'package:herble/main_page/profile/change_pw.dart';
 import 'package:herble/main_page/profile/change_username.dart';
-import 'package:herble/main.dart';
 import 'package:herble/start_page/home_page.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../globals.dart' as globals;
 
