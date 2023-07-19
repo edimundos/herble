@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart' as globals;
+import 'ForgotPasswordPage.dart';
 
 void main() => runApp(const LogInScreen());
 bool stop = false;
@@ -129,29 +130,51 @@ class _MyCustomFormState extends State<MyCustomForm> {
               )
             : Container(),
         !isLoading
-            ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                child: Row(
-                  children: [
-                    Text(
-                      "Remember me",
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        height: 1,
-                        color: const Color.fromARGB(255, 32, 54, 50),
+            ? Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                    child: GestureDetector(
+                      child: Text(
+                        "Forgot Password?",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.cormorantGaramond(
+                            fontSize: 20,
+                            decoration: TextDecoration.underline,
+                            height: 1,
+                            color: Color.fromARGB(255, 116, 129, 127)),
                       ),
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ForgotPasswordPage())),
                     ),
-                    Checkbox(
-                      value: rememberMe,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          rememberMe = value!;
-                        });
-                      },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Remember me",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.cormorantGaramond(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          ),
+                        ),
+                        Checkbox(
+                          value: rememberMe,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              rememberMe = value!;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               )
             : Container(),
         !isLoading

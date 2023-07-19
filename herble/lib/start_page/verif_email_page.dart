@@ -48,6 +48,8 @@ class _verifyEmailState extends State<VerifyEmail> {
     selectedTime24Hour = widget.timeOfDay!;
     pw2 = widget.password!;
     username2 = widget.username!;
+    // FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    Timer(const Duration(seconds: 3), () {});
     FirebaseAuth.instance.currentUser?.sendEmailVerification();
     timer = Timer.periodic(const Duration(seconds: 3),
         (_) => checkEmailVerified(username2, email2, pw2, selectedTime24Hour));
