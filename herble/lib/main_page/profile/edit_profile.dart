@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:herble/globals.dart' as globals;
 import 'package:herble/main_page/main_page.dart';
@@ -28,10 +27,19 @@ class UsernameBody extends StatefulWidget {
 
 class _UsernameBodyState extends State<UsernameBody> {
   final usernameController = TextEditingController();
+  final emailController = TextEditingController();
 
   bool isDisabled = false;
 
+  @override
+  void initState() {
+    super.initState();
+    usernameController.text = globals.username;
+    emailController.text = globals.email;
+  }
+
   void dispose() {
+    emailController.dispose();
     usernameController.dispose();
     super.dispose();
   }
@@ -118,18 +126,23 @@ class _UsernameBodyState extends State<UsernameBody> {
                                 });
                                 int validator = await dataIsValid(
                                   usernameController.text,
+                                  emailController.text,
                                 );
                                 if (validator == 100) {
+                                  await updateEmail(
+                                    emailController.text,
+                                  );
                                   await updateUsername(
                                     usernameController.text,
                                   );
+                                  globals.email = emailController.text;
                                   globals.username = usernameController.text;
                                   setState(() {
                                     isDisabled = false;
                                   });
                                   Future.delayed(Duration.zero,
                                       () => _navigateToPlantList(context));
-                                } else if (validator == 105) {
+                                } else if (validator == 103) {
                                   setState(() {
                                     isDisabled = false;
                                   });
@@ -149,7 +162,7 @@ class _UsernameBodyState extends State<UsernameBody> {
                                       );
                                     },
                                   );
-                                } else if (validator == 106) {
+                                } else if (validator == 104) {
                                   setState(() {
                                     isDisabled = false;
                                   });
@@ -169,23 +182,7 @@ class _UsernameBodyState extends State<UsernameBody> {
                                       );
                                     },
                                   );
-                                }
-                                //###################################################
-                                int validator = await dataIsValid(
-                                  emailB4Controller.text,
-                                  emailController.text,
-                                );
-                                if (validator == 100) {
-                                  Future.delayed(Duration.zero,
-                                      () => _navigateToPlantList(context));
-                                  await updateEmail(
-                                    emailController.text,
-                                  );
-                                  globals.email = emailController.text;
-                                  setState(() {
-                                    isDisabled = false;
-                                  });
-                                } else if (validator == 103) {
+                                } else if (validator == 101) {
                                   setState(() {
                                     isDisabled = false;
                                   });
@@ -205,26 +202,6 @@ class _UsernameBodyState extends State<UsernameBody> {
                                       );
                                     },
                                   );
-                                } else if (validator == 105) {
-                                  setState(() {
-                                    isDisabled = false;
-                                  });
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: const Text(
-                                            'A user with this email already exists'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'sorry'),
-                                            child: const Text('sorry'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
                                 } else if (validator == 102) {
                                   setState(() {
                                     isDisabled = false;
@@ -234,7 +211,7 @@ class _UsernameBodyState extends State<UsernameBody> {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         content: const Text(
-                                            'Old email is not correct'),
+                                            'A user with this email already exists'),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () =>
@@ -286,15 +263,13 @@ class _UsernameBodyState extends State<UsernameBody> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: TextField(
-                  // controller: emailController,
+                  controller: emailController,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '${globals.email}',
-                    hintText: 'enter your new email',
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.cancel),
+                      icon: const Icon(Icons.cancel),
                       onPressed: () {
-                        usernameController.clear();
+                        emailController.clear();
                       },
                     ),
                   ),
@@ -320,11 +295,9 @@ class _UsernameBodyState extends State<UsernameBody> {
                 child: TextField(
                   controller: usernameController,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: '${globals.username}',
-                    hintText: 'enter your new username',
+                    border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.cancel),
+                      icon: const Icon(Icons.cancel),
                       onPressed: () {
                         usernameController.clear();
                       },
@@ -347,9 +320,14 @@ class _UsernameBodyState extends State<UsernameBody> {
     });
   }
 
-  Future<int> dataIsValid(String username) async {
-    if (await checkExists(username)) return 105;
-    if (username.length <= 2) return 106;
+  Future<int> dataIsValid(String username, String emailController) async {
+    if (!emailController.contains('@')) return 101;
+    if (emailController == globals.email) {
+    } else if (await checkExists(emailController)) return 102;
+    if (username == globals.username) {
+    } else if (await checkExists(username)) return 103;
+    if (username.length <= 2) return 104;
+
     return 100;
   }
 
@@ -381,13 +359,6 @@ class _UsernameBodyState extends State<UsernameBody> {
       'username_flutter': globals.username,
       'pw_flutter': globals.password,
     });
-  }
-
-  Future<int> dataIsValidEmail(String emailOld, String email) async {
-    if (emailOld != globals.email) return 102;
-    if (!email.contains('@')) return 103;
-    if (await checkExists(email)) return 105;
-    return 100;
   }
 
   Future<bool> checkExistsEmail(String email) async {
