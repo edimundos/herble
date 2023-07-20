@@ -329,8 +329,8 @@ class _LogInFormState extends State<LogInForm> {
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'sorry'),
-                                    child: const Text('sorry'),
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
                                   ),
                                 ],
                               );
@@ -349,8 +349,8 @@ class _LogInFormState extends State<LogInForm> {
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'sorry'),
-                                    child: const Text('sorry'),
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
                                   ),
                                 ],
                               );
@@ -368,8 +368,8 @@ class _LogInFormState extends State<LogInForm> {
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'sorry'),
-                                    child: const Text('sorry'),
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
                                   ),
                                 ],
                               );
@@ -388,8 +388,8 @@ class _LogInFormState extends State<LogInForm> {
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'sorry'),
-                                    child: const Text('sorry'),
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
                                   ),
                                 ],
                               );
@@ -408,8 +408,8 @@ class _LogInFormState extends State<LogInForm> {
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'sorry'),
-                                    child: const Text('sorry'),
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
                                   ),
                                 ],
                               );
@@ -428,8 +428,8 @@ class _LogInFormState extends State<LogInForm> {
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () =>
-                                        Navigator.pop(context, 'sorry'),
-                                    child: const Text('sorry'),
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
                                   ),
                                 ],
                               );
@@ -451,7 +451,6 @@ class _LogInFormState extends State<LogInForm> {
                       'Register',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.inter(
-                        fontSize: globals.width * 0.011,
                         fontWeight: FontWeight.w500,
                         height: 1,
                         color: Color.fromARGB(255, 226, 233, 218),

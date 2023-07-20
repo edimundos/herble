@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:herble/colors.dart';
 import 'package:herble/main_page/profile/change_email.dart';
 import 'package:herble/main_page/profile/change_pw.dart';
 import 'package:herble/main_page/profile/change_username.dart';
@@ -43,42 +44,58 @@ class _ProfileBodyState extends State<ProfileBody> {
       body: Column(
         children: [
           SizedBox(
-              height: 100,
+              height: globals.height * 0.04,
               child: Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0),
                     child: Text(
-                      "Profile Page",
+                      "Profile page",
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
+                      style: GoogleFonts.caudex(
+                        fontSize: globals.width * 0.03,
                         height: 1,
                         color: const Color.fromARGB(255, 32, 54, 50),
                       ),
                     ),
                   ),
                   const Spacer(),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(25.0),
-                      child: Image(
-                        image: AssetImage("assets/herble_logo.png"),
-                      ),
+                  Material(
+                    shape: const CircleBorder(),
+                    clipBehavior: Clip.hardEdge,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return const ChangeUsername(); // Replace ChangeSettings with the actual widget for the settings page
+                            },
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.settings_outlined,
+                          size: globals.width * 0.03, color: Colors.black26),
                     ),
-                  )
+                  ),
+                  // const Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: Padding(
+                  //     padding: EdgeInsets.all(25.0),
+                  //     child: Image(
+                  //       image: AssetImage("assets/herble_logo.png"),
+                  //     ),
+                  //   ),
+                  // )
                 ],
               )),
-          const SizedBox(
-            height: 15,
+          SizedBox(
+            height: globals.height * 0.01,
           ),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Text(
               "Hello, ${globals.username}!",
-              style: GoogleFonts.cormorantGaramond(
+              style: GoogleFonts.inter(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
                 height: 1,
@@ -86,50 +103,26 @@ class _ProfileBodyState extends State<ProfileBody> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 15,
+          SizedBox(
+            height: globals.height * 0.03,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const ChangeEmail();
-                        },
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Text(
-                        "Change Email",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          height: 1,
-                          color: const Color.fromARGB(255, 32, 54, 50),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                        thickness: 1.0,
-                      ),
-                    ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    side: const BorderSide(
+                      color: Colors.black26, // Set the color of the border
+                      width: 1.0, // Set the width of the border
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                GestureDetector(
-                  onTap: () {
+                  onPressed: () async {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
@@ -138,68 +131,144 @@ class _ProfileBodyState extends State<ProfileBody> {
                       ),
                     );
                   },
-                  child: Column(
+                  child: Row(
                     children: [
-                      Text(
-                        "Change Username",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          height: 1,
-                          color: const Color.fromARGB(255, 32, 54, 50),
+                      Icon(Icons.edit,
+                          size: globals.width * 0.02, color: Colors.black),
+                      Container(
+                        width: globals.width * 0.08,
+                        height: globals.height * 0.014,
+                        child: Center(
+                          child: Text(
+                            'Edit Profile',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.inter(
+                              fontSize: globals.width * 0.014,
+                              fontWeight: FontWeight.w600,
+                              height: 1,
+                              color: Colors.black87,
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                        thickness: 1.0,
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 40,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: globals.height * 0.002,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                " User Information ",
+                textAlign: TextAlign.left,
+                style: GoogleFonts.inter(
+                  fontSize: globals.width * 0.017,
+                  fontWeight: FontWeight.normal,
+                  height: 1,
+                  color: const Color.fromARGB(255, 32, 54, 50),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const ChangePassword();
-                        },
-                      ),
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      Text(
-                        "Change Password",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          height: 1,
-                          color: const Color.fromARGB(255, 32, 54, 50),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                        thickness: 1.0,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-              ],
+              ),
             ),
+          ),
+          SizedBox(
+            height: globals.height * 0.01,
+          ),
+          Column(
+            children: [
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.of(context).push(
+              //       MaterialPageRoute(
+              //         builder: (BuildContext context) {
+              //           return const ChangeEmail();
+              //         },
+              //       ),
+              //     );
+              //   },
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.email,
+                            size: globals.width * 0.02, color: Colors.black),
+                        Text(
+                          " ${globals.email}",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.inter(
+                            fontSize: globals.width * 0.02,
+                            fontWeight: FontWeight.normal,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: globals.height * 0.002,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Divider(
+                      color: Colors.black26,
+                      thickness: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(
+                height: globals.height * 0.015,
+              ),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.person,
+                            size: globals.width * 0.02, color: Colors.black),
+                        Text(
+                          " @${globals.username} ",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.inter(
+                            fontSize: globals.width * 0.02,
+                            fontWeight: FontWeight.normal,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: globals.height * 0.002,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                    child: Divider(
+                      color: Colors.black26,
+                      thickness: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(
+                height: globals.height * 0.07,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+            ],
           ),
           const SizedBox(
             height: 15,
@@ -222,26 +291,18 @@ class _ProfileBodyState extends State<ProfileBody> {
               );
             },
             child: Container(
-              width: 200,
-              height: 50,
+              width: globals.width * 0.24,
+              height: globals.height * 0.024,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                gradient: const LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: <Color>[
-                    Color.fromARGB(255, 39, 39, 39),
-                    Color.fromARGB(255, 202, 207, 197),
-                  ],
-                ),
+                borderRadius: BorderRadius.circular(10),
+                color: mainpallete,
               ),
               child: Center(
                 child: Text(
                   'Sign out',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.cormorantGaramond(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.inter(
+                    fontSize: globals.width * 0.02,
                     height: 1,
                     color: Color.fromARGB(255, 226, 233, 218),
                   ),

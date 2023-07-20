@@ -120,7 +120,9 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                       child: Row(
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.all(15.0),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                15, 15, 15, 30),
+                                            // const EdgeInsets.all(15.0),
                                             child: Container(
                                               height: globals.height * 0.05,
                                               width: globals.width * 0.09,
@@ -176,7 +178,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                       style: GoogleFonts.inter(
                                                         fontSize:
                                                             globals.width *
-                                                                0.017,
+                                                                0.02,
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         height: 1,
@@ -197,19 +199,19 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                     plants[index]
                                                                 .plantDescription
                                                                 .length >=
-                                                            10
+                                                            20
                                                         ? plants[index]
                                                                 .plantDescription
                                                                 .substring(
-                                                                    0, 10) +
+                                                                    0, 20) +
                                                             "..."
                                                         : plants[index]
                                                             .plantDescription,
                                                     textAlign: TextAlign.left,
                                                     overflow: TextOverflow.clip,
-                                                    style: GoogleFonts
-                                                        .cormorantGaramond(
-                                                      fontSize: 23,
+                                                    style: GoogleFonts.inter(
+                                                      fontSize:
+                                                          globals.width * 0.015,
                                                       fontWeight:
                                                           FontWeight.normal,
                                                       height: 1,
@@ -227,7 +229,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                     ),
                                     Padding(
                                       padding:
-                                          const EdgeInsets.only(left: 30.0),
+                                          const EdgeInsets.only(left: 15.0),
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Column(
@@ -236,9 +238,9 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                               children: [
                                                 Text(
                                                   "Watering frequency: ",
-                                                  style: GoogleFonts
-                                                      .cormorantGaramond(
-                                                    fontSize: 20,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize:
+                                                        globals.width * 0.015,
                                                     fontWeight: FontWeight.bold,
                                                     height: 1,
                                                     color: const Color.fromARGB(
@@ -246,11 +248,13 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  "${" every " + plants[index].dayCount.toString()} days",
+                                                  plants[index].dayCount == 1
+                                                      ? "every ${plants[index].dayCount} day"
+                                                      : "every ${plants[index].dayCount} days",
                                                   overflow: TextOverflow.clip,
-                                                  style: GoogleFonts
-                                                      .cormorantGaramond(
-                                                    fontSize: 20,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize:
+                                                        globals.width * 0.012,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     height: 1,
@@ -266,23 +270,23 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                 Text(
                                                   "Watering volume: ",
                                                   overflow: TextOverflow.clip,
-                                                  style: GoogleFonts
-                                                      .cormorantGaramond(
-                                                    fontSize: 20,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize:
+                                                        globals.width * 0.015,
                                                     fontWeight: FontWeight.bold,
-                                                    height: 1,
+                                                    // height: 1,
                                                     color: const Color.fromARGB(
                                                         255, 32, 54, 50),
                                                   ),
                                                 ),
                                                 Text(
                                                   "${plants[index].waterVolume.toString()} ml",
-                                                  style: GoogleFonts
-                                                      .cormorantGaramond(
-                                                    fontSize: 20,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize:
+                                                        globals.width * 0.012,
                                                     fontWeight:
                                                         FontWeight.normal,
-                                                    height: 1,
+                                                    // height: 1,
                                                     color: const Color.fromARGB(
                                                         255, 32, 54, 50),
                                                   ),

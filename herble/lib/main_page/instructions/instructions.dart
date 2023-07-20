@@ -35,7 +35,7 @@ class _InstructionsFormState extends State<InstructionsForm> {
       body: Column(
         children: [
           SizedBox(
-              height: 100,
+              height: globals.height * 0.04,
               child: Row(
                 children: [
                   Padding(
@@ -43,9 +43,9 @@ class _InstructionsFormState extends State<InstructionsForm> {
                     child: Text(
                       "Instructions",
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
+                      style: GoogleFonts.caudex(
+                        fontSize: globals.width * 0.03,
+                        // fontWeight: FontWeight.bold,
                         height: 1,
                         color: const Color.fromARGB(255, 32, 54, 50),
                       ),
@@ -90,8 +90,8 @@ class _InstructionsFormState extends State<InstructionsForm> {
                           padding: const EdgeInsets.fromLTRB(10, 5, 10, 5.0),
                           child: Text(
                             globals.allInstructions![index].question,
-                            style: GoogleFonts.cormorantGaramond(
-                              fontSize: 25,
+                            style: GoogleFonts.inter(
+                              fontSize: globals.width * 0.018,
                               fontWeight: FontWeight.bold,
                               height: 1,
                               color: const Color.fromARGB(255, 32, 54, 50),
