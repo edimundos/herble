@@ -210,8 +210,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       isLoading = false;
                     });
 
-                    final prefs =
-                        await SharedPreferences.getInstance(); //remember me
+                    final prefs = await SharedPreferences.getInstance();
                     if (rememberMe) {
                       await prefs.setInt('userID', globals.userID);
                       await prefs.setString('password', globals.password);
