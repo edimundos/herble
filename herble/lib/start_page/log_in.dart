@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart' as globals;
+import 'ForgotPasswordPage.dart';
 
 void main() => runApp(const LogInScreen());
 bool stop = false;
@@ -150,12 +151,64 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ))
             : Container(),
         !isLoading
-            ? Center(
-              child: TextButton(
-                  onPressed: () async {
+            ? Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                    child: GestureDetector(
+                      child: Text(
+                        "Forgot Password?",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.cormorantGaramond(
+                          fontSize: 20,
+                          decoration: TextDecoration.underline,
+                          height: 1,
+                          color: Color.fromARGB(255, 116, 129, 127),
+                        ),
+                      ),
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordPage())),
+                    ),
+                  ),
+                ],
+              )
+            : Container(),
+        !isLoading
+            ? TextButton(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  var pass = checkPass(emailController.text, pwController.text);
+                  if (await pass) {
+                    // DateTime now = DateTime.now();
+                    // Time notificationTime = Time(now.hour, now.minute + 1, 0);
+                    // Duration repeatInterval = const Duration(seconds: 10);
+                    // await NotificationService().scheduleNotification(
+                    //   3, //id
+                    //   'test', //title
+                    //   'Click the notification to confirm that you filled it', //text
+                    //   notificationTime,
+                    //   repeatInterval,
+                    // );
+                    // globals.isLoggedIn = true;
+                    globals.password = pwController.text;
+                    globals.username = emailController.text;
+                    globals.isLoggedIn = true;
+                    globals.userID = await getUserID(
+                      emailController.text,
+                    );
+                    await getEmailAndUsername();
+                    globals.wateringTime = await getUserTime(
+                      emailController.text,
+                    );
+
+                    signInFirebase();
+
                     setState(() {
                       isLoading = true;
                     });
+                    
                     var pass = checkPass(emailController.text, pwController.text);
                     if (await pass) {
                       // DateTime now = DateTime.now();
@@ -197,6 +250,11 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       }
             
                       _navigateToPlantList(context);
+
+                    final prefs = await SharedPreferences.getInstance();
+                    if (rememberMe) {
+                      await prefs.setInt('userID', globals.userID);
+                      await prefs.setString('password', globals.password);
                     } else {
                       setState(() {
                         isLoading = false;
