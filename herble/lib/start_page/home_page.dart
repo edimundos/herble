@@ -355,7 +355,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             opacity: 1,
             child: AnimatedContainer(
               height: MediaQuery.of(context).size.height * 0.6,
-              
               duration: Duration(seconds: animLength),
               curve: Curves.easeInOut,
               decoration: BoxDecoration(
@@ -407,12 +406,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           // }
                           return MyCustomForm();
                         }),
-                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.22,
-                     ),
+                    // SizedBox(
+                    //   height: MediaQuery.of(context).size.height * 0.22,
+                    // ),
                     !login.isLoading
                         ? Align(
-                          alignment: Alignment.bottomCenter,
+                            alignment: Alignment.bottomCenter,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -514,45 +513,45 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           : Container(),
                       SizedBox(height: globals.height * 0.01),
                       LogInForm(),
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                      // SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                       !signup.isLoading
                           ? Align(
-                             alignment: Alignment.bottomCenter,
+                              alignment: Alignment.bottomCenter,
                               child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "Already have an account?",
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.inter(
-                                    fontSize: globals.width * 0.01,
-                                    height: 1,
-                                    color: Color.fromARGB(255, 116, 129, 127),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    Future.delayed(
-                                        Duration(
-                                            seconds: animLength,
-                                            milliseconds: 300), () {
-                                      popUpSignIn();
-                                    });
-                                  },
-                                  child: Text(
-                                    "Log in",
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "Already have an account?",
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.inter(
                                       fontSize: globals.width * 0.01,
-                                      fontWeight: FontWeight.bold,
                                       height: 1,
-                                      color: Color.fromARGB(255, 34, 65, 54),
+                                      color: Color.fromARGB(255, 116, 129, 127),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ))
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Future.delayed(
+                                          Duration(
+                                              seconds: animLength,
+                                              milliseconds: 300), () {
+                                        popUpSignIn();
+                                      });
+                                    },
+                                    child: Text(
+                                      "Log in",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.inter(
+                                        fontSize: globals.width * 0.01,
+                                        fontWeight: FontWeight.bold,
+                                        height: 1,
+                                        color: Color.fromARGB(255, 34, 65, 54),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ))
                           : Container(),
                     ],
                   ),
