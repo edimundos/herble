@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/globals.dart' as globals;
@@ -27,7 +28,7 @@ class VerifyEmail extends StatefulWidget {
   State<VerifyEmail> createState() => _verifyEmailState();
 }
 
-class _verifyEmailState extends State<VerifyEmail> {
+class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
   late String email2;
   bool isEmailVerified = false;
   Timer? timer;
@@ -42,17 +43,45 @@ class _verifyEmailState extends State<VerifyEmail> {
     selectedTime24Hour = widget.timeOfDay!;
     pw2 = widget.password!;
     username2 = widget.username!;
-    // FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    WidgetsBinding.instance.addObserver(this);
+    FirebaseAuth.instance.currentUser?.sendEmailVerification();
     Timer(const Duration(seconds: 3), () {});
     FirebaseAuth.instance.currentUser?.sendEmailVerification();
-    timer = Timer.periodic(const Duration(seconds: 3),
-        (_) => checkEmailVerified(username2, email2, pw2, selectedTime24Hour));
+    // FirebaseAuth.instance.currentUser?.sendEmailVerification();
+
+    // DeleteFirebaseAccount();
+    if (!mounted) return;
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      timer = Timer.periodic(
+          const Duration(seconds: 3),
+          (_) =>
+              checkEmailVerified(username2, email2, pw2, selectedTime24Hour));
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print("App lifecycle state changed: $state");
+
+    final background = state == AppLifecycleState.detached;
+    if (background && !isEmailVerified) {
+      // FirebaseAuth.instance.currentUser?.delete();
+
+      // print("App is in background and email is not verified. Deleting user.");
+    }
   }
 
   checkEmailVerified(String username, String email, String password,
       TimeOfDay selectedTime24Hour) async {
     await FirebaseAuth.instance.currentUser?.reload();
-
     setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
@@ -75,7 +104,8 @@ class _verifyEmailState extends State<VerifyEmail> {
       globals.password = password;
       globals.isLoggedIn = true;
       globals.email = email;
-      globals.wateringTime = selectedTime24Hour as Time;
+      globals.wateringTime =
+          Time(selectedTime24Hour.hour, selectedTime24Hour.minute);
       final prefs = await SharedPreferences.getInstance(); //remember me
       await prefs.setInt('userID', globals.userID);
       await prefs.setString('password', globals.password);
@@ -127,14 +157,21 @@ class _verifyEmailState extends State<VerifyEmail> {
     // FirebaseAuth.instance.currentUser?.delete();
   }
 
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
+  // Future<void> DeleteFirebaseAccount() async {
+  //   String url = 'https://herbledb.000webhostapp.com/get_user_by_username.php';
+  //   var response =
+  //       await http.post(Uri.parse(url), body: {'username_flutter': email2});
+
+  //   if (response.statusCode != 200) {
+  //     FirebaseAuth.instance.currentUser?.delete();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    Timer(const Duration(seconds: 2), () {});
+    // DeleteFirebaseAccount();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -194,7 +231,8 @@ class _verifyEmailState extends State<VerifyEmail> {
                   try {
                     FirebaseAuth.instance.currentUser?.sendEmailVerification();
                   } catch (e) {
-                    debugPrint('$e');
+                    print("g spot");
+                    print('$e');
                   }
                 },
                 child: Container(
@@ -231,7 +269,7 @@ class _verifyEmailState extends State<VerifyEmail> {
               TextButton(
                 onPressed: () {
                   try {
-                    FirebaseAuth.instance.signOut();
+                    // FirebaseAuth.instance.currentUser?.delete();
                     Navigator.pop(context);
                   } catch (e) {
                     debugPrint('$e');

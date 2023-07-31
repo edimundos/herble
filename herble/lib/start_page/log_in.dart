@@ -1,4 +1,8 @@
 import 'dart:async';
+// import 'dart:js_util';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../start_page/DatabaseUsers.dart' as FUser;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -10,6 +14,7 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart' as globals;
 import 'ForgotPasswordPage.dart';
+import 'verif_email_page.dart';
 
 void main() => runApp(const LogInScreen());
 bool stop = false;
@@ -56,6 +61,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   bool rememberMe = true;
   bool check = false;
   bool passwordVisible = false;
+  bool unverifiedAccount = false;
 
   void dispose() {
     emailController.dispose();
@@ -98,7 +104,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         controller: emailController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Email/Username',
+                          labelText: 'Email',
                           labelStyle: TextStyle(
                             fontFamily: 'GoogleFonts.inter',
                             color: Colors.grey,
@@ -180,7 +186,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   setState(() {
                     isLoading = true;
                   });
-                  var pass = checkPass(emailController.text, pwController.text);
+                  var pass = checkPass(emailController.text);
                   if (await pass) {
                     // DateTime now = DateTime.now();
                     // Time notificationTime = Time(now.hour, now.minute + 1, 0);
@@ -224,20 +230,24 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     setState(() {
                       isLoading = false;
                     });
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Incorrect password/email'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        });
+
+                    if (unverifiedAccount == false) {
+                      // ignore: use_build_context_synchronously
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: const Text('Incorrect password/email'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'sorry'),
+                                  child: const Text('sorry'),
+                                ),
+                              ],
+                            );
+                          });
+                    }
                   }
                 },
                 child: SizedBox(
@@ -267,37 +277,115 @@ class _MyCustomFormState extends State<MyCustomForm> {
     );
   }
 
-  Future<bool> checkPass(String username, String pw) async {
-    String url = 'https://herbledb.000webhostapp.com/get_user_by_username.php';
-    var response =
-        await http.post(Uri.parse(url), body: {'username_flutter': username});
-
-    if (response.statusCode == 200 && response.body.length > 6) {
-      List<dynamic> user = jsonDecode(response.body);
-      Map<String, dynamic> userMap = user[0];
-      String X = userMap["password"].toString();
-      if (BCrypt.checkpw(pw, X)) {
+  Future<bool> checkPass(String username) async {
+    bool checking = await signInFirebase();
+    print("Big D");
+    print(checking);
+    if (checking && FirebaseAuth.instance.currentUser?.emailVerified == true) {
+      // readUserByUsername();
+      String url =
+          'https://herbledb.000webhostapp.com/get_user_by_username.php';
+      var response =
+          await http.post(Uri.parse(url), body: {'username_flutter': username});
+      print(response.toString());
+      if (response.statusCode == 200 && response.body.length > 6) {
         return true;
       } else {
+        // The request failed
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  "Something went wrong. Please restart your application.")));
+
+          debugPrint('Request failed with status: ${response.statusCode}');
+        }
         return false;
       }
-    } else {
-      // The request failed
-      debugPrint('Request failed with status: ${response.statusCode}');
+    } else if (await signInFirebase() &&
+        FirebaseAuth.instance.currentUser?.emailVerified == false) {
+      print("TRYING TO NAVIGATE");
+      String email2;
+      String username;
+      int timeOfDay;
+
+      var data = await readUserByEmail();
+
+      if (data == null) {
+        print("Fuck navigation");
+        return false;
+      }
+
+      int sec = data?["waterTimeMin"];
+
+      TimeOfDay tof =
+          TimeOfDay(hour: ((sec - sec % 60) / 60).round(), minute: sec % 60);
+
+      //READ DATA FROM FIREBASE DATASTORE
+      // SEND IT TO VERIFY EMAIL PAGE
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => VerifyEmail(
+                  email: emailController.text.trim(),
+                  password: pwController.text.trim(),
+                  username: data?["username"],
+                  timeOfDay: tof)));
+      unverifiedAccount = true;
       return false;
+    }
+    print("nNavigation failed");
+    return false;
+  }
+
+  Future readUserByEmail() async {
+    Map<String, dynamic>? data;
+    try {
+      var doc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(emailController.text.trim());
+
+      var snapshot = await doc.get();
+      var data = snapshot.data();
+
+      print(data);
+      return data;
+    } on Exception catch (e) {
+      print("reading data exception");
+      print(e);
+      return null;
     }
   }
 
-  Future signInFirebase() async {
+  // Future readUserByUsername() async {
+  //   Map<String, dynamic>? data;
+  //   try {
+  //     var doc = await FirebaseFirestore.instance
+  //         .collection("users")
+  //         .doc(emailController.text.trim());
+  //     doc.get().then((doc) {
+  //       data = doc.data();
+  //     });
+  //     return data?["username"];
+  //   } on Exception catch (e) {
+  //     print("reading data exception");
+  //     print(e);
+  //   }
+  // }
+  // .map((snapshot) =>
+  //     snapshot.docs.map((doc) => FUser.User.fromJson(doc.data())).toList());
+
+  Future<bool> signInFirebase() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: correctEmail,
+        email: emailController.text.trim(),
         password: pwController.text.trim(),
       );
       return true;
     } on FirebaseAuthException catch (e) {
       stop = true;
       print(e);
+      return false;
     }
   }
 
