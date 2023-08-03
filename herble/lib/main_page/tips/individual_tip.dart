@@ -18,31 +18,32 @@ class _IndividualTipState extends State<IndividualTip> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
+          SizedBox(height: globals.height * 0.004),
           SizedBox(
-              height: 100,
+              height: globals.height * 0.04,
               child: Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
+                    child: Material(
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => MainPage(
-                                      index: 2,
-                                    )),
+                              builder: (BuildContext context) {
+                                return const MainPage(
+                                  index: 2,
+                                ); // Replace ChangeSettings with the actual widget for the settings page
+                              },
+                            ),
                           );
                         },
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Image(
-                              image: AssetImage("assets/backButton.png"),
-                            ),
-                          ),
-                        )),
+                        icon: Icon(Icons.arrow_back_sharp,
+                            size: globals.width * 0.03, color: Colors.black26),
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
@@ -60,12 +61,12 @@ class _IndividualTipState extends State<IndividualTip> {
                 ],
               )),
           Padding(
-            padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
             child: Text(
               widget.tip.title,
               textAlign: TextAlign.center,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 35,
+              style: GoogleFonts.inter(
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
                 height: 1,
                 color: const Color.fromARGB(255, 32, 54, 50),
@@ -74,7 +75,7 @@ class _IndividualTipState extends State<IndividualTip> {
           ),
           const SizedBox(height: 15),
           Padding(
-            padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
             child: Container(
                 height: 300,
                 decoration: BoxDecoration(
@@ -86,11 +87,11 @@ class _IndividualTipState extends State<IndividualTip> {
           ),
           const SizedBox(height: 15),
           Padding(
-            padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
             child: Text(
               widget.tip.description,
               textAlign: TextAlign.left,
-              style: GoogleFonts.cormorantGaramond(
+              style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.normal,
                 height: 1,

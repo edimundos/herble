@@ -40,7 +40,7 @@ Future<void> rememberMeLogic(BuildContext context) async {
 Future<void> _navigateToPlantList(BuildContext context) async {
   Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => MainPage(index: 1)),
+    MaterialPageRoute(builder: (context) => const MainPage(index: 1)),
   );
 }
 
@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         fontSize: globals.width * 0.047,
         fontWeight: FontWeight.w400,
         height: 1,
-        color: Color(0xffffffff),
+        color: const Color(0xffffffff),
       ),
     );
     final textPainter = TextPainter(
@@ -146,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return ListView(children: [
       Column(
         children: [
-          Container(
+          SizedBox(
             height: globals.height * 0.08,
             width: MediaQuery.of(context).size.width,
             child: Stack(
@@ -169,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             fontSize: globals.width * 0.05,
                             fontWeight: FontWeight.w400,
                             // height: globals.height * 0,
-                            color: Color(0xffffffff),
+                            color: const Color(0xffffffff),
                           ),
                         ),
                         // ),
@@ -189,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   fontSize: globals.width * 0.015,
                   fontWeight: FontWeight.w400,
                   // height: 1,
-                  color: Color(0xffffffff),
+                  color: const Color(0xffffffff),
                 ),
               ))
         ],
@@ -238,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           style: GoogleFonts.inter(
                             fontSize: globals.width * 0.015,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xffffffff),
+                            color: const Color(0xffffffff),
                           ),
                         ),
                       ),
@@ -269,7 +269,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         },
                   child: Container(
                     width: globals.width * 0.18,
-                    color: Color.fromARGB(255, 255, 255, 255),
+                    color: const Color.fromARGB(255, 255, 255, 255),
                     padding: const EdgeInsets.symmetric(
                       vertical: 6,
                       // horizontal: 9,
@@ -280,7 +280,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         style: GoogleFonts.inter(
                           fontSize: globals.width * 0.015,
                           fontWeight: FontWeight.w600,
-                          color: Color.fromARGB(255, 98, 123, 119),
+                          color: const Color.fromARGB(255, 98, 123, 119),
                         ),
                       ),
                     ),
@@ -357,9 +357,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               height: MediaQuery.of(context).size.height * 0.6,
               duration: Duration(seconds: animLength),
               curve: Curves.easeInOut,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 255, 255, 255),
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topRight: Radius.circular(40.0),
                   topLeft: Radius.circular(40.0),
                 ),
@@ -383,7 +383,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                       fontSize: globals.width * 0.016,
                                       fontWeight: FontWeight.bold,
                                       height: 1,
-                                      color: Color.fromARGB(255, 34, 65, 54)),
+                                      color: const Color.fromARGB(
+                                          255, 34, 65, 54)),
                                 ),
                                 Text(
                                   " to your account",
@@ -391,7 +392,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   style: GoogleFonts.inter(
                                       fontSize: globals.width * 0.016,
                                       height: 1,
-                                      color: Color.fromARGB(255, 34, 65, 54)),
+                                      color: const Color.fromARGB(
+                                          255, 34, 65, 54)),
                                 ),
                               ])
                         : Container(),
@@ -404,7 +406,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           //     index: 1,
                           //   );
                           // }
-                          return MyCustomForm();
+                          return const MyCustomForm();
                         }),
                     // SizedBox(
                     //   height: MediaQuery.of(context).size.height * 0.22,
@@ -421,7 +423,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   style: GoogleFonts.inter(
                                     fontSize: globals.width * 0.01,
                                     height: 1,
-                                    color: Color.fromARGB(255, 116, 129, 127),
+                                    color: const Color.fromARGB(
+                                        255, 116, 129, 127),
                                   ),
                                 ),
                                 TextButton(
@@ -441,7 +444,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                       fontSize: globals.width * 0.01,
                                       fontWeight: FontWeight.bold,
                                       height: 1,
-                                      color: Color.fromARGB(255, 34, 65, 54),
+                                      color:
+                                          const Color.fromARGB(255, 34, 65, 54),
                                     ),
                                   ),
                                 ),
@@ -473,9 +477,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 height: MediaQuery.of(context).size.height * 0.8,
                 duration: Duration(seconds: animLength),
                 curve: Curves.easeInOut,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: const BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                     topRight: Radius.circular(40.0),
                     topLeft: Radius.circular(40.0),
                   ),
@@ -499,7 +503,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                         fontSize: globals.width * 0.016,
                                         fontWeight: FontWeight.bold,
                                         height: 1,
-                                        color: Color.fromARGB(255, 34, 65, 54)),
+                                        color: const Color.fromARGB(
+                                            255, 34, 65, 54)),
                                   ),
                                   Text(
                                     " an account",
@@ -507,12 +512,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     style: GoogleFonts.inter(
                                         fontSize: globals.width * 0.016,
                                         height: 1,
-                                        color: Color.fromARGB(255, 34, 65, 54)),
+                                        color: const Color.fromARGB(
+                                            255, 34, 65, 54)),
                                   ),
                                 ])
                           : Container(),
                       SizedBox(height: globals.height * 0.01),
-                      LogInForm(),
+                      const LogInForm(),
                       // SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                       !signup.isLoading
                           ? Align(
@@ -526,7 +532,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     style: GoogleFonts.inter(
                                       fontSize: globals.width * 0.01,
                                       height: 1,
-                                      color: Color.fromARGB(255, 116, 129, 127),
+                                      color: const Color.fromARGB(
+                                          255, 116, 129, 127),
                                     ),
                                   ),
                                   TextButton(
@@ -546,7 +553,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                         fontSize: globals.width * 0.01,
                                         fontWeight: FontWeight.bold,
                                         height: 1,
-                                        color: Color.fromARGB(255, 34, 65, 54),
+                                        color: const Color.fromARGB(
+                                            255, 34, 65, 54),
                                       ),
                                     ),
                                   ),

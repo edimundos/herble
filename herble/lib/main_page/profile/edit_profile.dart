@@ -38,12 +38,14 @@ class _UsernameBodyState extends State<UsernameBody> {
     emailController.text = globals.email;
   }
 
+  @override
   void dispose() {
     emailController.dispose();
     usernameController.dispose();
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,8 +77,8 @@ class _UsernameBodyState extends State<UsernameBody> {
                           },
                           child: Row(
                             children: [
-                              Container(
-                                width: globals.width * 0.08,
+                              SizedBox(
+                                width: globals.width * 0.09,
                                 height: globals.height * 0.014,
                                 child: Center(
                                   child: Text(
@@ -110,133 +112,140 @@ class _UsernameBodyState extends State<UsernameBody> {
                           ),
                         ),
                       ),
-                      // const SizedBox(
-                      //   width: 5,
-                      // ),
                       const Spacer(),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                        ),
-                        onPressed: !isDisabled
-                            ? () async {
-                                setState(() {
-                                  isDisabled = true;
-                                });
-                                int validator = await dataIsValid(
-                                  usernameController.text,
-                                  emailController.text,
-                                );
-                                if (validator == 100) {
-                                  await updateEmail(
+                      SizedBox(
+                        width: globals.width * 0.095,
+                        height: globals.height * 0.015,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              elevation: 0),
+                          onPressed: !isDisabled
+                              ? () async {
+                                  setState(() {
+                                    isDisabled = true;
+                                  });
+                                  int validator = await dataIsValid(
+                                    usernameController.text,
                                     emailController.text,
                                   );
-                                  await updateUsername(
-                                    usernameController.text,
-                                  );
-                                  globals.email = emailController.text;
-                                  globals.username = usernameController.text;
-                                  setState(() {
-                                    isDisabled = false;
-                                  });
-                                  Future.delayed(Duration.zero,
-                                      () => _navigateToPlantList(context));
-                                } else if (validator == 103) {
-                                  setState(() {
-                                    isDisabled = false;
-                                  });
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: const Text(
-                                            'A user with this username already exists'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'Ok'),
-                                            child: const Text('Ok'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else if (validator == 104) {
-                                  setState(() {
-                                    isDisabled = false;
-                                  });
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: const Text(
-                                            'Username must be longer than 3 characters'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'Ok'),
-                                            child: const Text('Ok'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else if (validator == 101) {
-                                  setState(() {
-                                    isDisabled = false;
-                                  });
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: const Text(
-                                            'New email must contain @'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'sorry'),
-                                            child: const Text('sorry'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } else if (validator == 102) {
-                                  setState(() {
-                                    isDisabled = false;
-                                  });
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: const Text(
-                                            'A user with this email already exists'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'sorry'),
-                                            child: const Text('sorry'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
+                                  if (validator == 100) {
+                                    await updateEmail(
+                                      emailController.text,
+                                    );
+                                    await updateUsername(
+                                      usernameController.text,
+                                    );
+                                    globals.email = emailController.text;
+                                    globals.username = usernameController.text;
+                                    setState(() {
+                                      isDisabled = false;
+                                    });
+                                    Future.delayed(Duration.zero,
+                                        () => _navigateToPlantList(context));
+                                  } else if (validator == 103) {
+                                    setState(() {
+                                      isDisabled = false;
+                                    });
+                                    // ignore: use_build_context_synchronously
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: const Text(
+                                              'A user with this username already exists'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'Ok'),
+                                              child: const Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else if (validator == 104) {
+                                    setState(() {
+                                      isDisabled = false;
+                                    });
+                                    // ignore: use_build_context_synchronously
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: const Text(
+                                              'Username must be longer than 3 characters'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'Ok'),
+                                              child: const Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else if (validator == 101) {
+                                    setState(() {
+                                      isDisabled = false;
+                                    });
+                                    // ignore: use_build_context_synchronously
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: const Text(
+                                              'New email must contain @'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'Ok'),
+                                              child: const Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else if (validator == 102) {
+                                    setState(() {
+                                      isDisabled = false;
+                                    });
+                                    // ignore: use_build_context_synchronously
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: const Text(
+                                              'A user with this email already exists'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'Ok'),
+                                              child: const Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
                                 }
-                              }
-                            : null,
-                        child: Center(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 25.0),
-                              child: Text(
-                                'Save',
-                                style: GoogleFonts.inter(
-                                  fontSize: globals.width * 0.017,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1,
-                                  color: const Color.fromARGB(255, 31, 100, 58),
+                              : null,
+                          child: Center(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 25.0),
+                                child: SizedBox(
+                                  child: Text(
+                                    'Save',
+                                    style: GoogleFonts.inter(
+                                      fontSize: globals.width * 0.017,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1,
+                                      color: const Color.fromARGB(
+                                          255, 31, 100, 58),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -261,7 +270,7 @@ class _UsernameBodyState extends State<UsernameBody> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -291,7 +300,7 @@ class _UsernameBodyState extends State<UsernameBody> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: TextField(
                   controller: usernameController,
                   decoration: InputDecoration(

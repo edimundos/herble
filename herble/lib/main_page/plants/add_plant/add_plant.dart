@@ -54,6 +54,7 @@ class _PlantFormState extends State<PlantForm> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
@@ -71,7 +72,7 @@ class _PlantFormState extends State<PlantForm> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MainPage(
+                                    builder: (context) => const MainPage(
                                           index: 1,
                                         )),
                               );
@@ -143,8 +144,8 @@ class _PlantFormState extends State<PlantForm> {
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 16),
                         child: TextField(
                           controller: nameController,
                           decoration: const InputDecoration(
@@ -155,8 +156,8 @@ class _PlantFormState extends State<PlantForm> {
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 16),
                         child: TextField(
                           controller: descriptionController,
                           decoration: const InputDecoration(
@@ -167,8 +168,8 @@ class _PlantFormState extends State<PlantForm> {
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 16),
                         child: TextField(
                           keyboardType: TextInputType.number,
                           inputFormatters: [
@@ -185,8 +186,8 @@ class _PlantFormState extends State<PlantForm> {
                       ),
                       Padding(
                         //te ganjau vajadzes kaut kādu check box ar dazadiem variantiem or smth un tad pedejais variants "Custom:"
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 16),
                         child: TextField(
                           keyboardType: TextInputType.number,
                           inputFormatters: [
