@@ -355,6 +355,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             opacity: 1,
             child: AnimatedContainer(
               height: MediaQuery.of(context).size.height * 0.6,
+              
               duration: Duration(seconds: animLength),
               curve: Curves.easeInOut,
               decoration: BoxDecoration(
@@ -406,11 +407,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           // }
                           return MyCustomForm();
                         }),
-                    SizedBox(
-                      height: globals.height * 0.03,
-                    ),
+                     SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.22,
+                     ),
                     !login.isLoading
-                        ? Center(
+                        ? Align(
+                          alignment: Alignment.bottomCenter,
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -512,9 +514,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           : Container(),
                       SizedBox(height: globals.height * 0.01),
                       LogInForm(),
-                      SizedBox(height: globals.height * 0.002),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                       !signup.isLoading
-                          ? Center(
+                          ? Align(
+                             alignment: Alignment.bottomCenter,
                               child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -528,7 +531,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 TextButton(
-                                  // The "Register" text is now a button
                                   onPressed: () {
                                     Navigator.pop(context);
                                     Future.delayed(

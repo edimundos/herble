@@ -33,7 +33,7 @@ class _TipFormState extends State<TipForm> {
       body: Column(
         children: [
           SizedBox(
-              height: 100,
+              height: globals.height * 0.04,
               child: Row(
                 children: [
                   Padding(
@@ -41,9 +41,9 @@ class _TipFormState extends State<TipForm> {
                     child: Text(
                       "Tips",
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
+                      style: GoogleFonts.caudex(
+                        fontSize: globals.width * 0.03,
+                        // fontWeight: FontWeight.bold,
                         height: 1,
                         color: const Color.fromARGB(255, 32, 54, 50),
                       ),

@@ -132,8 +132,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           border: OutlineInputBorder(),
                           labelText: 'Password',
                           labelStyle: TextStyle(
-                            fontFamily: 'GoogleFonts.inter',
-                            fontSize: globals.width * 0.011,
+                            fontFamily: 'GoogleFonts.inter', 
                             color: Colors.grey,
                           ),
                           suffixIcon: IconButton(
@@ -213,26 +212,60 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     signInFirebase();
 
                     setState(() {
-                      isLoading = false;
+                      isLoading = true;
                     });
+                    
+                    var pass = checkPass(emailController.text, pwController.text);
+                    if (await pass) {
+                      // DateTime now = DateTime.now();
+                      // Time notificationTime = Time(now.hour, now.minute + 1, 0);
+                      // Duration repeatInterval = const Duration(seconds: 10);
+                      // await NotificationService().scheduleNotification(
+                      //   3, //id
+                      //   'test', //title
+                      //   'Click the notification to confirm that you filled it', //text
+                      //   notificationTime,
+                      //   repeatInterval,
+                      // );
+                      // globals.isLoggedIn = true;
+                      globals.password = pwController.text;
+                      globals.username = emailController.text;
+                      globals.isLoggedIn = true;
+                      globals.userID = await getUserID(
+                        emailController.text,
+                      );
+                      await getEmailAndUsername();
+                      globals.wateringTime = await getUserTime(
+                        emailController.text,
+                      );
+            
+                      signInFirebase();
+            
+                      setState(() {
+                        isLoading = false;
+                      });
+            
+                      final prefs =
+                          await SharedPreferences.getInstance(); //remember me
+                      if (rememberMe) {
+                        await prefs.setInt('userID', globals.userID);
+                        await prefs.setString('password', globals.password);
+                      } else {
+                        await prefs.remove("userID");
+                        await prefs.remove("password");
+                      }
+            
+                      _navigateToPlantList(context);
 
                     final prefs = await SharedPreferences.getInstance();
                     if (rememberMe) {
                       await prefs.setInt('userID', globals.userID);
                       await prefs.setString('password', globals.password);
                     } else {
-                      await prefs.remove("userID");
-                      await prefs.remove("password");
-                    }
-
-                    _navigateToPlantList(context);
-                  } else {
-                    setState(() {
-                      isLoading = false;
-                    });
-
-                    if (unverifiedAccount == false) {
-                      // ignore: use_build_context_synchronously
+                      setState(() {
+                        isLoading = false;
+                      });
+                      if (unverifiedAccount == false) {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -241,37 +274,37 @@ class _MyCustomFormState extends State<MyCustomForm> {
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () =>
-                                      Navigator.pop(context, 'sorry'),
-                                  child: const Text('sorry'),
+                                      Navigator.pop(context, 'Ok'),
+                                  child: const Text('Ok'),
                                 ),
                               ],
                             );
                           });
                     }
-                  }
-                },
-                child: SizedBox(
-                  height: globals.height * 0.02,
-                  width: globals.width * 0.27,
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color.fromARGB(255, 34, 65, 54),
-                    ),
-                    child: Text(
-                      'Log in',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                        fontSize: globals.width * 0.011,
-                        fontWeight: FontWeight.w500,
-                        height: 1,
-                        color: Color.fromARGB(255, 226, 233, 218),
+                    }
+                  },
+                  child: SizedBox(
+                    height: globals.height * 0.02,
+                    width: globals.width * 0.27,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color.fromARGB(255, 34, 65, 54),
+                      ),
+                      child: Text(
+                        'Log in',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w500,
+                          height: 1,
+                          color: Color.fromARGB(255, 226, 233, 218),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              )
+            )
             : Container(),
       ],
     );
