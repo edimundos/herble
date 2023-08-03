@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/colors.dart';
 import 'package:herble/main_page/profile/change_pw.dart';
@@ -255,19 +256,15 @@ class _ProfileBodyState extends State<ProfileBody> {
           TextButton(
             onPressed: () async {
               FirebaseAuth.instance.signOut();
-              globals.isLoggedIn = false;
-              globals.userID = 0;
+              // globals.isLoggedIn = false;
+              // globals.userID = 0;
               final prefs = await SharedPreferences.getInstance();
               await prefs.remove("userID");
               await prefs.remove("password");
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      const AppStartPage(), // Replace with your initial screen
-                ),
-                (Route<dynamic> route) =>
-                    false, // Remove all previous routes from the stack
-              );
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                if (!mounted) return;
+                Navigator.popUntil(context, (route) => route.isFirst);
+              });
             },
             child: Container(
               width: globals.width * 0.24,

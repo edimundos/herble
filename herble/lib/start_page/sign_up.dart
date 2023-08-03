@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/src/types.dart';
@@ -7,6 +8,7 @@ import 'package:herble/main_page/main_page.dart';
 import 'package:herble/start_page/verif_email_page.dart';
 import 'package:http/http.dart' as http;
 import '../globals.dart' as globals;
+import '../start_page/DatabaseUsers.dart' as FUser;
 import 'package:email_auth/email_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -639,16 +641,34 @@ class _LogInFormState extends State<LogInForm> {
           .createUserWithEmailAndPassword(
               email: emailController.text.trim(),
               password: pwController1.text.trim());
+
+      // WRITE DATA TO FIREBASE DATASTORE
+      // DOC.ID = EMAIL
+
+      createUser();
+
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
+      print("here");
       print(e);
+      print("here");
     }
     return null;
+  }
 
-    // await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //   email: emailController.text.trim(),
-    //   password: pwController1.text.trim(),
-    // );
+  Future createUser() async {
+    final docUser = FirebaseFirestore.instance
+        .collection("users")
+        .doc(emailController.text.trim());
+
+    final user = FUser.User(
+        email: emailController.text.trim(),
+        username: usernameController.text.trim(),
+        waterTimeMin: selectedTime24Hour.hour * 60 + selectedTime24Hour.minute);
+
+    final json = user.toJson();
+
+    await docUser.set(json);
   }
 
   Future<void> postUser(String username, String pw, String email) async {
