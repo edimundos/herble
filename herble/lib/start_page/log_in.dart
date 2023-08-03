@@ -132,19 +132,17 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           border: OutlineInputBorder(),
                           labelText: 'Password',
                           labelStyle: TextStyle(
-                            fontFamily: 'GoogleFonts.inter', 
+                            fontFamily: 'GoogleFonts.inter',
                             color: Colors.grey,
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              // Based on passwordVisible state choose the icon
                               passwordVisible
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                               color: Color.fromARGB(255, 56, 56, 56),
                             ),
                             onPressed: () {
-                              // Update the state i.e. toogle the state of passwordVisible variable
                               setState(() {
                                 passwordVisible = !passwordVisible;
                               });
@@ -157,30 +155,56 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ))
             : Container(),
         !isLoading
-            ? Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
-                    child: GestureDetector(
-                      child: Text(
-                        "Forgot Password?",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          height: 1,
-                          color: Color.fromARGB(255, 116, 129, 127),
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      child: SizedBox(
+                        height: globals.height * 0.02,
+                        width: globals.width * 0.27,
+                        child: Text(
+                          "Forgot Password?",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.inter(
+                            fontSize: globals.width * 0.014,
+                            decoration: TextDecoration.underline,
+                            height: 1,
+                            color: Color.fromARGB(255, 116, 129, 127),
+                          ),
                         ),
                       ),
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const ForgotPasswordPage())),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
             : Container(),
         !isLoading
             ? TextButton(
+                child: Center(
+                  child: SizedBox(
+                    height: globals.height * 0.02,
+                    width: globals.width * 0.27,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color.fromARGB(255, 34, 65, 54),
+                      ),
+                      child: Text(
+                        'Log in',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w500,
+                          height: 1,
+                          color: Color.fromARGB(255, 226, 233, 218),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 onPressed: () async {
                   setState(() {
                     isLoading = true;
@@ -214,8 +238,9 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     setState(() {
                       isLoading = true;
                     });
-                    
-                    var pass = checkPass(emailController.text, pwController.text);
+
+                    var pass =
+                        checkPass(emailController.text, pwController.text);
                     if (await pass) {
                       // DateTime now = DateTime.now();
                       // Time notificationTime = Time(now.hour, now.minute + 1, 0);
@@ -238,13 +263,13 @@ class _MyCustomFormState extends State<MyCustomForm> {
                       globals.wateringTime = await getUserTime(
                         emailController.text,
                       );
-            
+
                       signInFirebase();
-            
+
                       setState(() {
                         isLoading = false;
                       });
-            
+
                       final prefs =
                           await SharedPreferences.getInstance(); //remember me
                       if (rememberMe) {
@@ -254,14 +279,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         await prefs.remove("userID");
                         await prefs.remove("password");
                       }
-            
-                      _navigateToPlantList(context);
 
-                    final prefs = await SharedPreferences.getInstance();
-                    if (rememberMe) {
-                      await prefs.setInt('userID', globals.userID);
-                      await prefs.setString('password', globals.password);
-                    } else {
+                      _navigateToPlantList(context);
                       setState(() {
                         isLoading = false;
                       });
@@ -273,8 +292,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                               content: const Text('Incorrect password/email'),
                               actions: <Widget>[
                                 TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Ok'),
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
                                   child: const Text('Ok'),
                                 ),
                               ],
@@ -312,7 +330,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
   Future<bool> checkPass(String username) async {
     bool checking = await signInFirebase();
-    print("Big D");
     print(checking);
     if (checking && FirebaseAuth.instance.currentUser?.emailVerified == true) {
       // readUserByUsername();

@@ -32,6 +32,7 @@ class _TipFormState extends State<TipForm> {
     return Scaffold(
       body: Column(
         children: [
+          SizedBox(height: globals.height * 0.004),
           SizedBox(
               height: globals.height * 0.04,
               child: Row(
@@ -108,8 +109,8 @@ class _TipFormState extends State<TipForm> {
                                 child: Text(
                                   globals.allTips![index].title,
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 25,
+                                  style: GoogleFonts.inter(
+                                    fontSize: globals.height * 0.009,
                                     fontWeight: FontWeight.bold,
                                     height: 1,
                                     color:
@@ -145,8 +146,8 @@ class _TipFormState extends State<TipForm> {
                                 child: Text(
                                   ("${globals.allTips![index].description.substring(0, 50)}..."),
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 20,
+                                  style: GoogleFonts.inter(
+                                    fontSize: globals.height * 0.008,
                                     fontWeight: FontWeight.normal,
                                     height: 1,
                                     color:

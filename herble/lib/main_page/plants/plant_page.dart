@@ -88,7 +88,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                       itemCount: plants.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 35),
                           child: GestureDetector(
                             onTap: () {
                               globals.currentPlant = plants[index];
@@ -106,7 +106,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                 height: globals.height * 0.11,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: mainpallete.shade100,
+                                  color: Color.fromARGB(255, 214, 224, 221),
                                   border: Border.all(
                                     color: mainpallete
                                         .shade200, // Set the color of the outline
@@ -169,7 +169,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                       const EdgeInsets.only(
                                                           left: 0.0),
                                                   child: SizedBox(
-                                                    width: globals.width * 0.1,
+                                                    width: globals.width * 0.2,
                                                     child: Text(
                                                       plants[index].plantName,
                                                       textAlign: TextAlign.left,
@@ -193,31 +193,36 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                   height:
                                                       globals.height * 0.001,
                                                 ),
-                                                SizedBox(
-                                                  width: globals.width * 0.1,
-                                                  child: Text(
-                                                    plants[index]
-                                                                .plantDescription
-                                                                .length >=
-                                                            20
-                                                        ? plants[index]
-                                                                .plantDescription
-                                                                .substring(
-                                                                    0, 20) +
-                                                            "..."
-                                                        : plants[index]
-                                                            .plantDescription,
-                                                    textAlign: TextAlign.left,
-                                                    overflow: TextOverflow.clip,
-                                                    style: GoogleFonts.inter(
-                                                      fontSize:
-                                                          globals.width * 0.015,
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      height: 1,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255, 32, 54, 50),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 0.0),
+                                                  child: SizedBox(
+                                                    width: globals.width * 0.2,
+                                                    child: Text(
+                                                      plants[index]
+                                                                  .plantDescription
+                                                                  .length >=
+                                                              60
+                                                          ? plants[index]
+                                                                  .plantDescription
+                                                                  .substring(
+                                                                      0, 60) +
+                                                              "..."
+                                                          : plants[index]
+                                                              .plantDescription,
+                                                      textAlign: TextAlign.left,
+                                                      overflow:
+                                                          TextOverflow.clip,
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        height: 1,
+                                                        color: const Color
+                                                                .fromARGB(
+                                                            255, 32, 54, 50),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -236,11 +241,19 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                           children: [
                                             Row(
                                               children: [
+                                                Icon(
+                                                  Icons
+                                                      .water_drop, // Use the water_drop icon from Material Icons
+                                                  size: globals.width *
+                                                      0.02, // Adjust the icon size as needed
+                                                  color: const Color.fromARGB(
+                                                      255, 32, 54, 50),
+                                                ),
                                                 Text(
-                                                  "Watering frequency: ",
+                                                  " frequency: ",
                                                   style: GoogleFonts.inter(
                                                     fontSize:
-                                                        globals.width * 0.015,
+                                                        globals.width * 0.018,
                                                     fontWeight: FontWeight.bold,
                                                     height: 1,
                                                     color: const Color.fromARGB(
@@ -253,8 +266,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                       : "every ${plants[index].dayCount} days",
                                                   overflow: TextOverflow.clip,
                                                   style: GoogleFonts.inter(
-                                                    fontSize:
-                                                        globals.width * 0.012,
+                                                    fontSize: 17,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     height: 1,
@@ -267,12 +279,20 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                             const SizedBox(height: 15),
                                             Row(
                                               children: [
+                                                Icon(
+                                                  Icons
+                                                      .water_drop, // Use the water_drop icon from Material Icons
+                                                  size: globals.width *
+                                                      0.02, // Adjust the icon size as needed
+                                                  color: const Color.fromARGB(
+                                                      255, 32, 54, 50),
+                                                ),
                                                 Text(
-                                                  "Watering volume: ",
+                                                  " volume: ",
                                                   overflow: TextOverflow.clip,
                                                   style: GoogleFonts.inter(
                                                     fontSize:
-                                                        globals.width * 0.015,
+                                                        globals.width * 0.018,
                                                     fontWeight: FontWeight.bold,
                                                     // height: 1,
                                                     color: const Color.fromARGB(
@@ -282,8 +302,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                                                 Text(
                                                   "${plants[index].waterVolume.toString()} ml",
                                                   style: GoogleFonts.inter(
-                                                    fontSize:
-                                                        globals.width * 0.012,
+                                                    fontSize: 17,
                                                     fontWeight:
                                                         FontWeight.normal,
                                                     // height: 1,
@@ -347,7 +366,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
                           style: GoogleFonts.inter(
                             fontSize: globals.width * 0.01,
                             height: 1,
-                            color: Color.fromARGB(255, 116, 129, 127),
+                            color: const Color.fromARGB(255, 116, 129, 127),
                           ),
                         ),
                         TextButton(

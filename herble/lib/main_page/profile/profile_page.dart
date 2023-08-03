@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/colors.dart';
-import 'package:herble/main_page/profile/change_email.dart';
 import 'package:herble/main_page/profile/change_pw.dart';
-import 'package:herble/main_page/profile/change_username.dart';
+import 'package:herble/main_page/profile/edit_profile.dart';
 import 'package:herble/start_page/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../globals.dart' as globals;
@@ -44,12 +43,13 @@ class _ProfileBodyState extends State<ProfileBody> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
+          SizedBox(height: globals.height * 0.004),
           SizedBox(
               height: globals.height * 0.04,
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 25.0),
+                    padding: const EdgeInsets.only(left: 15.0),
                     child: Text(
                       "Profile page",
                       textAlign: TextAlign.left,
@@ -69,7 +69,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (BuildContext context) {
-                              return const ChangeUsername(); // Replace ChangeSettings with the actual widget for the settings page
+                              return const ChangePassword(); // Replace ChangeSettings with the actual widget for the settings page
                             },
                           ),
                         );
@@ -78,15 +78,6 @@ class _ProfileBodyState extends State<ProfileBody> {
                           size: globals.width * 0.03, color: Colors.black26),
                     ),
                   ),
-                  // const Align(
-                  //   alignment: Alignment.centerRight,
-                  //   child: Padding(
-                  //     padding: EdgeInsets.all(25.0),
-                  //     child: Image(
-                  //       image: AssetImage("assets/herble_logo.png"),
-                  //     ),
-                  //   ),
-                  // )
                 ],
               )),
           SizedBox(
@@ -111,7 +102,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(right: 15.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -172,7 +163,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   fontSize: globals.width * 0.017,
                   fontWeight: FontWeight.normal,
                   height: 1,
-                  color: const Color.fromARGB(255, 32, 54, 50),
+                  color: Colors.black54,
                 ),
               ),
             ),
@@ -182,16 +173,6 @@ class _ProfileBodyState extends State<ProfileBody> {
           ),
           Column(
             children: [
-              // GestureDetector(
-              //   onTap: () {
-              //     Navigator.of(context).push(
-              //       MaterialPageRoute(
-              //         builder: (BuildContext context) {
-              //           return const ChangeEmail();
-              //         },
-              //       ),
-              //     );
-              //   },
               Column(
                 children: [
                   Padding(
@@ -214,7 +195,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                     ),
                   ),
                   SizedBox(
-                    height: globals.height * 0.002,
+                    height: globals.height * 0.0017,
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: 15.0, right: 15.0),
@@ -225,7 +206,6 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ),
                 ],
               ),
-
               SizedBox(
                 height: globals.height * 0.015,
               ),
@@ -251,7 +231,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                     ),
                   ),
                   SizedBox(
-                    height: globals.height * 0.002,
+                    height: globals.height * 0.0017,
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: 15.0, right: 15.0),
@@ -262,7 +242,6 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ),
                 ],
               ),
-
               SizedBox(
                 height: globals.height * 0.07,
               ),
