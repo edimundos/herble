@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,12 +34,13 @@ class _UpdatePageState extends State<UpdatePlantBasics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: PlantUpdateForm(
-      plant: widget.plant,
-      pic: widget.pic,
-      picId: widget.picId,
-      cum: 0,
-    ));
+      body: PlantUpdateForm(
+        plant: widget.plant,
+        pic: widget.pic,
+        picId: widget.picId,
+        cum: 0,
+      ),
+    );
   }
 }
 
@@ -49,10 +51,12 @@ Future<void> main() async {
   } on CameraException catch (e) {
     print('Error in fetching the cameras: $e');
   }
-  runApp(const PicturePage(
-    pic: null,
-    cum: 0,
-  ));
+  runApp(
+    const PicturePage(
+      pic: null,
+      cum: 0,
+    ),
+  );
 }
 
 class _PicturePageState extends State<PicturePage> {
@@ -88,13 +92,13 @@ class PlantUpdateForm extends StatefulWidget {
   final int? picId;
   final int cum;
 
-  const PlantUpdateForm(
-      {Key? key,
-      required this.plant,
-      required this.pic,
-      required this.picId,
-      required this.cum})
-      : super(key: key);
+  const PlantUpdateForm({
+    Key? key,
+    required this.plant,
+    required this.pic,
+    required this.picId,
+    required this.cum,
+  }) : super(key: key);
 
   @override
   State<PlantUpdateForm> createState() => _PlantUpdateFormState();
@@ -105,7 +109,7 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
   final descriptionController = TextEditingController();
   final dayController = TextEditingController();
   final volumeController = TextEditingController();
-  late Uint8List? currentPicture;
+  Uint8List? updatedPicture = null;
   int? picId;
 
   @override
@@ -123,9 +127,6 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
     descriptionController.text = widget.plant.plantDescription;
     dayController.text = widget.plant.dayCount.toString();
     volumeController.text = widget.plant.waterVolume.toString();
-    // if (widget.pic != null) {
-    //   currentPicture = widget.pic!;
-    // }
     super.initState();
   }
 
@@ -144,205 +145,208 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
         child: Column(
           children: [
             SizedBox(
-                height: 100,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Material(
-                        shape: const CircleBorder(),
-                        clipBehavior: Clip.hardEdge,
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => IndividualPlant(
-                                  plant: globals.currentPlant,
-                                  pic: widget.pic,
-                                ),
+              height: 100,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Material(
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => IndividualPlant(
+                                plant: globals.currentPlant,
+                                pic: widget.pic,
                               ),
-                            );
-                          },
-                          icon: Icon(Icons.arrow_back_sharp,
-                              size: globals.width * 0.03,
-                              color: Colors.black38),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_sharp,
+                          size: globals.width * 0.03,
+                          color: Colors.black38,
                         ),
                       ),
                     ),
-                    Center(
-                      child: Text(
-                        "Update basics",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.inter(
-                          fontSize: 25,
-                          // fontWeight: FontWeight.bold,
-                          height: 1,
-                          color: const Color.fromARGB(255, 32, 54, 50),
-                        ),
+                  ),
+                  Center(
+                    child: Text(
+                      "Update basics",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        fontSize: 25,
+                        // fontWeight: FontWeight.bold,
+                        height: 1,
+                        color: const Color.fromARGB(255, 32, 54, 50),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 30, 3, 30),
-                      child: ElevatedButton(
-                        // ignore: sort_child_properties_last
-
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-                          elevation: 0,
-                        ),
-                        onPressed: () async {
-                          int validator = dataIsValid(
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10.0, 30, 3, 30),
+                    child: ElevatedButton(
+                      // ignore: sort_child_properties_last
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+                        elevation: 0,
+                      ),
+                      onPressed: () async {
+                        int validator = dataIsValid(
+                          nameController.text,
+                          descriptionController.text,
+                          dayController.text,
+                          volumeController.text,
+                        );
+                        if (validator == 100 && globals.isLoggedIn) {
+                          await updatePlant(
                             nameController.text,
                             descriptionController.text,
-                            dayController.text,
-                            volumeController.text,
+                            int.parse(dayController.text),
+                            updatedPicture ??
+                                widget
+                                    .pic, // Use updatedPicture if available, otherwise use widget.pic
+                            int.parse(volumeController.text),
                           );
-                          if (validator == 100 && globals.isLoggedIn) {
-                            await updatePlant(
-                              nameController.text,
-                              descriptionController.text,
-                              int.parse(dayController.text),
-                              widget.pic,
-                              int.parse(volumeController.text),
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MainPage(index: 1)),
-                            );
-                          } else if (validator == 103) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content:
-                                      const Text('Day count must be a number'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Ok'),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else if (validator == 104) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: const Text(
-                                      'Water volume must be a number'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Ok'),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else if (validator == 105) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content:
-                                      const Text('Plant name cannot be empty'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Ok'),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else if (validator == 106) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content:
-                                      const Text('Day count cannot be empty'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Ok'),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else if (validator == 107) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: const Text(
-                                      'Water volume cannot be empty'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Ok'),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          } else {
-                            () {
-                              if (widget.cum == 1) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddPlantPage(
-                                            pic: currentPicture!,
-                                            picId: picId,
-                                          )),
-                                );
-                              } else if (widget.cum == 2) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UpdatePlantBasics(
-                                            pic: currentPicture!,
-                                            plant: globals.currentPlant,
-                                            picId: picId,
-                                          )),
-                                );
-                              }
-                            };
-                          }
-                        },
-                        // ignore: sort_child_properties_last
-
-                        child: Center(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 20.0),
-                              child: SizedBox(
-                                child: Text(
-                                  'Save',
-                                  style: GoogleFonts.inter(
-                                    fontSize: globals.width * 0.017,
-                                    fontWeight: FontWeight.w400,
-                                    height: 1,
-                                    color:
-                                        const Color.fromARGB(255, 31, 100, 58),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainPage(index: 1),
+                            ),
+                          );
+                        } else if (validator == 103) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content:
+                                    const Text('Day count must be a number'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
                                   ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (validator == 104) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content:
+                                    const Text('Water volume must be a number'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (validator == 105) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content:
+                                    const Text('Plant name cannot be empty'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (validator == 106) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content:
+                                    const Text('Day count cannot be empty'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (validator == 107) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content:
+                                    const Text('Water volume cannot be empty'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          () {
+                            if (widget.cum == 1) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddPlantPage(
+                                    pic: updatedPicture ?? widget.pic,
+                                    picId: picId,
+                                  ),
+                                ),
+                              );
+                            } else if (widget.cum == 2) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => UpdatePlantBasics(
+                                    pic: updatedPicture ?? widget.pic,
+                                    plant: globals.currentPlant,
+                                    picId: picId,
+                                  ),
+                                ),
+                              );
+                            }
+                          };
+                        }
+                      },
+                      // ignore: sort_child_properties_last
+                      child: Center(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: SizedBox(
+                              child: Text(
+                                'Save',
+                                style: GoogleFonts.inter(
+                                  fontSize: globals.width * 0.017,
+                                  fontWeight: FontWeight.w400,
+                                  height: 1,
+                                  color: const Color.fromARGB(255, 31, 100, 58),
                                 ),
                               ),
                             ),
@@ -350,8 +354,10 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                         ),
                       ),
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              ),
+            ),
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
@@ -369,9 +375,7 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                             leading: const Icon(Icons.photo_library),
                             title: const Text('Choose from Gallery'),
                             onTap: () {
-                              _useGalery();
-                              // Navigator.pop(context); // Close the bottom sheet
-                              // Add your code for handling the "Choose from Gallery" option here
+                              _useGallery();
                             },
                           ),
                           ListTile(
@@ -381,11 +385,11 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        CameraScreen(cum: widget.cum)),
+                                  builder: (context) =>
+                                      CameraScreen(cum: widget.cum),
+                                ),
                               );
                               picId = null; // Close the bottom sheet
-                              // Add your code for handling the "Take Photo" option here
                             },
                           ),
                           ListTile(
@@ -396,8 +400,9 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        PicturePage(pic: widget.pic, cum: 2)),
+                                  builder: (context) =>
+                                      PicturePage(pic: widget.pic, cum: 2),
+                                ),
                               );
                             },
                           ),
@@ -405,7 +410,13 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                             leading: const Icon(Icons.delete),
                             title: const Text('Remove Current Photo'),
                             onTap: () {
-                              Navigator.pop(context);
+                              loadImageFromAssets('assets/default_plant-1.jpg')
+                                  .then((value) {
+                                setState(() {
+                                  updatedPicture = value;
+                                });
+                              });
+                              Navigator.pop(context); // Close the bottom sheet
                             },
                           ),
                         ],
@@ -420,7 +431,9 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                 child: Stack(
                   children: [
                     Image.memory(
-                      widget.pic,
+                      updatedPicture ??
+                          widget
+                              .pic, // Use updatedPicture or the original picture (widget.pic)
                       width: 200.0,
                       height: 200.0,
                       fit: BoxFit.cover,
@@ -438,40 +451,6 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                 ),
               ),
             ),
-
-            // GestureDetector(
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //           builder: (context) =>
-            //               PicturePage(pic: widget.pic, cum: 2)),
-            //     );
-            //   },
-            //   child: ClipRRect(
-            //     clipBehavior: Clip.hardEdge,
-            //     borderRadius: BorderRadius.circular(35),
-            //     child: Stack(
-            //       children: [
-            //         Image.memory(
-            //           widget.pic,
-            //           width: 200.0,
-            //           height: 200.0,
-            //           fit: BoxFit.cover,
-            //         ),
-            //         const Positioned(
-            //           bottom: 10,
-            //           right: 10,
-            //           child: Icon(
-            //             Icons.edit,
-            //             color: Colors.black45,
-            //             size: 40.0,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: Column(
@@ -530,8 +509,10 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
                         if (value.length > 200) {
                           descriptionController.text = value.substring(0, 200);
                           descriptionController.selection =
-                              TextSelection.fromPosition(TextPosition(
-                                  offset: descriptionController.text.length));
+                              TextSelection.fromPosition(
+                            TextPosition(
+                                offset: descriptionController.text.length),
+                          );
                         }
 
                         // Update the character count when the text changes
@@ -622,13 +603,13 @@ class _PlantUpdateFormState extends State<PlantUpdateForm> {
     return byteData.buffer.asUint8List();
   }
 
-  Future<void> _useGalery() async {
+  Future<void> _useGallery() async {
     var imagePicker = ImagePicker();
     picId = null;
     var image = await imagePicker.pickImage(source: ImageSource.gallery);
     Uint8List bytes = await image!.readAsBytes();
     setState(() {
-      currentPicture = bytes;
+      updatedPicture = bytes;
     });
   }
 }

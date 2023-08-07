@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 
-import 'home_page.dart';
-
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 

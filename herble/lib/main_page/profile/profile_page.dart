@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/colors.dart';
 import 'package:herble/main_page/profile/change_pw.dart';
 import 'package:herble/main_page/profile/edit_profile.dart';
-import 'package:herble/start_page/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../globals.dart' as globals;
 

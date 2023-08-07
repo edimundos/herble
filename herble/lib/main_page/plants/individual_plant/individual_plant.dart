@@ -40,7 +40,7 @@ class _IndividualPlantState extends State<IndividualPlant> {
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const PlantListScreen(),
+                              builder: (context) => const MainPage(index: 1),
                             ),
                           );
                         },
