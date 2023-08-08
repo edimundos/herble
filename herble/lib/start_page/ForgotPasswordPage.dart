@@ -44,9 +44,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage>
                     child: Text(
                       "Forgot Password",
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 42,
-                        fontWeight: FontWeight.bold,
+                      style: GoogleFonts.inter(
+                        fontSize: 30,
                         height: 1,
                         color: const Color.fromARGB(255, 32, 54, 50),
                       ),
@@ -66,26 +65,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage>
               )),
           const Flexible(
             child: FractionallySizedBox(
-              heightFactor: 0.3,
+              heightFactor: 0.2,
             ),
           ),
           Center(
             child: Column(children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
                 child: Text(
-                  "Recieve an email to reset your password",
+                  "Receive an email to reset your password",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.cormorantGaramond(
+                  style: GoogleFonts.inter(
                     fontSize: 30,
-                    fontWeight: FontWeight.bold,
                     height: 1,
                     color: const Color.fromARGB(255, 32, 54, 50),
                   ),
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 35,
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 0),
@@ -119,20 +117,40 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage>
               const SizedBox(
                 height: 20,
               ),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 0),
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size.fromHeight(50),
-                      backgroundColor: Colors.blueGrey),
-                  icon: Icon(Icons.email_outlined),
-                  label: Text("cancel"),
-                  onPressed: () {
+                child: GestureDetector(
+                  child: Text(
+                    "Cancel",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.inter(
+                      fontSize: 15,
+                      height: 1,
+                      color: Color.fromARGB(255, 184, 27, 27),
+                    ),
+                  ),
+                  onTap: () {
                     if (!mounted) return;
                     cancel();
                   },
                 ),
               )
+
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 0),
+              //   child: ElevatedButton.icon(
+              //     style: ElevatedButton.styleFrom(
+              //         minimumSize: Size.fromHeight(50),
+              //         backgroundColor: Colors.blueGrey),
+              //     icon: Icon(Icons.email_outlined),
+              //     label: Text("cancel"),
+              //     onPressed: () {
+              //       if (!mounted) return;
+              //       cancel();
+              //     },
+              //   ),
+              // )
             ]),
           )
         ],

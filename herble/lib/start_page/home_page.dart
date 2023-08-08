@@ -380,7 +380,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   "Log in ",
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.inter(
-                                      fontSize: globals.width * 0.016,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       height: 1,
                                       color: const Color.fromARGB(
@@ -390,7 +390,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   " to your account",
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.inter(
-                                      fontSize: globals.width * 0.016,
+                                      fontSize: 20,
                                       height: 1,
                                       color: const Color.fromARGB(
                                           255, 34, 65, 54)),
@@ -408,9 +408,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           // }
                           return const MyCustomForm();
                         }),
-                    // SizedBox(
-                    //   height: MediaQuery.of(context).size.height * 0.22,
-                    // ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                    ),
                     !login.isLoading
                         ? Align(
                             alignment: Alignment.bottomCenter,
@@ -500,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     "Register ",
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.inter(
-                                        fontSize: globals.width * 0.016,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         height: 1,
                                         color: const Color.fromARGB(
@@ -510,7 +510,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     " an account",
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.inter(
-                                        fontSize: globals.width * 0.016,
+                                        fontSize: 20,
                                         height: 1,
                                         color: const Color.fromARGB(
                                             255, 34, 65, 54)),
@@ -519,7 +519,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           : Container(),
                       SizedBox(height: globals.height * 0.01),
                       const LogInForm(),
-                      // SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.19),
                       !signup.isLoading
                           ? Align(
                               alignment: Alignment.bottomCenter,

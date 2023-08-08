@@ -130,7 +130,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           labelText: 'Password',
                           labelStyle: TextStyle(
                             fontFamily: 'GoogleFonts.inter',
-                            fontSize: globals.width * 0.011,
                             color: Colors.grey,
                           ),
                           suffixIcon: IconButton(
@@ -155,26 +154,31 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ))
             : Container(),
         !isLoading
-            ? Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
-                    child: GestureDetector(
-                      child: Text(
-                        "Forgot Password?",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          height: 1,
-                          color: Color.fromARGB(255, 116, 129, 127),
+            ? Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(52, 0, 0, 0),
+                      child: GestureDetector(
+                        child: Text(
+                          "Forgot Password?",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            decoration: TextDecoration.underline,
+                            height: 1,
+                            color: Color.fromARGB(255, 116, 129, 127),
+                          ),
                         ),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordPage())),
                       ),
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordPage())),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
             : Container(),
         !isLoading
@@ -237,9 +241,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
                               content: const Text('Incorrect password/email'),
                               actions: <Widget>[
                                 TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'sorry'),
-                                  child: const Text('sorry'),
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
+                                  child: const Text('Ok'),
                                 ),
                               ],
                             );
@@ -247,23 +250,25 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     }
                   }
                 },
-                child: SizedBox(
-                  height: globals.height * 0.02,
-                  width: globals.width * 0.27,
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color.fromARGB(255, 34, 65, 54),
-                    ),
-                    child: Text(
-                      'Log in',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                        fontSize: globals.width * 0.011,
-                        fontWeight: FontWeight.w500,
-                        height: 1,
-                        color: Color.fromARGB(255, 226, 233, 218),
+                child: Center(
+                  child: SizedBox(
+                    height: globals.height * 0.02,
+                    width: globals.width * 0.27,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color.fromARGB(255, 34, 65, 54),
+                      ),
+                      child: Text(
+                        'Log in',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          height: 1,
+                          color: Color.fromARGB(255, 226, 233, 218),
+                        ),
                       ),
                     ),
                   ),
