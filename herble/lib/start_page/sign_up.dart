@@ -62,13 +62,16 @@ class _LogInFormState extends State<LogInForm> {
   bool isEmailValid = true;
   bool showPasswordLengthMessage = false;
   bool emailExists = false;
+  final emailFocusNode = FocusNode();
+  final usernameFocusNode = FocusNode();
 
   void dispose() {
     emailController.dispose();
     pwController1.dispose();
     pwController2.dispose();
     usernameController.dispose();
-
+    emailFocusNode.dispose();
+    usernameFocusNode.dispose();
     super.dispose();
   }
 
@@ -146,9 +149,20 @@ class _LogInFormState extends State<LogInForm> {
       });
     });
     emailController.addListener(validateEmail);
-    emailController.addListener(checkEmailExists);
+    emailFocusNode.addListener(() {
+      if (!emailFocusNode.hasFocus) {
+        checkEmailExists(); // Check email existence when focus is lost
+        updateSubmitValid();
+      }
+    });
 
-    usernameController.addListener(checkUsernameExists);
+    usernameFocusNode.addListener(() {
+      if (!usernameFocusNode.hasFocus) {
+        // Check username existence when focus is lost
+        checkUsernameExists();
+        updateSubmitValid();
+      }
+    });
     emailAuth = EmailAuth(
       sessionName: "Sample session",
     );
@@ -196,11 +210,11 @@ class _LogInFormState extends State<LogInForm> {
                         width: globals.width * 0.27,
                         child: TextField(
                           controller: emailController,
+                          focusNode:
+                              emailFocusNode, // Associate the focus node with the field
                           onChanged: (text) {
                             // Validate email when the email field changes and text is not empty
-                            updateSubmitValid();
-                            validateEmail();
-                            checkEmailExists();
+                            validateEmail(); // Validate email format
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -268,9 +282,9 @@ class _LogInFormState extends State<LogInForm> {
                   controller: usernameController,
                   onChanged: (_) {
                     // Check username existence when the username field changes
-                    checkUsernameExists();
                     updateSubmitValid();
                   },
+                  focusNode: usernameFocusNode,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
