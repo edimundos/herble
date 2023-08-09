@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:herble/main_page/main_page.dart';
 import 'package:herble/main_page/plants/individual_plant/pre_update_screen.dart';
 import 'package:herble/main_page/plants/individual_plant/update_plant_basics.dart';
+import 'package:herble/main_page/plants/plant_page.dart';
 import '../../../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
@@ -31,25 +33,21 @@ class _IndividualPlantState extends State<IndividualPlant> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
+                    child: Material(
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => MainPage(
-                                      index: 1,
-                                    )),
+                              builder: (context) => const MainPage(index: 1),
+                            ),
                           );
                         },
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Image(
-                              image: AssetImage("assets/backButton.png"),
-                            ),
-                          ),
-                        )),
+                        icon: Icon(Icons.arrow_back_sharp,
+                            size: globals.width * 0.03, color: Colors.black38),
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
@@ -111,132 +109,305 @@ class _bodyFormState extends State<bodyForm> {
                 ),
               )),
         ),
-        // Text("plant name:${widget.plant.plantName}"),
-        // Text("plant description:${widget.plant.plantDescription}"),
 
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
-            child: Text(
-              "Plant name: ${widget.plant.plantName}",
-              textAlign: TextAlign.left,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: textSize,
-                fontWeight: FontWeight.bold,
-                height: 1,
-                color: const Color.fromARGB(255, 32, 54, 50),
+        Container(
+          color: Colors.white, // Set the color of the rectangle here
+          padding: const EdgeInsets.fromLTRB(
+              10, 4, 10, 0), // Add padding to the content inside the rectangle
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: Text(
+                        "Plant basic information ",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          height: 1,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                ],
               ),
-            ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Plant name ",
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.inter(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              height: 1,
+                              color: const Color.fromARGB(255, 32, 54, 50),
+                            ),
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: SizedBox(
+                                width: globals.width * 0.12,
+                                height: globals.height * 0.015,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                    side: const BorderSide(
+                                      color: Colors
+                                          .black26, // Set the color of the border
+                                      width: 1.0, // Set the width of the border
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) {
+                                          return UpdatePlantBasics(
+                                              plant: widget.plant,
+                                              pic: widget.pic);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.edit,
+                                          size: globals.width * 0.018,
+                                          color: Colors.black),
+                                      SizedBox(
+                                        width: globals.width * 0.07,
+                                        height: globals.height * 0.014,
+                                        child: Center(
+                                          child: Text(
+                                            'Edit basics',
+                                            textAlign: TextAlign.center,
+                                            style: GoogleFonts.inter(
+                                              fontSize: globals.width * 0.012,
+                                              fontWeight: FontWeight.w600,
+                                              height: 1,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        widget.plant.plantName,
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 5, 10, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Plant description ",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                      Text(
+                        widget.plant.plantDescription,
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(30.0, 10, 10, 10),
-            child: Text(
-              "Plant description: ${widget.plant.plantDescription}",
-              textAlign: TextAlign.left,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: textSize,
-                fontWeight: FontWeight.bold,
-                height: 1,
-                color: const Color.fromARGB(255, 32, 54, 50),
+        const SizedBox(height: 5),
+        const Divider(
+          height: 1,
+          color: Colors.black,
+        ),
+        const SizedBox(height: 5),
+        Container(
+          color: Colors.white, // Set the color of the box here
+          padding: const EdgeInsets.fromLTRB(
+              10, 4, 10, 0), // Add padding to the content inside the box
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 8, 0),
+                      child: Text(
+                        "Plant watering information ",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          height: 1,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 10, 10, 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Day count: ",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                      Text(
+                        "${widget.plant.dayCount}",
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: SizedBox(
+                            width: globals.width * 0.13,
+                            height: globals.height * 0.015,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50)),
+                                side: const BorderSide(
+                                  color: Colors
+                                      .black26, // Set the color of the border
+                                  width: 1.0, // Set the width of the border
+                                ),
+                              ),
+                              onPressed: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                    return PreUpdateScreen(
+                                        plant: widget.plant, pic: widget.pic);
+                                  }),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.edit,
+                                      size: globals.width * 0.018,
+                                      color: Colors.black),
+                                  SizedBox(
+                                    width: globals.width * 0.08,
+                                    height: globals.height * 0.01,
+                                    child: Center(
+                                      child: Text(
+                                        'Edit watering',
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.inter(
+                                          fontSize: globals.width * 0.012,
+                                          fontWeight: FontWeight.w600,
+                                          height: 1,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 5, 10, 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Water volume: ",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                      Text(
+                        "${widget.plant.waterVolume} ml",
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-        // const SizedBox(height: 5),
-        ElevatedButton(
-          // ignore: sort_child_properties_last
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Edit plant basics",
-                style: GoogleFonts.cormorantGaramond(
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                  height: 1,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                )),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 177, 177, 177),
-            elevation: 0,
-          ),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return UpdatePlantBasics(
-                      plant: widget.plant, pic: widget.pic);
-                },
-              ),
-            );
-          },
-        ),
-        // const SizedBox(height: 10),
-        // Text("day count:${widget.plant.dayCount}"),
-        // Text("water volume:${widget.plant.waterVolume}"),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(30.0, 10, 10, 10),
-            child: Text(
-              "Day count: ${widget.plant.dayCount}",
-              textAlign: TextAlign.left,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: textSize,
-                fontWeight: FontWeight.bold,
-                height: 1,
-                color: const Color.fromARGB(255, 32, 54, 50),
-              ),
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(30.0, 10, 10, 10),
-            child: Text(
-              "Water volume: ${widget.plant.waterVolume} ml",
-              textAlign: TextAlign.left,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: textSize,
-                fontWeight: FontWeight.bold,
-                height: 1,
-                color: const Color.fromARGB(255, 32, 54, 50),
-              ),
-            ),
-          ),
-        ),
-        // const SizedBox(height: 10),
-        ElevatedButton(
-          // ignore: sort_child_properties_last
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Edit plant technicalities",
-                style: GoogleFonts.cormorantGaramond(
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                  height: 1,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                )),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 177, 177, 177),
-            elevation: 0,
-          ),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  return PreUpdateScreen(plant: widget.plant, pic: widget.pic);
-                },
-              ),
-            );
-          },
-        ),
-        // const SizedBox(height: 20),
+        const SizedBox(height: 55),
+
         TextButton(
           onPressed: () async {
             bool? confirmed = await showConfirmationDialog(context);
@@ -248,19 +419,18 @@ class _bodyFormState extends State<bodyForm> {
               );
             }
           },
-          child: Center(
-            child: Text(
-              'Delete plant',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: textSize - 5,
-                fontWeight: FontWeight.bold,
-                height: 1,
-                color: Color.fromARGB(255, 168, 37, 37),
-              ),
+          child: Text(
+            'Delete plant',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              // fontWeight: FontWeight.bold,
+              height: 1,
+              color: const Color.fromARGB(255, 168, 37, 37),
             ),
           ),
         ),
+
         // SizedBox(
         //   height: 10,
         // ),
@@ -358,13 +528,13 @@ class _bodyFormState extends State<bodyForm> {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
-                // Navigator.of(context).pop(true);
+                Navigator.of(context).pop(true);
               },
             ),
             TextButton(
               child: const Text('No'),
               onPressed: () {
-                // Navigator.of(context).pop(false);
+                Navigator.of(context).pop(false);
               },
             ),
           ],

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:herble/colors.dart';
 import 'package:herble/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:herble/main_page/main_page.dart';
@@ -178,7 +179,7 @@ class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
       body: Column(
         children: [
           SizedBox(
-              height: 100,
+              height: 85,
               child: Row(
                 children: [
                   Padding(
@@ -186,9 +187,8 @@ class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
                     child: Text(
                       "Verify email",
                       textAlign: TextAlign.left,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
+                      style: GoogleFonts.inter(
+                        fontSize: 30,
                         height: 1,
                         color: const Color.fromARGB(255, 32, 54, 50),
                       ),
@@ -209,18 +209,59 @@ class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
           const SizedBox(
             height: 100,
           ),
+          Icon(
+            Icons.email, // Email icon
+            size: 60,
+            color: const Color.fromARGB(255, 32, 54, 50),
+          ),
           Center(
             child: Column(children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                child: Text(
-                  "Check your email ($email2) to find verification link. (might be in spam)",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.cormorantGaramond(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    height: 1,
-                    color: const Color.fromARGB(255, 32, 54, 50),
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Check your email! ",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            fontSize: 28,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          )),
+                      SizedBox(height: 35),
+                      Text(
+                        " To verify your account, click on the verification link sent to your email on ",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 17,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Text(
+                          email2,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                            color: const Color.fromARGB(255, 32, 54, 50),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "(it might be in spam)",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 17,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -240,23 +281,15 @@ class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
                   width: 200,
                   height: 50,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    gradient: const LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: <Color>[
-                        Color.fromARGB(255, 39, 39, 39),
-                        Color.fromARGB(255, 202, 207, 197),
-                      ],
-                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    color: mainpallete,
                   ),
                   child: Center(
                     child: Text(
                       'Resend link',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                      style: GoogleFonts.inter(
+                        fontSize: 18,
                         height: 1,
                         color: Color.fromARGB(255, 226, 233, 218),
                       ),
@@ -264,46 +297,69 @@ class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              TextButton(
-                onPressed: () {
-                  try {
-                    // FirebaseAuth.instance.currentUser?.delete();
-                    Navigator.pop(context);
-                  } catch (e) {
-                    debugPrint('$e');
-                  }
-                },
-                child: Container(
-                  width: 200,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    gradient: const LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: <Color>[
-                        Color.fromARGB(255, 39, 39, 39),
-                        Color.fromARGB(255, 202, 207, 197),
-                      ],
-                    ),
-                  ),
-                  child: Center(
+
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
                     child: Text(
-                      'Cancel',
+                      "Cancel",
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                      style: GoogleFonts.inter(
+                        fontSize: 15,
                         height: 1,
-                        color: Color.fromARGB(255, 226, 233, 218),
+                        color: Color.fromARGB(255, 184, 27, 27),
                       ),
                     ),
+                    onTap: () {
+                      try {
+                        // FirebaseAuth.instance.currentUser?.delete();
+                        Navigator.pop(context);
+                      } catch (e) {
+                        debugPrint('$e');
+                      }
+                    },
                   ),
                 ),
-              )
+              ),
+
+              // TextButton(
+              //   onPressed: () {
+              //     try {
+              //       // FirebaseAuth.instance.currentUser?.delete();
+              //       Navigator.pop(context);
+              //     } catch (e) {
+              //       debugPrint('$e');
+              //     }
+              //   },
+              //   child: Container(
+              //     width: 200,
+              //     height: 50,
+              //     decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(50),
+              //       gradient: const LinearGradient(
+              //         begin: Alignment.topRight,
+              //         end: Alignment.bottomLeft,
+              //         colors: <Color>[
+              //           Color.fromARGB(255, 39, 39, 39),
+              //           Color.fromARGB(255, 202, 207, 197),
+              //         ],
+              //       ),
+              //     ),
+              //     child: Center(
+              //       child: Text(
+              //         'Cancel',
+              //         textAlign: TextAlign.center,
+              //         style: GoogleFonts.cormorantGaramond(
+              //           fontSize: 30,
+              //           fontWeight: FontWeight.bold,
+              //           height: 1,
+              //           color: Color.fromARGB(255, 226, 233, 218),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // )
             ]),
           )
         ],

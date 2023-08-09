@@ -143,12 +143,55 @@ class _PicFormState extends State<PicForm> {
                     width: 10,
                   ),
                   const Spacer(),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(25.0),
-                      child: Image(
-                        image: AssetImage("assets/herble_logo.png"),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10.0, 30, 3, 30),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        if (widget.cum == 1) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddPlantPage(
+                                      pic: currentPicture!,
+                                      picId: picId,
+                                    )),
+                          );
+                        } else if (widget.cum == 2) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UpdatePlantBasics(
+                                      pic: currentPicture!,
+                                      plant: globals.currentPlant,
+                                      picId: picId,
+                                    )),
+                          );
+                        }
+                      },
+                      child: Center(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: SizedBox(
+                              child: Text(
+                                'Save',
+                                style: GoogleFonts.inter(
+                                  fontSize: globals.width * 0.017,
+                                  fontWeight: FontWeight.w400,
+                                  height: 1,
+                                  color: const Color.fromARGB(255, 31, 100, 58),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   )

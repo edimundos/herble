@@ -1,5 +1,3 @@
-import 'package:herble/globals.dart';
-
 class User {
   final String email;
   final String username;

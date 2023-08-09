@@ -15,7 +15,7 @@ class ConnectInternet extends StatefulWidget {
   final String pic;
   final int volume;
   final int? picId;
-  ConnectInternet({
+  const ConnectInternet({
     super.key,
     required this.plant,
     required this.desc,
@@ -38,10 +38,10 @@ class _ConnectInternetState extends State<ConnectInternet> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 100,
             child: Row(
-              children: const [
+              children: [
                 SizedBox(
                   width: 10,
                 ),
@@ -62,7 +62,7 @@ class _ConnectInternetState extends State<ConnectInternet> {
             height: 20,
           ),
           Text(
-            "1. Reconect to the internet to finish",
+            "1. Reconnect to the internet to finish",
             textAlign: TextAlign.left,
             style: GoogleFonts.cormorantGaramond(
               fontSize: 25,
@@ -92,11 +92,11 @@ class _ConnectInternetState extends State<ConnectInternet> {
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
                           height: 1,
-                          color: Color.fromARGB(255, 255, 255, 255),
+                          color: const Color.fromARGB(255, 255, 255, 255),
                         )),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    backgroundColor: const Color.fromARGB(255, 177, 177, 177),
                     elevation: 0,
                   ),
                   onPressed: () async {

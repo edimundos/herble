@@ -4,9 +4,10 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart' show SystemChrome, SystemUiMode;
 import 'package:flutter/material.dart';
-import 'package:herble/main_page/plants/change_picture.dart';
 import 'dart:ui' as ui;
 import 'dart:async';
+import 'package:herble/globals.dart' as globals;
+import 'package:herble/main_page/plants/individual_plant/update_plant_basics.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -198,9 +199,9 @@ class _CameraScreenState extends State<CameraScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PicturePage(
+                          builder: (context) => UpdatePlantBasics(
                                 pic: imageData,
-                                cum: widget.cum,
+                                plant: globals.currentPlant,
                               )),
                     );
                   } on CameraException catch (e) {
