@@ -47,7 +47,7 @@ class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     FirebaseAuth.instance.currentUser?.sendEmailVerification();
     Timer(const Duration(seconds: 3), () {});
-    FirebaseAuth.instance.currentUser?.sendEmailVerification();
+
     // FirebaseAuth.instance.currentUser?.sendEmailVerification();
 
     // DeleteFirebaseAccount();
@@ -170,8 +170,9 @@ class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    // FirebaseAuth.instance.currentUser?.sendEmailVerification();
     Timer(const Duration(seconds: 2), () {});
+    FirebaseAuth.instance.currentUser?.sendEmailVerification();
     // DeleteFirebaseAccount();
     return Scaffold(
       backgroundColor: Colors.white,

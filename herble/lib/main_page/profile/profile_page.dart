@@ -241,9 +241,9 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: globals.height * 0.07,
-              ),
+              // SizedBox(
+              //   height: globals.height * 0.07,
+              // ),
               const SizedBox(
                 height: 15,
               ),
