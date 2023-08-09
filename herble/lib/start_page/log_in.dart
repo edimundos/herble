@@ -1,8 +1,6 @@
 import 'dart:async';
 // import 'dart:js_util';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../start_page/DatabaseUsers.dart' as FUser;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -10,7 +8,6 @@ import 'package:herble/main_page/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:bcrypt/bcrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart' as globals;
 import 'ForgotPasswordPage.dart';
@@ -132,7 +129,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           border: OutlineInputBorder(),
                           labelText: 'Password',
                           labelStyle: TextStyle(
-                            fontFamily: 'GoogleFonts.inter', 
+                            fontFamily: 'GoogleFonts.inter',
                             color: Colors.grey,
                           ),
                           suffixIcon: IconButton(
@@ -157,26 +154,31 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ))
             : Container(),
         !isLoading
-            ? Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
-                    child: GestureDetector(
-                      child: Text(
-                        "Forgot Password?",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          height: 1,
-                          color: Color.fromARGB(255, 116, 129, 127),
+            ? Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(52, 0, 0, 0),
+                      child: GestureDetector(
+                        child: Text(
+                          "Forgot Password?",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            decoration: TextDecoration.underline,
+                            height: 1,
+                            color: Color.fromARGB(255, 116, 129, 127),
+                          ),
                         ),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordPage())),
                       ),
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordPage())),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
             : Container(),
         !isLoading
@@ -212,60 +214,26 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     signInFirebase();
 
                     setState(() {
-                      isLoading = true;
+                      isLoading = false;
                     });
-                    
-                    var pass = checkPass(emailController.text, pwController.text);
-                    if (await pass) {
-                      // DateTime now = DateTime.now();
-                      // Time notificationTime = Time(now.hour, now.minute + 1, 0);
-                      // Duration repeatInterval = const Duration(seconds: 10);
-                      // await NotificationService().scheduleNotification(
-                      //   3, //id
-                      //   'test', //title
-                      //   'Click the notification to confirm that you filled it', //text
-                      //   notificationTime,
-                      //   repeatInterval,
-                      // );
-                      // globals.isLoggedIn = true;
-                      globals.password = pwController.text;
-                      globals.username = emailController.text;
-                      globals.isLoggedIn = true;
-                      globals.userID = await getUserID(
-                        emailController.text,
-                      );
-                      await getEmailAndUsername();
-                      globals.wateringTime = await getUserTime(
-                        emailController.text,
-                      );
-            
-                      signInFirebase();
-            
-                      setState(() {
-                        isLoading = false;
-                      });
-            
-                      final prefs =
-                          await SharedPreferences.getInstance(); //remember me
-                      if (rememberMe) {
-                        await prefs.setInt('userID', globals.userID);
-                        await prefs.setString('password', globals.password);
-                      } else {
-                        await prefs.remove("userID");
-                        await prefs.remove("password");
-                      }
-            
-                      _navigateToPlantList(context);
 
                     final prefs = await SharedPreferences.getInstance();
                     if (rememberMe) {
                       await prefs.setInt('userID', globals.userID);
                       await prefs.setString('password', globals.password);
                     } else {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      if (unverifiedAccount == false) {
+                      await prefs.remove("userID");
+                      await prefs.remove("password");
+                    }
+
+                    _navigateToPlantList(context);
+                  } else {
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    if (unverifiedAccount == false) {
+                      // ignore: use_build_context_synchronously
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -273,16 +241,16 @@ class _MyCustomFormState extends State<MyCustomForm> {
                               content: const Text('Incorrect password/email'),
                               actions: <Widget>[
                                 TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Ok'),
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
                                   child: const Text('Ok'),
                                 ),
                               ],
                             );
                           });
                     }
-                    }
-                  },
+                  }
+                },
+                child: Center(
                   child: SizedBox(
                     height: globals.height * 0.02,
                     width: globals.width * 0.27,
@@ -296,6 +264,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         'Log in',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                           height: 1,
                           color: Color.fromARGB(255, 226, 233, 218),
@@ -304,7 +273,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     ),
                   ),
                 ),
-            )
+              )
             : Container(),
       ],
     );
@@ -336,11 +305,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
       }
     } else if (await signInFirebase() &&
         FirebaseAuth.instance.currentUser?.emailVerified == false) {
-      print("TRYING TO NAVIGATE");
-      String email2;
-      String username;
-      int timeOfDay;
-
       var data = await readUserByEmail();
 
       if (data == null) {
@@ -372,7 +336,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
   }
 
   Future readUserByEmail() async {
-    Map<String, dynamic>? data;
     try {
       var doc = await FirebaseFirestore.instance
           .collection("users")
