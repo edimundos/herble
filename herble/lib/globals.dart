@@ -11,6 +11,7 @@ double width = screenSize.width;
 double height = screenSize.height;
 bool isLoggedIn = false;
 int userID = 0;
+String fcmToken = '';
 String username = '';
 String password = '';
 String email = '';
