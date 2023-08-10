@@ -84,14 +84,27 @@ class _ProfileBodyState extends State<ProfileBody> {
           ),
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Text(
-              "Hello, ${globals.username}!",
-              style: GoogleFonts.inter(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                height: 1,
-                color: const Color.fromARGB(255, 0, 0, 0),
-              ),
+            child: Column(
+              children: [
+                Text(
+                  "Hello,",
+                  style: GoogleFonts.inter(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: const Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ),
+                Text(
+                  " ${globals.username}!",
+                  style: GoogleFonts.inter(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: const Color.fromARGB(255, 0, 0, 0),
+                  ),
+                )
+              ],
             ),
           ),
           SizedBox(
@@ -241,16 +254,10 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: globals.height * 0.07,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
             ],
           ),
           const SizedBox(
-            height: 15,
+            height: 150,
           ),
           TextButton(
             onPressed: () async {

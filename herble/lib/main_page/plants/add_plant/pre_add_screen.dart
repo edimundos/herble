@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../colors.dart';
 import 'add_plant.dart';
 import 'package:herble/globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -172,9 +173,8 @@ class _PreAddScreenState extends State<PreAddScreen> {
                                 'The device must be connected to plant pot'),
                             actions: <Widget>[
                               TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
+                                onPressed: () => Navigator.pop(context, 'Ok'),
+                                child: const Text('Ok'),
                               ),
                             ],
                           );
@@ -185,7 +185,27 @@ class _PreAddScreenState extends State<PreAddScreen> {
                       isLoading = false;
                     });
                   },
-                  child: const Text("Continue")),
+                  child: Container(
+                    width: 200,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: mainpallete,
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Continue',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 18,
+                          height: 1,
+                          color: Color.fromARGB(255, 226, 233, 218),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // child: const Text("Continue")),
+                )
         ],
       ),
     );

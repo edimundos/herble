@@ -106,6 +106,45 @@ class _InstructionsFormState extends State<InstructionsForm> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.email_outlined, size: 50),
+                Text(
+                  "Did not see your question here?",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    fontSize: 17,
+                    // fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: const Color.fromARGB(255, 32, 54, 50),
+                  ),
+                ),
+                Text(
+                  "Send us an email to ",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    fontSize: 17,
+                    // fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: const Color.fromARGB(255, 32, 54, 50),
+                  ),
+                ),
+                Text(
+                  "info@herble.eu ",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: const Color.fromARGB(255, 32, 54, 50),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
