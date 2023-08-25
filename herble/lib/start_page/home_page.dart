@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:herble/start_page/log_in.dart';
 import 'package:herble/notifications/notificationservice.dart';
@@ -429,12 +430,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
-                                    Future.delayed(
-                                        Duration(
-                                            seconds: animLength,
-                                            milliseconds: 300), () {
-                                      popUpRegister();
+                                    if (!mounted) return;
+                                    SchedulerBinding.instance
+                                        .addPostFrameCallback((_) {
+                                      Navigator.pop(context);
+                                      Future.delayed(
+                                          Duration(
+                                              seconds: animLength,
+                                              milliseconds: 300), () {
+                                        popUpRegister();
+                                      });
                                     });
                                   },
                                   child: Text(
@@ -539,13 +544,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.pop(context);
-                                      Future.delayed(
-                                          Duration(
-                                              seconds: animLength,
-                                              milliseconds: 300), () {
-                                        popUpSignIn();
+                                      if (!mounted) return;
+                                      SchedulerBinding.instance
+                                          .addPostFrameCallback((_) {
+                                        Navigator.pop(context);
+                                        Future.delayed(
+                                            Duration(
+                                                seconds: animLength,
+                                                milliseconds: 300), () {
+                                          popUpSignIn();
+                                        });
                                       });
+                                      // Navigator.pop(context);
                                     },
                                     child: Text(
                                       "Log in",
