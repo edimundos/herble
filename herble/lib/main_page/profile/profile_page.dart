@@ -254,13 +254,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
             ],
-          ),
-          const SizedBox(
-            height: 150,
           ),
           TextButton(
             onPressed: () async {

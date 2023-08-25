@@ -594,27 +594,6 @@ class _LogInFormState extends State<LogInForm> {
                                     selectedTime24Hour,
                                   ));
                         }
-                        // } else if (validator == 106) {
-                        //   setState(() {
-                        //     isLoading = false;
-                        //   });
-                        //   showDialog(
-                        //     context: context,
-                        //     builder: (BuildContext context) {
-                        //       return AlertDialog(
-                        //         content: const Text(
-                        //             'Username must be longer than 3 characters'),
-                        //         actions: <Widget>[
-                        //           TextButton(
-                        //             onPressed: () =>
-                        //                 Navigator.pop(context, 'Ok'),
-                        //             child: const Text('Ok'),
-                        //           ),
-                        //         ],
-                        //       );
-                        //     },
-                        //   );
-                        // }
                       }
                     : null,
                 child: SizedBox(
