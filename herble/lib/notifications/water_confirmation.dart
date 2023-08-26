@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,23 +9,25 @@ import 'package:herble/notifications/notificationservice.dart';
 import '../globals.dart' as globals;
 
 Duration other = Duration(seconds: 1);
-late globals.Plant plant;
+late int plantID;
 Duration selectedDuration = Duration(hours: 1);
 
 class WaterConfirm extends StatefulWidget {
-  final globals.Plant plant;
+  final int plantID;
 
-  const WaterConfirm({Key? key, required this.plant}) : super(key: key);
+  const WaterConfirm({Key? key, required this.plantID}) : super(key: key);
 
   @override
   State<WaterConfirm> createState() => _WaterConfirmState();
 }
 
 class _WaterConfirmState extends State<WaterConfirm> {
+  late globals.Plant currentPlant;
+
   @override
-  void initState() {
+  Future<void> initState() async {
     super.initState();
-    plant = widget.plant;
+    currentPlant = await getPlantsById(plantID);
   }
 
   double opacity = 1.0; // Initial opacity value
@@ -85,7 +89,7 @@ class _WaterConfirmState extends State<WaterConfirm> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
                     child: Text(
-                      "Did you fill up the water for your plant: ${widget.plant.plantName}?",
+                      "Did you fill up the water for your plant: ${currentPlant.plantName}?",
                       textAlign: TextAlign.left,
                       style: GoogleFonts.cormorantGaramond(
                         fontSize: 25,
@@ -114,10 +118,10 @@ class _WaterConfirmState extends State<WaterConfirm> {
                   ),
                   onPressed: () async {
                     await scheduleNotification(
-                      widget.plant.dayCount,
-                      widget.plant.waterVolume,
-                      widget.plant.plantId,
-                      widget.plant.plantName,
+                      currentPlant.dayCount,
+                      currentPlant.waterVolume,
+                      currentPlant.plantId,
+                      currentPlant.plantName,
                     );
                     Navigator.pop(context);
                     fadeScreenToBlack();
@@ -152,8 +156,8 @@ class _WaterConfirmState extends State<WaterConfirm> {
                             ),
                             onPressed: () async {
                               await scheduleReminder(
-                                widget.plant.plantId,
-                                widget.plant.plantName,
+                                currentPlant.plantId,
+                                currentPlant.plantName,
                                 selectedDuration,
                               );
                               Navigator.pop(context);
@@ -252,5 +256,26 @@ class _WaterConfirmState extends State<WaterConfirm> {
       'Click to confirm that you filled it', //text
       repeatInterval,
     );
+  }
+}
+
+Future<globals.Plant> getPlantsById(int id) async {
+  String url = 'https://herbledb.000webhostapp.com/get_plant_by_id.php';
+  try {
+    var http;
+    var response = await http.post(Uri.parse(url), body: {'id': id.toString()});
+
+    if (response.statusCode == 200) {
+      List<dynamic> plants = json
+          .decode(response.body)
+          .map((data) => globals.Plant.fromJson(data as Map<String, dynamic>))
+          .toList();
+      return plants[0];
+    } else {
+      throw Exception('Request failed with status: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Handle exceptions here
+    throw e;
   }
 }

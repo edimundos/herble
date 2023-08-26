@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:herble/firebase_messaging.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:herble/start_page/log_in.dart';
 import 'package:herble/notifications/notificationservice.dart';
@@ -307,7 +309,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return false;
   }
 
-  void listenToNotification() => NotificationService()
+  void listenToNotification() => PushNotificationService()
       .onNotificationClick
       .stream
       .listen(onNotificationListener);
@@ -318,7 +320,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: ((context) => WaterConfirm(plant: plant))));
+              builder: ((context) => WaterConfirm(plantID: plant.plantId))));
     }
   }
 

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/colors.dart';
 import 'package:herble/firebase_api_notif.dart';
 import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
