@@ -44,53 +44,47 @@ class _PasswordBodyState extends State<PasswordBody> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return const MainPage(
+                      index: 3,
+                    ); // Replace ChangeSettings with the actual widget for the settings page
+                  },
+                ),
+              );
+            },
+            icon: Icon(Icons.arrow_back_sharp,
+                size: globals.width * 0.03, color: Colors.black26),
+          ),
+          actions: [
+            Builder(
+              builder: (context) {
+                double availableWidth = MediaQuery.of(context).size.width;
+                double desiredSize =
+                    availableWidth * 0.1; // 10% of available width
+                return Padding(
+                  padding: EdgeInsets.only(right: 16.0),
+                  child: Image(
+                    image: AssetImage("assets/herble_logo.png"),
+                    width: desiredSize,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            reverse: true,
-            child: Column(children: [
-              SizedBox(
-                  height: 100,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: GestureDetector(
-                            onTap: () {
-                              FocusScope.of(context).requestFocus(FocusNode());
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MainPage(
-                                          index: 3,
-                                        )),
-                              );
-                            },
-                            child: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.all(15.0),
-                                child: Image(
-                                  image: AssetImage("assets/backButton.png"),
-                                ),
-                              ),
-                            )),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Spacer(),
-                      const Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: EdgeInsets.all(25.0),
-                          child: Image(
-                            image: AssetImage("assets/herble_logo.png"),
-                          ),
-                        ),
-                      )
-                    ],
-                  )),
+        body: Column(
+            // physics: const BouncingScrollPhysics(),
+            // reverse: true,
+            // child: Column(
+            children: [
               const Flexible(
                 child: FractionallySizedBox(
                   heightFactor: 0.3,
@@ -114,7 +108,7 @@ class _PasswordBodyState extends State<PasswordBody> {
                   ),
                 ],
               ))
-            ])));
+            ]));
   }
 
   Future<void> updatePassword(String password) async {

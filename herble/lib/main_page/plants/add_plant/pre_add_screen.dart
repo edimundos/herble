@@ -31,55 +31,44 @@ class _PreAddScreenState extends State<PreAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "Add plant",
+          textAlign: TextAlign.center,
+          style: GoogleFonts.caudex(
+            color: const Color.fromARGB(255, 32, 54, 50),
+            fontSize: MediaQuery.of(context).size.width * 0.08,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(Icons.arrow_back_sharp,
+              size: globals.width * 0.03, color: Colors.black26),
+        ),
+        automaticallyImplyLeading: false,
+        actions: [
+          Builder(
+            builder: (context) {
+              double availableWidth = MediaQuery.of(context).size.width;
+              double desiredSize =
+                  availableWidth * 0.1; // 10% of available width
+              return Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: Image(
+                  image: AssetImage("assets/herble_logo.png"),
+                  width: desiredSize,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          SizedBox(
-              height: 88,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Material(
-                      shape: const CircleBorder(),
-                      clipBehavior: Clip.hardEdge,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: Icon(Icons.arrow_back_sharp,
-                            size: globals.width * 0.03, color: Colors.black26),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    child: Center(
-                      child: Text(
-                        "Add plant",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.inter(
-                          fontSize: 25,
-                          height: 1,
-                          color: const Color.fromARGB(255, 32, 54, 50),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Spacer(),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(25.0),
-                      child: Image(
-                        image: AssetImage("assets/herble_logo.png"),
-                      ),
-                    ),
-                  )
-                ],
-              )),
           Padding(
             padding: const EdgeInsets.fromLTRB(30.0, 20, 30, 0),
             child: Text(
