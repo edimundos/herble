@@ -24,48 +24,56 @@ class _IndividualPlantState extends State<IndividualPlant> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "My Plant",
+          textAlign: TextAlign.center,
+          style: GoogleFonts.caudex(
+            color: const Color.fromARGB(255, 32, 54, 50),
+            fontSize: MediaQuery.of(context).size.width * 0.08,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context); // Close the bottom sheet
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const MainPage(
+                        index: 1,
+                      )),
+            );
+          },
+          icon: Icon(Icons.arrow_back_sharp,
+              size: globals.width * 0.03, color: Colors.black26),
+        ),
+        automaticallyImplyLeading: false,
+        actions: [
+          Builder(
+            builder: (context) {
+              double availableWidth = MediaQuery.of(context).size.width;
+              double desiredSize =
+                  availableWidth * 0.1; // 10% of available width
+              return Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: Image(
+                  image: AssetImage("assets/herble_logo.png"),
+                  width: desiredSize,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(children: [
-          SizedBox(
-              height: 100,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Material(
-                      shape: const CircleBorder(),
-                      clipBehavior: Clip.hardEdge,
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const MainPage(index: 1),
-                            ),
-                          );
-                        },
-                        icon: Icon(Icons.arrow_back_sharp,
-                            size: globals.width * 0.03, color: Colors.black38),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Spacer(),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(25.0),
-                      child: Image(
-                        image: AssetImage("assets/herble_logo.png"),
-                      ),
-                    ),
-                  )
-                ],
-              )),
-          bodyForm(plant: widget.plant, pic: widget.pic),
-        ]),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(children: [
+            bodyForm(plant: widget.plant, pic: widget.pic),
+          ]),
+        ),
       ),
     );
   }

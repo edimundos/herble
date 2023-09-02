@@ -32,12 +32,12 @@ class LogInScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text(appTitle),
           automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios_new),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //   },
+          //   icon: const Icon(Icons.arrow_back_ios_new),
+          // ),
         ),
         body: const MyCustomForm(),
       ),
