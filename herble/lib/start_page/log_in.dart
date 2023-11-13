@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -336,7 +335,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     }
   }
 
-  Future<Time> getUserTime(String username) async {
+  Future<DateTime> getUserTime(String username) async {
     String url = 'https://herbledb.000webhostapp.com/get_user_id.php';
     var response =
         await http.post(Uri.parse(url), body: {'username_flutter': username});
@@ -345,7 +344,10 @@ class _MyCustomFormState extends State<MyCustomForm> {
       List<dynamic> user = jsonDecode(response.body);
       Map<String, dynamic> userMap = user[0];
       List<String> parts = userMap["watering_time"].split(':');
-      Time time = Time(
+      DateTime time = DateTime(
+        2023,
+        1,
+        1,
         int.parse(parts[0]),
         int.parse(parts[1]),
       );
@@ -353,7 +355,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     } else {
       // The request failed
       debugPrint('Request failed with status: ${response.statusCode}');
-      return const Time(20, 0);
+      return DateTime(2023, 1, 1, 20, 0);
     }
   }
 

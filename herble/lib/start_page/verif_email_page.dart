@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/globals.dart' as globals;
 import 'package:http/http.dart' as http;
@@ -75,7 +74,7 @@ class _verifyEmailState extends State<VerifyEmail> {
       globals.password = password;
       globals.isLoggedIn = true;
       globals.email = email;
-      globals.wateringTime = selectedTime24Hour as Time;
+      globals.wateringTime = selectedTime24Hour as DateTime;
       final prefs = await SharedPreferences.getInstance(); //remember me
       await prefs.setInt('userID', globals.userID);
       await prefs.setString('password', globals.password);
@@ -91,8 +90,8 @@ class _verifyEmailState extends State<VerifyEmail> {
     globals.username = username;
     globals.password = pw;
     globals.email = email;
-    globals.wateringTime =
-        Time(selectedTime24Hour.hour, selectedTime24Hour.minute);
+    globals.wateringTime = DateTime(
+        2023, 1, 1, selectedTime24Hour.hour, selectedTime24Hour.minute);
     await http.post(Uri.parse(url), body: {
       'username_flutter': username,
       'pw_flutter': pw,

@@ -156,7 +156,7 @@ class _ConnectInternetState extends State<PostUpdate> {
     await NotificationService().cancelNotificationById(widget.plant.plantId);
 
     //create notification
-    Time notificationTime = globals.wateringTime;
+    DateTime notificationTime = globals.wateringTime;
     Duration repeatInterval =
         Duration(days: getRefilDayCount(days.toDouble(), volume.toDouble()));
     await NotificationService().scheduleNotification(

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:766729968420:android:122f4ced4c312a130cf1b1",
         "android_client_info": {
-          "package_name": "com.example.herble"
+          "package_name": "herble"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "766729968420-l5ei3ka6lqf2hscjgm6le4i93r1itmfe.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.herble"
+                "bundle_id": "eu.herble"
               }
             }
           ]

@@ -5,44 +5,33 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:herble/colors.dart';
-import 'package:herble/firebase_api_notif.dart';
 import 'package:herble/firebase_messaging.dart';
-import 'package:herble/notifications/water_confirmation.dart';
-import 'package:herble/start_page/firebase_options.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/start_page/home_page.dart';
-import 'package:herble/notifications/notificationservice.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
+//@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseApi().initNotifications();
-  //app in background
-  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-  //   print("onMessageOpenedApp: $message");
-  //   String plantID = jsonDecode(message.data as String)["plantID"].toString();
-  //   Navigator.pushNamed(navigatorKey.currentState!.context, "/water-reminder",
-  //       arguments: plantID);
-  // });
-
-  // //app is terminated
-  // FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
-  //   if (message != null) {
-  //     print("onMessageOpenedApp: $message");
-  //     String plantID = jsonDecode(message.data as String)["plantID"].toString();
-  //     Navigator.pushNamed(navigatorKey.currentState!.context, "/water-reminder",
-  //         arguments: plantID);
-  //   }
-  // });
-
-  //FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
+  FirebaseMessaging.instance.getToken().then((value) {
+    globals.fcmToken = value!;
+    print('Token: ${globals.fcmToken}');
+  });
+  NotificationServices notificationServices = NotificationServices();
+  notificationServices.RequestNotificationPermission();
+  // notificationServices.FirebaseInit(navigatorKey.currentState!.context);
+  // notificationServices.setupInteractMessage(navigatorKey.currentState!.context);
   runApp(const MyApp());
-  //await NotificationService().initNotification();
 
   globals.allInstructions = await getAllInstructions();
   globals.allTips = await getAllTips();
@@ -72,12 +61,6 @@ Future<void> main() async {
   });
 }
 
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp();
-
-//   print("_firebaseMessagingBackgroundHandler: $message");
-// }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -86,18 +69,6 @@ class MyApp extends StatelessWidget {
     //PushNotificationService().initialize(context);
     return MaterialApp(
       navigatorKey: navigatorKey,
-      routes: {
-        "/water-reminder": (context) {
-          final arguments = ModalRoute.of(context)!.settings.arguments;
-          if (arguments is String) {
-            return WaterConfirm(
-              plantID: int.parse(arguments),
-            );
-          } else {
-            return Text('Invalid arguments');
-          }
-        },
-      },
       title: 'Flutter Server',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

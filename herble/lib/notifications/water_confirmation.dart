@@ -1,33 +1,27 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/notifications/notificationservice.dart';
 import '../globals.dart' as globals;
 
 Duration other = Duration(seconds: 1);
-late int plantID;
 Duration selectedDuration = Duration(hours: 1);
 
 class WaterConfirm extends StatefulWidget {
-  final int plantID;
+  final globals.Plant currentPlant;
 
-  const WaterConfirm({Key? key, required this.plantID}) : super(key: key);
+  const WaterConfirm({Key? key, required this.currentPlant}) : super(key: key);
 
   @override
   State<WaterConfirm> createState() => _WaterConfirmState();
 }
 
 class _WaterConfirmState extends State<WaterConfirm> {
-  late globals.Plant currentPlant;
+  late globals.Plant currentPlant = widget.currentPlant;
 
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
-    currentPlant = await getPlantsById(plantID);
   }
 
   double opacity = 1.0; // Initial opacity value
@@ -117,12 +111,12 @@ class _WaterConfirmState extends State<WaterConfirm> {
                     elevation: 0,
                   ),
                   onPressed: () async {
-                    await scheduleNotification(
-                      currentPlant.dayCount,
-                      currentPlant.waterVolume,
-                      currentPlant.plantId,
-                      currentPlant.plantName,
-                    );
+                    // await scheduleNotification(
+                    //   currentPlant.dayCount,
+                    //   currentPlant.waterVolume,
+                    //   currentPlant.plantId,
+                    //   currentPlant.plantName,
+                    // );
                     Navigator.pop(context);
                     fadeScreenToBlack();
                     Future.delayed(Duration(seconds: 2));
@@ -155,11 +149,11 @@ class _WaterConfirmState extends State<WaterConfirm> {
                               elevation: 0,
                             ),
                             onPressed: () async {
-                              await scheduleReminder(
-                                currentPlant.plantId,
-                                currentPlant.plantName,
-                                selectedDuration,
-                              );
+                              // await scheduleReminder(
+                              //   currentPlant.plantId,
+                              //   currentPlant.plantName,
+                              //   selectedDuration,
+                              // );
                               Navigator.pop(context);
                               fadeScreenToBlack();
                               SystemChannels.platform
@@ -235,7 +229,7 @@ class _WaterConfirmState extends State<WaterConfirm> {
   Future<void> scheduleNotification(
       int days, int volume, int plantId, String plant) async {
     NotificationService().cancelNotificationById(plantId);
-    Time notificationTime = globals.wateringTime;
+    DateTime notificationTime = globals.wateringTime;
     Duration repeatInterval =
         Duration(days: getRefilDayCount(days.toDouble(), volume.toDouble()));
     await NotificationService().scheduleNotification(
@@ -259,23 +253,20 @@ class _WaterConfirmState extends State<WaterConfirm> {
   }
 }
 
-Future<globals.Plant> getPlantsById(int id) async {
-  String url = 'https://herbledb.000webhostapp.com/get_plant_by_id.php';
-  try {
-    var http;
-    var response = await http.post(Uri.parse(url), body: {'id': id.toString()});
+Future<void> scheduleNotifification() async {
+  String url = 'https://herbledb.000webhostapp.com/get_user_credentials.php';
+  var response = await http
+      .post(Uri.parse(url), body: {'user_id': globals.userID.toString()});
 
-    if (response.statusCode == 200) {
-      List<dynamic> plants = json
-          .decode(response.body)
-          .map((data) => globals.Plant.fromJson(data as Map<String, dynamic>))
-          .toList();
-      return plants[0];
-    } else {
-      throw Exception('Request failed with status: ${response.statusCode}');
-    }
-  } catch (e) {
-    // Handle exceptions here
-    throw e;
+  if (response.statusCode == 200 && response.body.length > 6) {
+    List<dynamic> user = jsonDecode(response.body);
+    Map<String, dynamic> userMap = user[0];
+    correctEmail = (userMap["email"]).toString().trim();
+    print(correctEmail);
+    globals.username = (userMap["username"]).toString();
+    globals.email = (userMap["email"]).toString();
+  } else {
+    // The request failed
+    debugPrint('Request failed with status: ${response.statusCode}');
   }
 }
