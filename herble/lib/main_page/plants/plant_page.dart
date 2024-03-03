@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:herble/colors.dart';
-import 'package:herble/firebase_api_notif.dart';
 import 'package:herble/main_page/plants/individual_plant/individual_plant.dart';
 import 'package:herble/main_page/plants/add_plant/pre_add_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -400,10 +399,6 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
         alignment: Alignment.bottomCenter,
         child: TextButton(
           onPressed: () async {
-            await FirebaseApi().sendPushNotification(
-              plantName: 'Your Plant Name',
-              notificationDateTime: DateTime.now().add(Duration(seconds: 30)),
-            );
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const PreAddScreen()),

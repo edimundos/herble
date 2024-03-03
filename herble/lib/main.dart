@@ -29,8 +29,6 @@ Future<void> main() async {
   });
   NotificationServices notificationServices = NotificationServices();
   notificationServices.RequestNotificationPermission();
-  // notificationServices.FirebaseInit(navigatorKey.currentState!.context);
-  // notificationServices.setupInteractMessage(navigatorKey.currentState!.context);
   runApp(const MyApp());
 
   globals.allInstructions = await getAllInstructions();
@@ -66,7 +64,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //PushNotificationService().initialize(context);
     return MaterialApp(
       navigatorKey: navigatorKey,
       title: 'Flutter Server',

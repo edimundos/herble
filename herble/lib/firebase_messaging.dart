@@ -119,7 +119,6 @@ class NotificationServices {
 }
 
 Future<globals.Plant> getPlantsById(int id) async {
-  print("AAAAAAAAAAAAA " + id.toString());
   String url = 'https://herbledb.000webhostapp.com/get_plant_by_id.php';
   try {
     var response = await http.post(Uri.parse(url), body: {'id': id.toString()});

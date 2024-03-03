@@ -181,17 +181,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   });
                   var pass = checkPass(emailController.text, pwController.text);
                   if (await pass) {
-                    // DateTime now = DateTime.now();
-                    // Time notificationTime = Time(now.hour, now.minute + 1, 0);
-                    // Duration repeatInterval = const Duration(seconds: 10);
-                    // await NotificationService().scheduleNotification(
-                    //   3, //id
-                    //   'test', //title
-                    //   'Click the notification to confirm that you filled it', //text
-                    //   notificationTime,
-                    //   repeatInterval,
-                    // );
-                    // globals.isLoggedIn = true;
                     globals.password = pwController.text;
                     globals.username = emailController.text;
                     globals.isLoggedIn = true;

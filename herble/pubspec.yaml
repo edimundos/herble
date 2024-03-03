@@ -36,6 +36,7 @@ dependencies:
   image_picker: ^1.0.4
   flutter:
     sdk: flutter
+  intl: ^0.17.0
   http: any
   bcrypt: any
   get: ^4.6.5 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:herble/notifications/notificationservice.dart';
 import '../globals.dart' as globals;
 
 Duration other = Duration(seconds: 1);
@@ -111,12 +112,11 @@ class _WaterConfirmState extends State<WaterConfirm> {
                     elevation: 0,
                   ),
                   onPressed: () async {
-                    // await scheduleNotification(
-                    //   currentPlant.dayCount,
-                    //   currentPlant.waterVolume,
-                    //   currentPlant.plantId,
-                    //   currentPlant.plantName,
-                    // );
+                    NotificationService notificationService =
+                        NotificationService();
+                    await notificationService
+                        .scheduleNotification(currentPlant.plantId);
+
                     Navigator.pop(context);
                     fadeScreenToBlack();
                     Future.delayed(Duration(seconds: 2));
@@ -149,11 +149,11 @@ class _WaterConfirmState extends State<WaterConfirm> {
                               elevation: 0,
                             ),
                             onPressed: () async {
-                              // await scheduleReminder(
-                              //   currentPlant.plantId,
-                              //   currentPlant.plantName,
-                              //   selectedDuration,
-                              // );
+                              NotificationService notificationService =
+                                  NotificationService();
+                              await notificationService.scheduleReminder(
+                                  currentPlant.plantId, selectedDuration);
+
                               Navigator.pop(context);
                               fadeScreenToBlack();
                               SystemChannels.platform
@@ -213,60 +213,5 @@ class _WaterConfirmState extends State<WaterConfirm> {
         ),
       ),
     );
-  }
-
-  int getRefilDayCount(double days, double volume) {
-    const double waterCapacity = 1.1;
-    int refilDays;
-    if (waterCapacity % volume == 0) {
-      refilDays = ((waterCapacity / volume * 1000).floor() * days - 1).floor();
-    } else {
-      refilDays = ((waterCapacity / volume * 1000).floor() * days).floor();
-    }
-    return refilDays;
-  }
-
-  Future<void> scheduleNotification(
-      int days, int volume, int plantId, String plant) async {
-    NotificationService().cancelNotificationById(plantId);
-    DateTime notificationTime = globals.wateringTime;
-    Duration repeatInterval =
-        Duration(days: getRefilDayCount(days.toDouble(), volume.toDouble()));
-    await NotificationService().scheduleNotification(
-      plantId, //id
-      'Fill up the water for $plant', //title
-      'Click to confirm that you filled it', //text
-      notificationTime,
-      repeatInterval,
-    );
-  }
-
-  Future<void> scheduleReminder(
-      int plantId, String plant, Duration repeatInterval) async {
-    NotificationService().cancelNotificationById(plantId);
-    await NotificationService().scheduleReminder(
-      plantId, //id
-      'Fill up the water for $plant', //title
-      'Click to confirm that you filled it', //text
-      repeatInterval,
-    );
-  }
-}
-
-Future<void> scheduleNotifification() async {
-  String url = 'https://herbledb.000webhostapp.com/get_user_credentials.php';
-  var response = await http
-      .post(Uri.parse(url), body: {'user_id': globals.userID.toString()});
-
-  if (response.statusCode == 200 && response.body.length > 6) {
-    List<dynamic> user = jsonDecode(response.body);
-    Map<String, dynamic> userMap = user[0];
-    correctEmail = (userMap["email"]).toString().trim();
-    print(correctEmail);
-    globals.username = (userMap["username"]).toString();
-    globals.email = (userMap["email"]).toString();
-  } else {
-    // The request failed
-    debugPrint('Request failed with status: ${response.statusCode}');
   }
 }

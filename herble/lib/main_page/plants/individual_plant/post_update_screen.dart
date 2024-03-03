@@ -153,19 +153,9 @@ class _ConnectInternetState extends State<PostUpdate> {
       'water_volume': volume.toString(),
     });
 
-    await NotificationService().cancelNotificationById(widget.plant.plantId);
-
     //create notification
-    DateTime notificationTime = globals.wateringTime;
-    Duration repeatInterval =
-        Duration(days: getRefilDayCount(days.toDouble(), volume.toDouble()));
-    await NotificationService().scheduleNotification(
-      widget.plant.plantId, //id
-      'Fill up water', //title
-      'Fill up the water for $name', //text
-      notificationTime,
-      repeatInterval,
-    );
+    NotificationService notificationService = NotificationService();
+    await notificationService.scheduleNotification(widget.plant.plantId);
   }
 
   int getRefilDayCount(double days, double volume) {
