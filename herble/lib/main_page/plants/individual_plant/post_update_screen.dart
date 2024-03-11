@@ -59,7 +59,7 @@ class _ConnectInternetState extends State<PostUpdate> {
             height: 20,
           ),
           Text(
-            "1. Reconect to the internet to finish",
+            "1. Reconnect to the internet to finish",
             textAlign: TextAlign.left,
             style: GoogleFonts.cormorantGaramond(
               fontSize: 25,

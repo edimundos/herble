@@ -19,34 +19,32 @@ class _IndividualInstructionState extends State<IndividualInstruction> {
       body: Column(
         children: [
           SizedBox(
-              height: 100,
+              height: globals.height * 0.038,
               child: Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
+                    child: Material(
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => MainPage(
-                                      index: 0,
-                                    )),
+                              builder: (BuildContext context) {
+                                return const MainPage(); // Replace ChangeSettings with the actual widget for the settings page
+                              },
+                            ),
                           );
                         },
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Image(
-                              image: AssetImage("assets/backButton.png"),
-                            ),
-                          ),
-                        )),
+                        icon: Icon(Icons.arrow_back_sharp,
+                            size: globals.width * 0.03, color: Colors.black26),
+                      ),
+                    ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  // const SizedBox(
+                  //   width: 40,
+                  // ),
                   const Spacer(),
                   const Align(
                     alignment: Alignment.centerRight,
@@ -60,25 +58,25 @@ class _IndividualInstructionState extends State<IndividualInstruction> {
                 ],
               )),
           Padding(
-            padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
             child: Text(
               widget.instruction.question,
               textAlign: TextAlign.center,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 35,
+              style: GoogleFonts.inter(
+                fontSize: globals.height * 0.013,
                 fontWeight: FontWeight.bold,
                 height: 1,
                 color: const Color.fromARGB(255, 32, 54, 50),
               ),
             ),
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: globals.height * 0.01),
           Padding(
             padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
             child: Text(
               widget.instruction.answer,
-              style: GoogleFonts.cormorantGaramond(
-                fontSize: 20,
+              style: GoogleFonts.inter(
+                fontSize: globals.height * 0.008,
                 fontWeight: FontWeight.normal,
                 height: 1,
                 color: const Color.fromARGB(255, 32, 54, 50),

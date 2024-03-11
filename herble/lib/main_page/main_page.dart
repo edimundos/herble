@@ -4,7 +4,6 @@ import 'package:herble/main_page/instructions/instructions.dart';
 import 'package:herble/main_page/plants/plant_page.dart';
 import 'package:herble/main_page/profile/profile_page.dart';
 import 'package:herble/main_page/tips/tips.dart';
-import '../globals.dart' as globals;
 
 class MainPage extends StatefulWidget {
   final int? index;
@@ -50,7 +49,6 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: SizedBox(
-          height: globals.height * 0.025,
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             selectedItemColor: mainpallete.shade300,

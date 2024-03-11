@@ -55,6 +55,7 @@ dependencies:
   email_auth: ^1.0.0
   firebase_core: ^2.15.0
   firebase_auth: ^4.6.1
+  cloud_firestore: ^4.8.3
   restart_app: ^1.2.1
   url_launcher: ^6.1.12 
   firebase_messaging: ^14.6.5

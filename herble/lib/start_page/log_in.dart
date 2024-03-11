@@ -1,14 +1,16 @@
 import 'dart:async';
+// import 'dart:js_util';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:bcrypt/bcrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart' as globals;
 import 'ForgotPasswordPage.dart';
+import 'verif_email_page.dart';
 
 void main() => runApp(const LogInScreen());
 bool stop = false;
@@ -29,12 +31,12 @@ class LogInScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text(appTitle),
           automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios_new),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //   },
+          //   icon: const Icon(Icons.arrow_back_ios_new),
+          // ),
         ),
         body: const MyCustomForm(),
       ),
@@ -55,12 +57,13 @@ class _MyCustomFormState extends State<MyCustomForm> {
   bool rememberMe = true;
   bool check = false;
   bool passwordVisible = false;
+  bool unverifiedAccount = false;
 
   void dispose() {
     emailController.dispose();
     pwController.dispose();
     super.dispose();
-    super.initState();
+    // super.initState();
   }
 
   @override
@@ -97,7 +100,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                         controller: emailController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Email/Username',
+                          labelText: 'Email',
                           labelStyle: TextStyle(
                             fontFamily: 'GoogleFonts.inter',
                             color: Colors.grey,
@@ -126,7 +129,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
                           labelText: 'Password',
                           labelStyle: TextStyle(
                             fontFamily: 'GoogleFonts.inter',
-                            fontSize: globals.width * 0.011,
                             color: Colors.grey,
                           ),
                           suffixIcon: IconButton(
@@ -151,26 +153,31 @@ class _MyCustomFormState extends State<MyCustomForm> {
               ))
             : Container(),
         !isLoading
-            ? Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
-                    child: GestureDetector(
-                      child: Text(
-                        "Forgot Password?",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.cormorantGaramond(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          height: 1,
-                          color: Color.fromARGB(255, 116, 129, 127),
+            ? Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(52, 0, 0, 0),
+                      child: GestureDetector(
+                        child: Text(
+                          "Forgot Password?",
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            decoration: TextDecoration.underline,
+                            height: 1,
+                            color: Color.fromARGB(255, 116, 129, 127),
+                          ),
                         ),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordPage())),
                       ),
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordPage())),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
             : Container(),
         !isLoading
@@ -179,7 +186,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
                   setState(() {
                     isLoading = true;
                   });
-                  var pass = checkPass(emailController.text, pwController.text);
+                  var pass = checkPass(emailController.text);
                   if (await pass) {
                     globals.password = pwController.text;
                     globals.username = emailController.text;
@@ -212,39 +219,44 @@ class _MyCustomFormState extends State<MyCustomForm> {
                     setState(() {
                       isLoading = false;
                     });
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: const Text('Incorrect password/email'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'sorry'),
-                                child: const Text('sorry'),
-                              ),
-                            ],
-                          );
-                        });
+
+                    if (unverifiedAccount == false) {
+                      // ignore: use_build_context_synchronously
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: const Text('Incorrect password/email'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
+                                  child: const Text('Ok'),
+                                ),
+                              ],
+                            );
+                          });
+                    }
                   }
                 },
-                child: SizedBox(
-                  height: globals.height * 0.02,
-                  width: globals.width * 0.27,
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Color.fromARGB(255, 34, 65, 54),
-                    ),
-                    child: Text(
-                      'Log in',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                        fontSize: globals.width * 0.011,
-                        fontWeight: FontWeight.w500,
-                        height: 1,
-                        color: Color.fromARGB(255, 226, 233, 218),
+                child: Center(
+                  child: SizedBox(
+                    height: globals.height * 0.02,
+                    width: globals.width * 0.27,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Color.fromARGB(255, 34, 65, 54),
+                      ),
+                      child: Text(
+                        'Log in',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          height: 1,
+                          color: Color.fromARGB(255, 226, 233, 218),
+                        ),
                       ),
                     ),
                   ),
@@ -255,37 +267,109 @@ class _MyCustomFormState extends State<MyCustomForm> {
     );
   }
 
-  Future<bool> checkPass(String username, String pw) async {
-    String url = 'https://herbledb.000webhostapp.com/get_user_by_username.php';
-    var response =
-        await http.post(Uri.parse(url), body: {'username_flutter': username});
-
-    if (response.statusCode == 200 && response.body.length > 6) {
-      List<dynamic> user = jsonDecode(response.body);
-      Map<String, dynamic> userMap = user[0];
-      String X = userMap["password"].toString();
-      if (BCrypt.checkpw(pw, X)) {
+  Future<bool> checkPass(String username) async {
+    bool checking = await signInFirebase();
+    print("Big D");
+    print(checking);
+    if (checking && FirebaseAuth.instance.currentUser?.emailVerified == true) {
+      // readUserByUsername();
+      String url =
+          'https://herbledb.000webhostapp.com/get_user_by_username.php';
+      var response =
+          await http.post(Uri.parse(url), body: {'username_flutter': username});
+      print(response.toString());
+      if (response.statusCode == 200 && response.body.length > 6) {
         return true;
       } else {
+        // The request failed
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  "Something went wrong. Please restart your application.")));
+
+          debugPrint('Request failed with status: ${response.statusCode}');
+        }
         return false;
       }
-    } else {
-      // The request failed
-      debugPrint('Request failed with status: ${response.statusCode}');
+    } else if (await signInFirebase() &&
+        FirebaseAuth.instance.currentUser?.emailVerified == false) {
+      var data = await readUserByEmail();
+
+      if (data == null) {
+        print("Fuck navigation");
+        return false;
+      }
+
+      int sec = data?["waterTimeMin"];
+
+      TimeOfDay tof =
+          TimeOfDay(hour: ((sec - sec % 60) / 60).round(), minute: sec % 60);
+
+      //READ DATA FROM FIREBASE DATASTORE
+      // SEND IT TO VERIFY EMAIL PAGE
+      // ignore: use_build_context_synchronously
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => VerifyEmail(
+                  email: emailController.text.trim(),
+                  password: pwController.text.trim(),
+                  username: data?["username"],
+                  timeOfDay: tof)));
+      unverifiedAccount = true;
       return false;
+    }
+    print("nNavigation failed");
+    return false;
+  }
+
+  Future readUserByEmail() async {
+    try {
+      var doc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(emailController.text.trim());
+
+      var snapshot = await doc.get();
+      var data = snapshot.data();
+
+      print(data);
+      return data;
+    } on Exception catch (e) {
+      print("reading data exception");
+      print(e);
+      return null;
     }
   }
 
-  Future signInFirebase() async {
+  // Future readUserByUsername() async {
+  //   Map<String, dynamic>? data;
+  //   try {
+  //     var doc = await FirebaseFirestore.instance
+  //         .collection("users")
+  //         .doc(emailController.text.trim());
+  //     doc.get().then((doc) {
+  //       data = doc.data();
+  //     });
+  //     return data?["username"];
+  //   } on Exception catch (e) {
+  //     print("reading data exception");
+  //     print(e);
+  //   }
+  // }
+  // .map((snapshot) =>
+  //     snapshot.docs.map((doc) => FUser.User.fromJson(doc.data())).toList());
+
+  Future<bool> signInFirebase() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: correctEmail,
+        email: emailController.text.trim(),
         password: pwController.text.trim(),
       );
       return true;
     } on FirebaseAuthException catch (e) {
       stop = true;
       print(e);
+      return false;
     }
   }
 

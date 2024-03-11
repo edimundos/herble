@@ -30,37 +30,36 @@ class _TipFormState extends State<TipForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "Tips",
+          textAlign: TextAlign.center,
+          style: GoogleFonts.caudex(
+            color: const Color.fromARGB(255, 32, 54, 50),
+            fontSize: MediaQuery.of(context).size.width * 0.08,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        actions: [
+          Builder(
+            builder: (context) {
+              double availableWidth = MediaQuery.of(context).size.width;
+              double desiredSize =
+                  availableWidth * 0.1; // 10% of available width
+              return Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: Image(
+                  image: AssetImage("assets/herble_logo.png"),
+                  width: desiredSize,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
-          SizedBox(
-              height: 100,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0),
-                    child: Text(
-                      "Tips",
-                      textAlign: TextAlign.left,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        height: 1,
-                        color: const Color.fromARGB(255, 32, 54, 50),
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(25.0),
-                      child: Image(
-                        image: AssetImage("assets/herble_logo.png"),
-                      ),
-                    ),
-                  )
-                ],
-              )),
           // title: Text(globals.allTips![index].title),
           //     subtitle: Text(
           //         "${globals.allTips![index].description.substring(0, 50)}..."),
@@ -108,10 +107,9 @@ class _TipFormState extends State<TipForm> {
                                 child: Text(
                                   globals.allTips![index].title,
                                   textAlign: TextAlign.left,
-                                  style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 25,
+                                  style: GoogleFonts.inter(
+                                    fontSize: globals.height * 0.009,
                                     fontWeight: FontWeight.bold,
-                                    height: 1,
                                     color:
                                         const Color.fromARGB(255, 32, 54, 50),
                                   ),
@@ -137,20 +135,22 @@ class _TipFormState extends State<TipForm> {
                                 ),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 15, 5, 0),
-                                child: Text(
-                                  ("${globals.allTips![index].description.substring(0, 50)}..."),
-                                  textAlign: TextAlign.left,
-                                  style: GoogleFonts.cormorantGaramond(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.normal,
-                                    height: 1,
-                                    color:
-                                        const Color.fromARGB(255, 32, 54, 50),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(15, 0, 5, 0),
+                                  child: Text(
+                                    ("${globals.allTips![index].description.substring(0, 100)}..."),
+                                    textAlign: TextAlign.left,
+                                    style: GoogleFonts.inter(
+                                      fontSize: globals.height * 0.008,
+                                      fontWeight: FontWeight.normal,
+                                      height: 1,
+                                      color:
+                                          const Color.fromARGB(255, 32, 54, 50),
+                                    ),
                                   ),
                                 ),
                               ),

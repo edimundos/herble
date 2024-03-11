@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:herble/main_page/main_page.dart';
+import 'package:herble/colors.dart';
 import 'package:herble/main_page/plants/individual_plant/update_plant_technicalities.dart';
 import 'package:herble/globals.dart' as globals;
 import 'package:flutter/material.dart';
@@ -27,39 +27,34 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
       body: Column(
         children: [
           SizedBox(
-              height: 100,
+              height: 88,
               child: Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage(
-                                      index: 1,
-                                    )),
-                          );
+                    child: Material(
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
                         },
-                        child: const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: Image(
-                              image: AssetImage("assets/backButton.png"),
-                            ),
-                          ),
-                        )),
+                        icon: Icon(Icons.arrow_back_sharp,
+                            size: globals.width * 0.03, color: Colors.black26),
+                      ),
+                    ),
                   ),
-                  Text(
-                    "Update",
-                    textAlign: TextAlign.left,
-                    style: GoogleFonts.cormorantGaramond(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      height: 1,
-                      color: const Color.fromARGB(255, 32, 54, 50),
+                  SizedBox(
+                    child: Center(
+                      child: Text(
+                        "Connect to WiFi",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.inter(
+                          fontSize: 25,
+                          height: 1,
+                          color: const Color.fromARGB(255, 32, 54, 50),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -77,31 +72,76 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
                   )
                 ],
               )),
-          Text(
-            "1. Turn on wifi on your herble pot ",
-            textAlign: TextAlign.left,
-            style: GoogleFonts.cormorantGaramond(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              height: 1,
-              color: const Color.fromARGB(255, 32, 54, 50),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 20, 30, 0),
+            child: Text(
+              "Follow these steps to update your plant's watering information. ",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: 17,
+                height: 1,
+                color: const Color.fromARGB(255, 32, 54, 50),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 40, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  "Step 1 - ",
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.inter(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: const Color.fromARGB(255, 32, 54, 50),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    "Turn on wifi on your herble pot. ",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.inter(
+                      fontSize: 22,
+                      height: 1,
+                      color: const Color.fromARGB(255, 32, 54, 50),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 17, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  "Step 2 - ",
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.inter(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                    color: const Color.fromARGB(255, 32, 54, 50),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    "Connect to the wifi from your device. ",
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.inter(
+                      fontSize: 22,
+                      height: 1,
+                      color: const Color.fromARGB(255, 32, 54, 50),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(
-            height: 10,
-          ),
-          Text(
-            "2. Connect to the wifi from your device",
-            textAlign: TextAlign.left,
-            style: GoogleFonts.cormorantGaramond(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              height: 1,
-              color: const Color.fromARGB(255, 32, 54, 50),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
+            height: 70,
           ),
           isLoading
               ? const CircularProgressIndicator()
@@ -110,7 +150,7 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text("Continue",
-                        style: GoogleFonts.cormorantGaramond(
+                        style: GoogleFonts.inter(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
                           height: 1,
@@ -118,7 +158,7 @@ class _PreUpdateScreenState extends State<PreUpdateScreen> {
                         )),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 177, 177, 177),
+                    backgroundColor: mainpallete,
                     elevation: 0,
                   ),
                   onPressed: () async {
