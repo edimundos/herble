@@ -4,17 +4,17 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Size screenSize = WidgetsBinding.instance.window.physicalSize;
 double width = screenSize.width;
 double height = screenSize.height;
 bool isLoggedIn = false;
 int userID = 0;
+String fcmToken = '';
 String username = '';
 String password = '';
 String email = '';
-Time wateringTime = Time(20, 0, 0);
+DateTime wateringTime = DateTime(2023, 1, 1, 20, 0, 0);
 List<Tip>? allTips;
 List<Instruction>? allInstructions;
 Plant currentPlant = Plant(

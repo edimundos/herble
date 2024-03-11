@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herble/main_page/main_page.dart';
@@ -161,18 +160,9 @@ class _ConnectInternetState extends State<ConnectInternet> {
 
     int plantId = await getPlantID(plant, days, volume);
 
-    NotificationService().cancelNotificationById(plantId);
     //create notification
-    Time notificationTime = globals.wateringTime;
-    Duration repeatInterval =
-        Duration(days: getRefilDayCount(days.toDouble(), volume.toDouble()));
-    await NotificationService().scheduleNotification(
-      plantId, //id
-      'Fill up the water for $plant', //title
-      'Click the notification to confirm that you filled it', //text
-      notificationTime,
-      repeatInterval,
-    );
+    NotificationService notificationService = NotificationService();
+    await notificationService.scheduleNotification(plantId);
   }
 
   int getRefilDayCount(double days, double volume) {

@@ -430,7 +430,7 @@ class _MyPlantsFormState extends State<MyPlantsForm> {
         padding: const EdgeInsets.only(bottom: 7),
         alignment: Alignment.bottomCenter,
         child: TextButton(
-          onPressed: () {
+          onPressed: () async {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const PreAddScreen()),

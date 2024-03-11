@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:herble/firebase_messaging.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:herble/start_page/log_in.dart';
-import 'package:herble/notifications/notificationservice.dart';
-import 'package:herble/notifications/water_confirmation.dart';
 import 'package:herble/glassmorphism.dart';
 import 'package:herble/start_page/log_in.dart' as login;
 import 'package:herble/start_page/sign_up.dart' as signup;
@@ -107,10 +106,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool showSignInButton = true;
   bool showRegisterButton = true;
 
+  NotificationServices notificationServices = NotificationServices();
+
   @override
   void initState() {
     super.initState();
-    listenToNotification();
+    notificationServices.RequestNotificationPermission();
+    notificationServices.FirebaseInit(context);
+    notificationServices.setupInteractMessage(context);
     controller = BottomSheet.createAnimationController(this);
     controller.duration = Duration(seconds: animLength);
     controller.reverseDuration = Duration(seconds: animLength);
@@ -306,21 +309,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           false, // Remove all previous routes from the stack
     );
     return false;
-  }
-
-  void listenToNotification() => NotificationService()
-      .onNotificationClick
-      .stream
-      .listen(onNotificationListener);
-
-  Future<void> onNotificationListener(String? payload) async {
-    if (payload != null && payload.isNotEmpty) {
-      globals.Plant plant = await getPlantsById(int.parse(payload));
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: ((context) => WaterConfirm(plant: plant))));
-    }
   }
 
   Future<globals.Plant> getPlantsById(int id) async {

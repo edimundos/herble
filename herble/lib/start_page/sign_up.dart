@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/src/types.dart';
 import 'package:herble/colors.dart';
 import 'package:herble/main_page/main_page.dart';
 import 'package:herble/start_page/verif_email_page.dart';
@@ -669,8 +668,8 @@ class _LogInFormState extends State<LogInForm> {
     globals.username = username;
     globals.password = pw;
     globals.email = email;
-    globals.wateringTime =
-        Time(selectedTime24Hour.hour, selectedTime24Hour.minute);
+    globals.wateringTime = DateTime(
+        2023, 1, 1, selectedTime24Hour.hour, selectedTime24Hour.minute);
     await http.post(Uri.parse(url), body: {
       'username_flutter': username,
       'pw_flutter': pw,

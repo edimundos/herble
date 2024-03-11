@@ -127,8 +127,8 @@ class _verifyEmailState extends State<VerifyEmail> with WidgetsBindingObserver {
     globals.username = username;
     globals.password = pw;
     globals.email = email;
-    globals.wateringTime =
-        Time(selectedTime24Hour.hour, selectedTime24Hour.minute);
+    globals.wateringTime = DateTime(
+        2023, 1, 1, selectedTime24Hour.hour, selectedTime24Hour.minute);
     await http.post(Uri.parse(url), body: {
       'username_flutter': username,
       'pw_flutter': pw,

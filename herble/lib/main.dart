@@ -1,20 +1,36 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:herble/colors.dart';
-import 'package:herble/start_page/firebase_options.dart';
+import 'package:herble/firebase_messaging.dart';
 import 'package:herble/globals.dart';
 import 'package:herble/start_page/home_page.dart';
-import 'package:herble/notifications/notificationservice.dart';
 import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
+//@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
+  FirebaseMessaging.instance.getToken().then((value) {
+    globals.fcmToken = value!;
+    print('Token: ${globals.fcmToken}');
+  });
+  NotificationServices notificationServices = NotificationServices();
+  notificationServices.RequestNotificationPermission();
   runApp(const MyApp());
-  await NotificationService().initNotification();
+
   globals.allInstructions = await getAllInstructions();
   globals.allTips = await getAllTips();
 
@@ -42,8 +58,6 @@ Future<void> main() async {
     }
   });
 }
-
-final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
